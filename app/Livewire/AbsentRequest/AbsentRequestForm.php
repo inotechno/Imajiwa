@@ -27,10 +27,12 @@ class AbsentRequestForm extends Component
             $this->employee = $this->absent_request->employee;
             $this->notes = $this->absent_request->notes;
             $this->employee_id = $this->absent_request->employee_id;
-            $this->start_date = $this->absent_request->start_date;
-            $this->end_date = $this->absent_request->end_date;
+            $this->start_date = $this->absent_request->start_date->format('Y-m-d');
+            $this->end_date = $this->absent_request->end_date->format('Y-m-d');
             $this->supervisor_id = $this->absent_request->supervisor_id;
             $this->director_id = $this->absent_request->director_id;
+
+            $this->dispatch('change-default');
         } else {
             $this->employee = Auth::user()->employee;
             $position = $this->employee->position;
