@@ -47,14 +47,12 @@ class EmployeeIndex extends Component
 
     public function render()
     {
-        $employees = Employee::with('user.roles', 'positions')->when($this->search, function ($query) {
+        $employees = Employee::with('user.roles', 'position')->when($this->search, function ($query) {
             $query->whereHas('user', function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%');
             });
         })->when($this->position_id, function ($query) {
-            $query->whereHas('positions', function ($query) {
-                $query->where('position_id', $this->position_id);
-            });
+            $query->where('position_id', $this->position_id);
         })->latest()->paginate($this->perPage);
 
         return view('livewire.employee.employee-index', compact('employees'))->layout('layouts.app', ['title' => 'Employee List']);

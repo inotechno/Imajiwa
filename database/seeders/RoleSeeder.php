@@ -163,7 +163,7 @@ class RoleSeeder extends Seeder
 
             // absent Request
             'view:absent-request-all' => ['HR', 'Director', 'Administrator'],
-            'view:absent-request' => ['Employee'],
+            'view:absent-request' => ['Employee', 'HR', 'Director', 'Administrator'],
             'create:absent-request' => ['Employee', 'HR', 'Administrator'],
             'update:absent-request' => ['Employee', 'HR', 'Administrator'],
             'delete:absent-request' => ['Employee', 'HR', 'Administrator'],
@@ -171,7 +171,7 @@ class RoleSeeder extends Seeder
 
             // Leave Request
             'view:leave-request-all' => ['HR', 'Director', 'Administrator'],
-            'view:leave-request' => ['Employee'],
+            'view:leave-request' => ['Employee', 'HR', 'Director', 'Administrator'],
             'create:leave-request' => ['Employee', 'HR', 'Administrator'],
             'update:leave-request' => ['Employee', 'HR', 'Administrator'],
             'delete:leave-request' => ['Employee', 'HR', 'Administrator'],

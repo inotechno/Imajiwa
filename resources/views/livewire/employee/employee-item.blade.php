@@ -26,9 +26,7 @@
                         </a>
                     @endif
                     <h6 class="font-size-15 mt-3 mb-1">{{ $user->name }}</h6>
-                    @foreach ($positions as $position)
-                        <p class="mb-0 text-muted">{{ $position->name }}</p>
-                    @endforeach
+                    <p class="mb-0 text-muted">{{ $position ?? '' }}</p>
                 </div>
                 <div class="d-flex mb-3 justify-content-center gap-2 text-muted">
                     <div>

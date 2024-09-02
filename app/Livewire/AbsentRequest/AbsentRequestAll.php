@@ -2,6 +2,10 @@
 
 namespace App\Livewire\AbsentRequest;
 
+use App\Models\AbsentRequest;
+use App\Models\Employee;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 
 class AbsentRequestAll extends Component

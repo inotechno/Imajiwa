@@ -17,8 +17,31 @@ class LeaveRequest extends Model
         'current_total_leave',
         'notes',
         'total_leave_after_request',
-        'is_approved',
+        'director_id',
+        'supervisor_id',
+        'director_approved_at',
+        'supervisor_approved_at',
     ];
+
+    protected $casts = [
+        'start_date' => 'date',
+        'end_date' => 'date',
+    ];
+
+    public function employee()
+    {
+        return $this->belongsTo(Employee::class);
+    }
+
+    public function director()
+    {
+        return $this->belongsTo(Employee::class, 'director_id');
+    }
+
+    public function supervisor()
+    {
+        return $this->belongsTo(Employee::class, 'supervisor_id');
+    }
 
     public function recipients(): MorphMany
     {
