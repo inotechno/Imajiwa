@@ -1,19 +1,5 @@
 <tr class="align-middle">
     <td>
-        @if ($user->avatar_url)
-            <a href="javascript: void(0);" class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top"
-                title="{{ $user->name }}">
-                <img src="{{ $user->avatar_url }}" alt="{{ $user->name }}" class="rounded-circle avatar-sm">
-            </a>
-        @else
-            <div class="avatar-sm">
-                <span class="avatar-title rounded-circle bg-success text-white font-size-16">
-                    {{ strtoupper(substr($user->name, 0, 1)) }}
-                </span>
-            </div>
-        @endif
-    </td>
-    <td>
         <h5 class="text-truncate font-size-14">
             <a href="javascript: void(0);" class="text-dark">{{ $user->name }}</a>
         </h5>
@@ -24,11 +10,11 @@
     </td>
     <td>
         <p>{{$director->name}}</p>
-        <p>{{$absent_request->director_approved_at}}</p>
+        <p>{{$absent_request->director_approved_at ?? '-'}}</p>
     </td>
     <td>
         <p>{{$supervisor->name}}</p>
-        <p>{{$absent_request->supervisor_approved_at}}</p>
+        <p>{{$absent_request->supervisor_approved_at ?? '-'}}</p>
     </td>
     <td>
         <span>{{ $absent_request->created_at->format('d M, Y h:i A') }}</span>

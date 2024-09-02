@@ -143,7 +143,7 @@ class RoleSeeder extends Seeder
             // Daily Report
             'view:daily-report-all' => ['HR', 'Director', 'Administrator'],
             'view:daily-report' => ['Employee'],
-            'create:daily-report' => ['Employee', 'Administrator'],
+            'create:daily-report' => ['Employee'],
             'update:daily-report' => ['Employee', 'Administrator'],
             'delete:daily-report' => ['Employee', 'Administrator'],
 
@@ -155,8 +155,8 @@ class RoleSeeder extends Seeder
 
             // Financial Request
             'view:financial-request-all' => ['HR', 'Director', 'Finance', 'Administrator'],
-            'view:financial-request' => ['Employee'],
-            'create:financial-request' => ['Finance', 'Administrator'],
+            'view:financial-request' => ['Employee', 'HR', 'Director', 'Finance', 'Administrator'],
+            'create:financial-request' => ['Employee'],
             'update:financial-request' => ['Finance', 'Administrator'],
             'delete:financial-request' => ['Finance', 'Administrator'],
             'approve:financial-request' => ['Employee', 'Finance', 'Director', 'Administrator'],
@@ -164,7 +164,7 @@ class RoleSeeder extends Seeder
             // absent Request
             'view:absent-request-all' => ['HR', 'Director', 'Administrator'],
             'view:absent-request' => ['Employee', 'HR', 'Director', 'Administrator'],
-            'create:absent-request' => ['Employee', 'HR', 'Administrator'],
+            'create:absent-request' => ['Employee'],
             'update:absent-request' => ['Employee', 'HR', 'Administrator'],
             'delete:absent-request' => ['Employee', 'HR', 'Administrator'],
             'approve:absent-request' => ['Employee', 'HR', 'Director', 'Administrator'],
@@ -172,7 +172,7 @@ class RoleSeeder extends Seeder
             // Leave Request
             'view:leave-request-all' => ['HR', 'Director', 'Administrator'],
             'view:leave-request' => ['Employee', 'HR', 'Director', 'Administrator'],
-            'create:leave-request' => ['Employee', 'HR', 'Administrator'],
+            'create:leave-request' => ['Employee'],
             'update:leave-request' => ['Employee', 'HR', 'Administrator'],
             'delete:leave-request' => ['Employee', 'HR', 'Administrator'],
             'approve:leave-request' => ['Employee', 'HR', 'Director', 'Administrator'],
