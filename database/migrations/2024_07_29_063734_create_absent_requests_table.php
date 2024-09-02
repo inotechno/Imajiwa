@@ -14,10 +14,17 @@ return new class extends Migration
         Schema::create('absent_requests', function (Blueprint $table) {
             $table->id();
             $table->foreignId('employee_id')->constrained()->cascadeOnDelete();
-            $table->date('date')->nullable();
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
             $table->text('notes')->nullable();
             $table->string('file_path')->nullable();
             $table->string('file_url')->nullable();
+            $table->foreignId('director_id')->nullable()->constrained('employees')->nullOnDelete()->cascadeOnUpdate();
+            $table->foreignId('supervisor_id')->nullable()->constrained('employees')->nullOnDelete()->cascadeOnUpdate();
+
+            $table->timestamp('director_approved_at')->nullable();
+            $table->timestamp('supervisor_approved_at')->nullable();
+
             $table->boolean('is_approved')->default(false);
 
             $table->timestamps();

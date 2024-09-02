@@ -115,7 +115,7 @@ Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
     });
 
     Route::get('/daily-report-all', DailyReportAll::class)->name('daily-report.all')->middleware('can:view:daily-report-all');
-    Route::get('/absent-request-all', AbsentRequestAll::class)->name('absent-request.all')->middleware('can:view:absent-request-all');
+    // Route::get('/absent-request-all', AbsentRequestAll::class)->name('absent-request.all')->middleware('can:view:absent-request-all');
 
     // Route::get('site', 'path.to.view')->name('site.index');
     // Route::get('department', 'path.to.view')->name('department.index');
@@ -137,7 +137,7 @@ Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
 
     Route::group(['prefix' => 'absent-request'], function () {
         Route::get('/', AbsentRequestIndex::class)->name('absent-request.index')->middleware('can:view:absent-request');
-        Route::get('team', AbsentRequestTeam::class)->name('team-absent-request.index')->middleware('can:view:absent-request');
+        // Route::get('team', AbsentRequestTeam::class)->name('team-absent-request.index')->middleware('can:view:absent-request');
         Route::get('create', AbsentRequestForm::class)->name('absent-request.create')->middleware('can:create:absent-request');
         Route::get('edit/{id}', AbsentRequestForm::class)->name('absent-request.edit')->middleware('can:update:absent-request');
         Route::get('detail/{id}', AbsentRequestDetail::class)->name('absent-request.detail')->middleware('can:view:absent-request');

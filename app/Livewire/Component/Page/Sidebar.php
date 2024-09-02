@@ -137,34 +137,34 @@ class Sidebar extends Component
                     ],
                 ],
                 [
-                    'name' => 'Absent Request All',
-                    'url' => '/absent-request-all',
+                    'name' => 'Absent Request',
+                    'url' => '/absent-request',
                     'route' => 'absent-request.index',
                     'icon' => 'bx bxs-tired',
-                    'permission' => 'view:absent-request-all',
-                ],
-                [
-                    'name' => 'Absent Request',
-                    'icon' => 'bx bxs-tired',
-                    'url' => '/absent-request',
                     'permission' => 'view:absent-request',
-                    'subMenus' => [
-                        [
-                            'name' => 'My Absent Request',
-                            'url' => '/absent-request',
-                            'route' => 'absent-request.index',
-                            'icon' => 'bx bxs-tired',
-                            'permission' => 'view:absent-request'
-                        ],
-                        [
-                            'name' => 'Team Absent Request',
-                            'url' => '/absent-request/team',
-                            'route' => 'team-absent-request.index',
-                            'icon' => 'bx bxs-tired',
-                            'permission' => 'view:absent-request'
-                        ],
-                    ],
                 ],
+                // [
+                //     'name' => 'Absent Request',
+                //     'icon' => 'bx bxs-tired',
+                //     'url' => '/absent-request',
+                //     'permission' => 'view:absent-request',
+                //     'subMenus' => [
+                //         [
+                //             'name' => 'My Absent Request',
+                //             'url' => '/absent-request',
+                //             'route' => 'absent-request.index',
+                //             'icon' => 'bx bxs-tired',
+                //             'permission' => 'view:absent-request'
+                //         ],
+                //         [
+                //             'name' => 'Team Absent Request',
+                //             'url' => '/absent-request/team',
+                //             'route' => 'team-absent-request.index',
+                //             'icon' => 'bx bxs-tired',
+                //             'permission' => 'view:absent-request'
+                //         ],
+                //     ],
+                // ],
                 // [
                 //     'name' => 'Leave Request',
                 //     'url' => '/leave-request',
