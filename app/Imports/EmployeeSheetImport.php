@@ -28,7 +28,7 @@ class EmployeeSheetImport implements ToCollection, WithHeadingRow, SkipsEmptyRow
     public function __construct()
     {
         $this->EmailService = app(EmailService::class);
-        $this->employees = Employee::with('positions', 'user', 'user.roles')->get();
+        $this->employees = Employee::with('position', 'user', 'user.roles')->get();
         $this->positions = Position::all()->keyBy('id');
         $this->roles = Role::all()->keyBy('name');
     }

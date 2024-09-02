@@ -14,8 +14,13 @@
                         <div class="row">
                             <div class="col-md">
                                 <div class="mb-3">
-                                    <label for="notes">Note</label>
-                                    <textarea class="form-control" id="notes" name="notes" wire:model="notes" rows="3"></textarea>
+                                    <label for="notes" class="mb-3">Note</label>
+                                    <textarea class="form-control @error('notes') is-invalid @enderror" id="notes" name="notes" wire:model="notes"
+                                        rows="3"></textarea>
+
+                                    @error('notes')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
 
                                 <button type="submit" class="btn btn-primary" wire:loading.attr="disabled"
@@ -25,14 +30,14 @@
                             <div class="col-md-6">
                                 <div class="row">
 
-                                    <div class="col-md-6">
-                                        <label>Start Date</label>
+                                    <div class="col-sm-6">
+                                        <label class="mb-3">Start Date</label>
                                         <div id="start-datepicker" data-provide="datepicker-inline"
                                             class="bootstrap-datepicker-inline"></div>
                                     </div>
 
-                                    <div class="col-md-6">
-                                        <label>End Date</label>
+                                    <div class="col-sm-6">
+                                        <label class="mb-3">End Date</label>
                                         <div id="end-datepicker" data-provide="datepicker-inline"
                                             class="bootstrap-datepicker-inline"></div>
                                     </div>
@@ -59,13 +64,17 @@
                     format: 'yyyy-mm-dd', // Atur format tanggal sesuai kebutuhan
                     todayHighlight: true, // Sorot tanggal hari ini
                     autoclose: true // Tutup datepicker setelah tanggal dipilih
+                }).on('changeDate', function(e) {
+                    @this.set('start_date', e.format(0, "yyyy-mm-dd")); // Update property Livewire
                 });
 
                 $('#end-datepicker').datepicker({
                     format: 'yyyy-mm-dd',
                     todayHighlight: true,
                     autoclose: true
-                });
+                }).on('changeDate', function(e) {
+                    @this.set('end_date', e.format(0, "yyyy-mm-dd"));
+                })
             });
         </script>
     @endpush
