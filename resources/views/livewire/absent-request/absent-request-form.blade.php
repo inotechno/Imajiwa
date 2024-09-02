@@ -62,7 +62,7 @@
             document.addEventListener('livewire:init', function() {
                 $('#start-datepicker').datepicker({
                     format: 'yyyy-mm-dd', // Atur format tanggal sesuai kebutuhan
-                    todayHighlight: true, // Sorot tanggal hari ini
+                    // todayHighlight: true, // Sorot tanggal hari ini
                     autoclose: true // Tutup datepicker setelah tanggal dipilih
                 }).on('changeDate', function(e) {
                     @this.set('start_date', e.format(0, "yyyy-mm-dd")); // Update property Livewire
@@ -70,10 +70,15 @@
 
                 $('#end-datepicker').datepicker({
                     format: 'yyyy-mm-dd',
-                    todayHighlight: true,
+                    // todayHighlight: true,
                     autoclose: true
                 }).on('changeDate', function(e) {
                     @this.set('end_date', e.format(0, "yyyy-mm-dd"));
+                })
+
+                Livewire.on('change-default', () => {
+                    $('#start-datepicker').datepicker('update', @json($start_date));
+                    $('#end-datepicker').datepicker('update', @json($end_date));
                 })
             });
         </script>
