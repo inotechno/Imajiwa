@@ -1,33 +1,33 @@
 <?php
 
-namespace App\Livewire\AbsentRequest;
+namespace App\Livewire\LeaveRequest;
 
-use App\Models\AbsentRequest;
+use Livewire\Component;
+use App\Models\LeaveRequest;
 use Illuminate\Support\Facades\Auth;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\On;
-use Livewire\Attributes\Reactive;
-use Livewire\Component;
 
-class AbsentRequestItem extends Component
+class LeaveRequestItem extends Component
 {
     use LivewireAlert;
-    public $absent_request;
+    public $leave_request;
     public $isApproved = false;
-    public $totalDays = 0;
-    public $isSupervisor = false;
     public $approvedDirector = false;
     public $approvedSupervisor = false;
+    public $totalDays = 0;
+    public $isSupervisor = false;
+
     public $disableUpdate = false;
 
-    public function mount(AbsentRequest $absent_request)
+    public function mount(LeaveRequest $leave_request)
     {
-        $this->absent_request = $absent_request;
-        if($this->absent_request->director_approved_at){
+        $this->leave_request = $leave_request;
+        if($this->leave_request->director_approved_at){
             $this->approvedDirector = true;
         }
 
-        if($this->absent_request->supervisor_approved_at){
+        if($this->leave_request->supervisor_approved_at){
             $this->approvedSupervisor = true;
         }
 
@@ -39,18 +39,18 @@ class AbsentRequestItem extends Component
             $this->disableUpdate = true;
         }
 
-        if(Auth::user()->employee){
-            if($this->absent_request->supervisor_id == Auth::user()->employee->id){
+        if (Auth::user()->employee) {
+            if ($this->leave_request->supervisor_id == Auth::user()->employee->id) {
                 $this->isSupervisor = true;
             }
         }
 
-        $this->totalDays = $this->absent_request->end_date->diffInDays($this->absent_request->start_date);
+        $this->totalDays = $this->leave_request->end_date->diffInDays($this->leave_request->start_date);
     }
 
     public function deleteConfirm()
     {
-        $this->alert('warning', 'Are you sure you want to delete this absent request?', [
+        $this->alert('warning', 'Are you sure you want to delete this leave request?', [
             'position' => 'center',
             'timer' => null,
             'toast' => false,
@@ -59,7 +59,7 @@ class AbsentRequestItem extends Component
             'confirmButtonColor' => '#DD6B55',
             'confirmButtonText' => 'Yes, Delete',
             'cancelButtonText' => 'No',
-            'onConfirmed' => 'delete-absent-request',
+            'onConfirmed' => 'delete-leave-request',
             'showCancelButton' => true,
 
             'allowOutsideClick' => false,
@@ -71,7 +71,7 @@ class AbsentRequestItem extends Component
 
     public function approveConfirm()
     {
-        $this->alert('info', 'Are you sure you want to approve this absent request?', [
+        $this->alert('info', 'Are you sure you want to approve this leave request?', [
             'position' => 'center',
             'timer' => null,
             'toast' => false,
@@ -80,7 +80,7 @@ class AbsentRequestItem extends Component
             'confirmButtonColor' => '#00a8ff',
             'confirmButtonText' => 'Yes, Approve',
             'cancelButtonText' => 'Cancel',
-            'onConfirmed' => 'approve-absent-request',
+            'onConfirmed' => 'approve-leave-request',
             'showCancelButton' => true,
 
             'allowOutsideClick' => false,
@@ -90,42 +90,42 @@ class AbsentRequestItem extends Component
         ]);
     }
 
-    #[On('approve-absent-request')]
+    #[On('approve-leave-request')]
     public function approve()
     {
-        if($this->isSupervisor == false){
-            $this->absent_request->update([
+        if ($this->isSupervisor == false) {
+            $this->leave_request->update([
                 'director_approved_at' => now(),
             ]);
-        }else{
-            $this->absent_request->update([
+        } else {
+            $this->leave_request->update([
                 'supervisor_approved_at' => now(),
             ]);
         }
 
-        $this->alert('success', 'Absent Request approved successfully');
+        $this->alert('success', 'Leave Request approved successfully');
         return redirect()->route('leave-request.index');
     }
 
-    #[On('delete-absent-request')]
+    #[On('delete-leave-request')]
     public function delete()
     {
-        // dd($this->absent_request);
-        $this->absent_request->delete();
-        $this->alert('success', 'Absent Request deleted successfully');
+        // dd($this->leave_request);
+        $this->leave_request->delete();
+        $this->alert('success', 'Leave Request deleted successfully');
 
-        return redirect()->route('absent-request.index');
+        return redirect()->route('leave-request.index');
     }
 
     public function render()
     {
-        $employee = $this->absent_request->employee;
+        $employee = $this->leave_request->employee;
         $user = $employee->user;
-        $supervisor = $this->absent_request->supervisor->user;
-        $director = $this->absent_request->director->user;
+        $supervisor = $this->leave_request->supervisor->user;
+        $director = $this->leave_request->director->user;
 
-        return view('livewire.absent-request.absent-request-item', [
-            'absent_request' => $this->absent_request,
+        return view('livewire.leave-request.leave-request-item', [
+            'leave_request' => $this->leave_request,
             'employee' => $employee,
             'user' => $user,
             'supervisor' => $supervisor,
