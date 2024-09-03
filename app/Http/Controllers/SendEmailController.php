@@ -21,7 +21,7 @@ class SendEmailController extends Controller
 
     public function newUser(Request $request)
     {
-        $user = User::where('email', 'ahmad.fatoni@mindotek.com')->first();
+        $user = User::where('email', 'wildanf.daftar@gmail.com')->first();
 
         if($user == null) {
             return response()->json(['error' => 'User not found'], 404);

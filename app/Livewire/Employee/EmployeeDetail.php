@@ -22,7 +22,7 @@ class EmployeeDetail extends Component
 
     public function mount($id)
     {
-        $this->employee = Employee::with('user', 'positions')->where('id', $id)->first();
+        $this->employee = Employee::with('user', 'position')->where('id', $id)->first();
         $this->user = $this->employee->user;
         $this->projects = $this->employee->projects;
         $this->project_status = $this->setProjectStatus();
