@@ -7,7 +7,7 @@
                 <div class="card-body">
                     <div class="mb-3">
                         <label class="mb-3">Date</label>
-                        <div id="date" data-provide="datepicker-inline" class="bootstrap-datepicker-inline"></div>
+                        <div id="calendar"></div>
                     </div>
 
                     <div class="mb-3">
@@ -32,51 +32,41 @@
     </div>
 
     @push('styles')
-        <link href="{{ asset('libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet"
-            type="text/css">
-
-        <style>
-            /* Gaya untuk tanggal aktif yang tidak memiliki kelas 'disabled' */
-            .bootstrap-datepicker-inline .datepicker-days .day:not(.disabled) {
-                background-color: #007bff;
-                /* Warna latar belakang untuk tanggal yang aktif */
-                color: #fff;
-                /* Warna teks menjadi putih */
-                border-radius: 0;
-                /* Buat tanggal yang dipilih lebih kotak (opsional) */
-            }
-
-            /* Gaya untuk hover saat memilih tanggal */
-            .bootstrap-datepicker-inline .datepicker-days .day:not(.disabled):hover {
-                background-color: #0056b3;
-                /* Warna lebih gelap saat dihover */
-                color: #fff;
-                /* Warna teks menjadi putih saat dihover */
-            }
-
-            /* Gaya untuk rentang tanggal yang dipilih */
-            .bootstrap-datepicker-inline .datepicker-days .range {
-                background-color: #007bff;
-                /* Warna latar belakang untuk rentang tanggal */
-                color: #fff;
-                /* Warna teks menjadi putih */
-            }
-        </style>
+        <link href="{{ asset('libs/%40fullcalendar/core/main.min.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('libs/%40fullcalendar/daygrid/main.min.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('libs/%40fullcalendar/bootstrap/main.min.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('libs/%40fullcalendar/timegrid/main.min.css') }}" rel="stylesheet" type="text/css" />
     @endpush
 
     @push('js')
-        <script src="{{ asset('libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+        <script src="{{ asset('libs/jquery-ui-dist/jquery-ui.min.js') }}"></script>
+        <script src="{{ asset('libs/%40fullcalendar/core/main.min.js') }}"></script>
+        <script src="{{ asset('libs/%40fullcalendar/bootstrap/main.min.js') }}"></script>
+        <script src="{{ asset('libs/%40fullcalendar/daygrid/main.min.js') }}"></script>
+        <script src="{{asset('libs/%40fullcalendar/timegrid/main.min.js') }}"></script>
+        <script src="{{asset('libs/%40fullcalendar/interaction/main.min.js') }}"></script>
+
         <script>
             document.addEventListener('livewire:init', function() {
-                $('#date').datepicker({
-                    // width: '100%',
-                    singleDatePicker: true,
-                    format: 'yyyy-mm-dd', // Atur format tanggal sesuai kebutuhan
-                    autoclose: true, // Tutup datepicker setelah tanggal dipilih
-                    startDate: @json($start_date),
-                    endDate: @json($end_date),
-                    keyboardNavigation: false
+                var startDate = @json($start_date); // Format: 'YYYY-MM-DD'
+                var endDate = @json($end_date); // Format: 'YYYY-MM-DD'
+
+                var calendarEl = document.getElementById('calendar');
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    defaultView: 'dayGridMonth',
+                    plugins: ["bootstrap", "interaction", "dayGrid", "timeGrid"],
+                    editable: false, // Nonaktifkan interaksi
+                    selectable: false, // Nonaktifkan pemilihan tanggal
+                    events: [{
+                        start: startDate,
+                        end: endDate,
+                        display: 'background', // Tampilkan rentang sebagai latar belakang
+                        backgroundColor: '#007bff', // Warna latar belakang rentang
+                        borderColor: '#007bff'
+                    }],
+                    themeSystem: 'bootstrap',
                 });
+                calendar.render();
             });
         </script>
     @endpush
