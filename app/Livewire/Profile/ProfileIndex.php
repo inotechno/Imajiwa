@@ -27,7 +27,7 @@ class ProfileIndex extends Component
     public function mount()
     {
         $this->user = Auth::user();
-        $this->employee = Employee::with('user', 'positions')->where('user_id', $this->user->id)->first();
+        $this->employee = Employee::with('user', 'position')->where('user_id', $this->user->id)->first();
         if ($this->employee) {
             $this->user = $this->employee->user;
             $this->projects = $this->employee->projects;

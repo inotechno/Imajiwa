@@ -62,7 +62,7 @@
                             </div>
                         </div>
 
-                        <div class="row mb-4" wire:ignore>
+                        {{-- <div class="row mb-4" wire:ignore>
                             <label for="status" class="col-form-label col-lg-2">Select Project Manager</label>
                             <div class="col-lg-10">
                                 <select class="form-control @error('employee_id') is-invalid @enderror" id="employee_id"
@@ -78,6 +78,14 @@
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
+                            </div>
+                        </div> --}}
+
+
+                        <div class="row mb-4">
+                            <label for="status" class="col-form-label col-lg-2">Project Manager</label>
+                            <div class="col-lg-10">
+                                <input type="text" class="form-control" readonly value="{{ $projectManagerName }}">
                             </div>
                         </div>
 
