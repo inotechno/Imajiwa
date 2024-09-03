@@ -47,7 +47,7 @@
                                         <p class="text-muted mb-0">Join Date</p>
                                     </div>
                                     <div class="mt-4">
-                                        <a href="{{ route('profile.edit', ['id' => $employee->id]) }}" class="btn btn-primary waves-effect waves-light btn-sm">Edit Profile <i class="mdi mdi-arrow-right ms-1"></i></a>
+                                        <a href="{{ route('profile.edit') }}" class="btn btn-primary waves-effect waves-light btn-sm">Edit Profile <i class="mdi mdi-arrow-right ms-1"></i></a>
                                     </div>
                                 </div>
                             </div>
