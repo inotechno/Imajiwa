@@ -173,7 +173,7 @@
                                         type="password"
                                         class="form-control @error('new_password') is-invalid @enderror"
                                         placeholder="Enter New Password...">
-                                    <button class="btn btn-light" type="button" id="password-addon"><i
+                                    <button class="btn btn-light" type="button" id="new-password-addon"><i
                                             class="mdi mdi-eye-outline"></i></button>
                                 </div>
 
@@ -189,7 +189,7 @@
                                         wire:model="confirm_password" type="password"
                                         class="form-control @error('confirm_password') is-invalid @enderror"
                                         placeholder="Enter Confirm Password...">
-                                    <button class="btn btn-light" type="button" id="password-addon"><i
+                                    <button class="btn btn-light" type="button" id="confrim-password-addon"><i
                                             class="mdi mdi-eye-outline"></i></button>
                                 </div>
                                 @error('confirm_password')
@@ -254,6 +254,22 @@
                     $('.select-marital-status').val(null).trigger('change');
                     $('.select-gender').val(null).trigger('change');
                 })
+
+                document.getElementById('new-password-addon').addEventListener('click', function() {
+                    const newPasswordInput = document.getElementById('new_password');
+                    const type = newPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                    newPasswordInput.setAttribute('type', type);
+                    this.querySelector('i').classList.toggle('mdi-eye-outline');
+                    this.querySelector('i').classList.toggle('mdi-eye-off-outline');
+                });
+
+                document.getElementById('confrim-password-addon').addEventListener('click', function() {
+                    const confirmPasswordInput = document.getElementById('confirm_password');
+                    const type = confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                    confirmPasswordInput.setAttribute('type', type);
+                    this.querySelector('i').classList.toggle('mdi-eye-outline');
+                    this.querySelector('i').classList.toggle('mdi-eye-off-outline');
+                });
             });
         </script>
     @endpush
