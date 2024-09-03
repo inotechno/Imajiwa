@@ -17,6 +17,7 @@ return new class extends Migration
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->text('notes')->nullable();
+            $table->enum('type_absent', ['sakit', 'izin', 'lainnya'])->nullable();
             $table->string('file_path')->nullable();
             $table->string('file_url')->nullable();
             $table->foreignId('director_id')->nullable()->constrained('employees')->nullOnDelete()->cascadeOnUpdate();

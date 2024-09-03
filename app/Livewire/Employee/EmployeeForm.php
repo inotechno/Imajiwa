@@ -85,15 +85,15 @@ class EmployeeForm extends Component
                 'religion' => 'nullable|string|max:255',
             ]);
 
-            $this->password = Str::random(8);
+            // $this->password = Str::random(8);
 
             if ($this->type == 'create') {
                 $this->user = User::create([
                     'username' => $this->username,
                     'name' => $this->name,
                     'email' => $this->email,
-                    'password' => Hash::make($this->password),
-                    'password_string' => $this->password,
+                    // 'password' => Hash::make($this->password),
+                    // 'password_string' => $this->password,
                 ]);
 
                 $this->user->employee()->create([

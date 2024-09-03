@@ -67,10 +67,8 @@
     </div>
 
     <div class="row">
-        {{ $absent_requests->links() }}
-
         <div class="col-lg-12">
-            @livewire('absent-request.absent-request-list', ['absent_requests' => $absent_requests->items()], key('absent-request-list'))
+            @livewire('absent-request.absent-request-list', ['absent_requests' => $absent_requests->getCollection()], key('absent-request-list'))
         </div>
 
         {{ $absent_requests->links() }}

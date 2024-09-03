@@ -16,7 +16,7 @@ class AbsentRequestForm extends Component
 
     public $mode = 'Create';
     public $absent_request;
-    public $notes, $employee_id, $start_date, $end_date, $supervisor_id, $director_id;
+    public $notes, $employee_id, $start_date, $end_date, $supervisor_id, $director_id, $type_absent;
     public $employee;
 
     public function mount($id = null)
@@ -31,19 +31,26 @@ class AbsentRequestForm extends Component
             $this->end_date = $this->absent_request->end_date->format('Y-m-d');
             $this->supervisor_id = $this->absent_request->supervisor_id;
             $this->director_id = $this->absent_request->director_id;
+            $this->type_absent = $this->absent_request->type_absent;
 
             $this->dispatch('change-default');
         } else {
             $this->employee = Auth::user()->employee;
             $position = $this->employee->position;
-            $department = $position->department;
+
+            if ($position) {
+                $department = $position->department;
+                if ($department) {
+                    $this->supervisor_id = $department->supervisor_id ?? null;
+                }
+            }
 
             $this->mode = 'Create';
             $this->notes = '';
             $this->employee_id = $this->employee->id;
             $this->start_date = '';
             $this->end_date = '';
-            $this->supervisor_id = $department->supervisor_id ?? null;
+            $this->supervisor_id = $this->supervisor_id ?? null;
             $this->director_id = User::role('director')->first()->employee->id;
         }
     }
@@ -56,6 +63,7 @@ class AbsentRequestForm extends Component
 
     public function save()
     {
+        // dd($this->type_absent);
         try {
             $this->validate([
                 'notes' => 'required',
@@ -64,6 +72,10 @@ class AbsentRequestForm extends Component
                 'end_date' => 'required|after_or_equal:start_date|date|after_or_equal:today',
                 'supervisor_id' => 'required|exists:employees,id',
                 'director_id' => 'required|exists:employees,id',
+                'type_absent' => 'required',
+            ],[
+                'supervisor_id.required' => 'Belum ada department, silahkan hubungi administrator',
+                'director_id.required' => 'Belum ada director, silahkan hubungi administrator',
             ]);
 
             if ($this->mode == 'Create') {
@@ -78,15 +90,6 @@ class AbsentRequestForm extends Component
 
     public function store()
     {
-        $this->validate([
-            'notes' => 'required',
-            'employee_id' => 'required',
-            'start_date' => 'required',
-            'end_date' => 'required',
-            'supervisor_id' => 'required',
-            'director_id' => 'required',
-        ]);
-
         try {
             $this->absent_request = AbsentRequest::create([
                 'notes' => $this->notes,
@@ -95,6 +98,7 @@ class AbsentRequestForm extends Component
                 'end_date' => $this->end_date,
                 'supervisor_id' => $this->supervisor_id,
                 'director_id' => $this->director_id,
+                'type_absent' => $this->type_absent
             ]);
 
             $this->reset();
@@ -108,15 +112,6 @@ class AbsentRequestForm extends Component
 
     public function update()
     {
-        $this->validate([
-            'notes' => 'required',
-            'employee_id' => 'required',
-            'start_date' => 'required',
-            'end_date' => 'required',
-            'supervisor_id' => 'required',
-            'director_id' => 'required',
-        ]);
-
         try {
             $this->absent_request->update([
                 'notes' => $this->notes,
@@ -125,6 +120,7 @@ class AbsentRequestForm extends Component
                 'end_date' => $this->end_date,
                 'supervisor_id' => $this->supervisor_id,
                 'director_id' => $this->director_id,
+                'type_absent' => $this->type_absent
             ]);
 
             $this->reset();

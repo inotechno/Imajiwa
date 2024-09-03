@@ -8,12 +8,8 @@ use Livewire\Component;
 
 class AbsentRequestList extends Component
 {
+    #[Reactive('absent_requests')]
     public $absent_requests;
-
-    public function mount(AbsentRequest $absent_request)
-    {
-        $this->absent_requests = $absent_request->with('employee.user', 'supervisor', 'director')->get();
-    }
 
     public function render()
     {
