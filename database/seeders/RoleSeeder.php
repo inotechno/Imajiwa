@@ -14,31 +14,31 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        $administrator = Role::create([
+        $administrator = Role::updateOrCreate([
             'name' => 'Administrator',
         ]);
 
-        $director = Role::create([
+        $director = Role::updateOrCreate([
             'name' => 'Director',
         ]);
 
-        $finance = Role::create([
+        $finance = Role::updateOrCreate([
             'name' => 'Finance',
         ]);
 
-        $hr = Role::create([
+        $hr = Role::updateOrCreate([
             'name' => 'HR',
         ]);
 
-        $commissioner = Role::create([
+        $commissioner = Role::updateOrCreate([
             'name' => 'Commissioner',
         ]);
 
-        $employee = Role::create([
+        $employee = Role::updateOrCreate([
             'name' => 'Employee',
         ]);
 
-        $project_manager = Role::create([
+        $project_manager = Role::updateOrCreate([
             'name' => 'Project Manager',
         ]);
 
@@ -59,13 +59,13 @@ class RoleSeeder extends Seeder
             'delete:user' => ['HR', 'Administrator'],
 
             // Employee
-            'view:employee' => ['HR', 'Director', 'Administrator', 'Project Manager'],
+            'view:employee' => ['HR', 'Director', 'Administrator'],
             'create:employee' => ['HR', 'Administrator'],
             'update:employee' => ['HR', 'Administrator'],
             'delete:employee' => ['HR', 'Administrator'],
 
             // Position
-            'view:position' => ['HR', 'Director', 'Administrator', 'Project Manager'],
+            'view:position' => ['HR', 'Director', 'Administrator'],
             'create:position' => ['HR', 'Administrator'],
             'update:position' => ['HR', 'Administrator'],
             'delete:position' => ['HR', 'Administrator'],
@@ -186,7 +186,7 @@ class RoleSeeder extends Seeder
             'view:report-visit' => ['Employee', 'HR', 'Director', 'Administrator'],
 
             // Project
-            'view:project-all' => ['HR', 'Director', 'Administrator'],
+            'view:project-all' => ['HR', 'Director', 'Administrator' , 'Project Manager', 'Employee'],
             'view:project' => ['Employee', 'Project Manager'],
             'create:project' => ['Administrator', 'Project Manager'],
             'update:project' => ['Administrator', 'Project Manager'],
@@ -198,14 +198,14 @@ class RoleSeeder extends Seeder
         ];
 
         foreach ($permissions as $permissionName => $roles) {
-            $permission = Permission::create([
+            $permission = Permission::updateOrCreate([
                 'name' => $permissionName,
                 'guard_name' => 'web',
             ]);
 
             // Assign permission to roles
             foreach ($roles as $roleName) {
-                $role = Role::firstOrCreate(['name' => $roleName]);
+                $role = Role::updateOrCreate(['name' => $roleName]);
                 $role->givePermissionTo($permission);
             }
         }

@@ -7,6 +7,7 @@ use App\Models\Project;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Illuminate\Support\Facades\Auth;
 
 class ProjectForm extends Component
 {
@@ -14,6 +15,7 @@ class ProjectForm extends Component
     public $project;
     public $name, $description, $start_date, $end_date, $status, $employee_id;
     public $selectedEmployees = [];
+    public $projectManagerName;
     public $employees;
     public $type = 'create';
 
@@ -29,11 +31,18 @@ class ProjectForm extends Component
             $this->employee_id = $this->project->employee_id;
             $this->type = 'update';
 
+            $this->projectManagerName = $this->project->projectManager->user->name ?? '';
             $this->selectedEmployees = $this->project->employees()->pluck('employee_id')->toArray();
             $this->dispatch('change-select-form');
+        }else {
+            $this->employee_id = auth()->user()->employee->id;
+            $this->projectManagerName = auth()->user()->employee->user->name;
         }
 
         $this->employees = Employee::with('user')->get();
+        if (!$this->employee_id) {
+            $this->projectManagerName = auth()->user()->employee->user->name;
+        }
     }
 
     public function save()
@@ -47,8 +56,8 @@ class ProjectForm extends Component
         ]);
 
         if ($this->employee_id == null) {
-            $this->alert('error', 'Please select project manager');
-            return;
+            $this->employee_id = auth()->user()->employee->id;
+            $this->projectManagerName = auth()->user()->employee->user->name;
         }
 
         if ($this->selectedEmployees == null) {
