@@ -23,8 +23,37 @@
                                     @enderror
                                 </div>
 
-                                <button type="submit" class="btn btn-primary" wire:loading.attr="disabled"
-                                    wire:target="save">Save</button>
+                                <div class="mb-3">
+                                    <label for="type_absent" class="mb-3">Type Absent</label>
+
+                                    <div class="d-flex gap-3">
+                                        <div class="form-check mb-3">
+                                            <input class="form-check-input" type="radio" name="type_absent" id="type_absent1" checked="" wire:model="type_absent" value="sakit">
+                                            <label class="form-check-label" for="type_absent1">
+                                                Sakit
+                                            </label>
+                                        </div>
+
+                                        <div class="form-check mb-3">
+                                            <input class="form-check-input" type="radio" name="type_absent" id="type_absent2" wire:model="type_absent" value="izin">
+                                            <label class="form-check-label" for="type_absent2">
+                                                Izin
+                                            </label>
+                                        </div>
+
+                                        <div class="form-check mb-3">
+                                            <input class="form-check-input" type="radio" name="type_absent" id="type_absent3" wire:model="type_absent" value="lainnya">
+                                            <label class="form-check-label" for="type_absent3">
+                                                Lainnya
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    @error('type_absent')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
                             </div>
 
                             <div class="col-md-6">
@@ -44,6 +73,10 @@
                                 </div>
                             </div>
 
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-primary" wire:loading.attr="disabled"
+                                wire:target="save">Save</button>
+                            </div>
                         </div>
                     </form>
                 </div>

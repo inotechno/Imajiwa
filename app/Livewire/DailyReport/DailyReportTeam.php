@@ -45,6 +45,6 @@ class DailyReportTeam extends Component
         })->paginate($this->perPage);
 
         // dd($daily_reports);
-        return view('livewire.daily-report.daily-report-index', compact('daily_reports'))->layout('layouts.app', ['title' => 'Team Daily Report']);
+        return view('livewire.daily-report.daily-report-team', compact('daily_reports'))->layout('layouts.app', ['title' => 'Team Daily Report']);
     }
 }

@@ -4,8 +4,8 @@ namespace App\Livewire\Employee;
 
 use App\Models\Employee;
 use App\Models\Position;
+use Livewire\Attributes\Url;
 use Livewire\WithPagination;
-use URL;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 
@@ -14,7 +14,7 @@ class EmployeeIndex extends Component
 
     use LivewireAlert, WithPagination;
 
-    #[URL(except: '')]
+    #[Url(except: '')]
     public $search = '';
 
     public $perPage = 10;

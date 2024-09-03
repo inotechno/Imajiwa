@@ -18,6 +18,7 @@ class AbsentRequest extends Model
         'start_date',
         'end_date',
         'notes',
+        'type_absent',
         'file_path',
         'file_url',
         'director_id',
@@ -29,6 +30,8 @@ class AbsentRequest extends Model
     protected $casts = [
         'start_date' => 'date',
         'end_date' => 'date',
+        'director_approved_at' => 'datetime',
+        'supervisor_approved_at' => 'datetime',
     ];
 
     public function employee()
