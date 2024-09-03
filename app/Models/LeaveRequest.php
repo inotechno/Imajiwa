@@ -14,8 +14,9 @@ class LeaveRequest extends Model
         'employee_id',
         'start_date',
         'end_date',
-        'current_total_leave',
         'notes',
+        'total_days',
+        'current_total_leave',
         'total_leave_after_request',
         'director_id',
         'supervisor_id',
@@ -26,6 +27,8 @@ class LeaveRequest extends Model
     protected $casts = [
         'start_date' => 'date',
         'end_date' => 'date',
+        'director_approved_at' => 'datetime',
+        'supervisor_approved_at' => 'datetime',
     ];
 
     public function employee()

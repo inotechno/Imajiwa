@@ -8,6 +8,7 @@ use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Str;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
 
 class ProfileForm extends Component
@@ -26,7 +27,7 @@ class ProfileForm extends Component
     $place_of_birth,
     $gender,
     $marital_status,
-    $old_password, $new_password, $confirm_password,$password_string,
+    $old_password, $new_password, $confirm_password, $password_string,
     $religion;
 
 
@@ -51,6 +52,22 @@ class ProfileForm extends Component
 
             $this->dispatch('change-select-form');
         }
+
+        $this->user = Auth::user();
+        $this->employee = $this->user->employee;
+        $this->name = $this->user->name;
+        $this->username = $this->user->username;
+        $this->email = $this->user->email;
+        $this->citizen_id = $this->employee->citizen_id;
+        $this->leave_remaining = $this->employee->leave_remaining;
+        $this->join_date = $this->employee->join_date;
+        $this->birth_date = $this->employee->birth_date;
+        $this->place_of_birth = $this->employee->place_of_birth;
+        $this->gender = $this->employee->gender;
+        $this->marital_status = $this->employee->marital_status;
+        $this->religion = $this->employee->religion;
+
+        $this->dispatch('change-select-form');
     }
 
     public function save()
