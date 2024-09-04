@@ -1,5 +1,5 @@
 <div>
-    @livewire('component.page.breadcrumb', ['breadcrumbs' => [['name' => 'Profile'] ]], key('breadcrumb'))
+    @livewire('component.page.breadcrumb', ['breadcrumbs' => [['name' => 'Profile']]], key('breadcrumb'))
 
     <div class="row">
         <div class="col-xl-6">
@@ -9,7 +9,7 @@
                         <div class="col-7">
                             <div class="text-primary p-3">
                                 <h5 class="text-primary">Welcome Back !</h5>
-                                <p>It will seem like simplified</p>
+                                {{-- <p>It will seem like simplified</p> --}}
                             </div>
                         </div>
                         <div class="col-5 align-self-end">
@@ -21,8 +21,8 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="avatar-md profile-user-wid mb-4">
-                                @if ($user->avatar_url)
-                                    <img src="{{ $user->avatar_url }}" alt="{{ $user->name }}"
+                                @if ($user->avatar_url && file_exists(public_path('storage/' . $user->avatar_url)))
+                                    <img src="{{ asset('storage/' . $user->avatar_url) }}" alt="{{ $user->name }}"
                                         class="img-thumbnail rounded-circle">
                                 @else
                                     <span class="avatar-title rounded-circle bg-success text-white font-size-24x">
@@ -30,6 +30,7 @@
                                     </span>
                                 @endif
                             </div>
+
                             <h5 class="font-size-15 text-truncate">{{ $user->name }}</h5>
                             <p class="text-muted mb-0 text-truncate">{{ $user->email }}</p>
                         </div>
@@ -47,7 +48,9 @@
                                         <p class="text-muted mb-0">Join Date</p>
                                     </div>
                                     <div class="mt-4">
-                                        <a href="{{ route('profile.edit') }}" class="btn btn-primary waves-effect waves-light btn-sm">Edit Profile <i class="mdi mdi-arrow-right ms-1"></i></a>
+                                        <a href="{{ route('profile.edit') }}"
+                                            class="btn btn-primary waves-effect waves-light btn-sm">Edit Profile <i
+                                                class="mdi mdi-arrow-right ms-1"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -60,9 +63,9 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title mb-4">Personal Information</h4>
+                    
 
-                    <p class="text-muted mb-4">Hi I'm Cynthia Price,has been the industry's standard dummy text To an
-                        English person, it will seem like simplified English, as a skeptical Cambridge.</p>
+                    <p class="text-muted mb-4">{{$employee->personal_information ?? '-'}}</p>
                     <div class="table-responsive">
                         <table class="table table-nowrap mb-0">
                             <tbody>
@@ -84,7 +87,7 @@
                                 </tr>
                                 <tr>
                                     <th scope="row">Date of Birth :</th>
-                                    <td>{{ toIndonesianDate($employee->date_of_birth) }}</td>
+                                    <td>{{ toIndonesianDate($employee->birth_date) }}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Place of Birth :</th>
