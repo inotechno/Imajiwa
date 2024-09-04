@@ -12,26 +12,34 @@
                         <div class="row mb-4">
                             <label for="avatar_url" class="col-form-label col-lg-2">Profile Image</label>
                             <div class="col-lg-10">
-                                <input type="file" id="avatar_url" name="avatar_url" wire:model="avatar_url"
-                                    class="form-control @error('avatar_url') is-invalid @enderror">
+                                <div x-data="{ isUploading: false, progress: 0 }" x-on:livewire-upload-start="isUploading = true"
+                                    x-on:livewire-upload-finish="isUploading = false"
+                                    x-on:livewire-upload-error="isUploading = false"
+                                    x-on:livewire-upload-progress="progress = $event.detail.progress">
+                                    <input type="file" id="avatar_url" name="avatar_url" wire:model="avatar_url"
+                                        class="form-control @error('avatar_url') is-invalid @enderror">
 
-                                @if (isset($avatar_url) && strpos($avatar_url, 'http') === 0)
-                                    <img src="{{ $avatar_url }}" alt="Avatar Preview" class="img-thumbnail mt-2"
-                                        width="150">
-                                @elseif ($user->avatar_url)
-                                    <img src="{{ Storage::url($user->avatar_url) }}" alt="Avatar"
-                                        class="img-thumbnail mt-2" width="150">
-                                @else
-                                    <img src="{{ asset('images/avatar-1.jpg') }}" alt="Default Avatar"
-                                        class="img-thumbnail mt-2" width="150">
-                                @endif
+                                    @if (isset($avatar_url) && strpos($avatar_url, 'http') === 0)
+                                        <img src="{{ $avatar_url }}" alt="Avatar Preview" class="img-thumbnail mt-2"
+                                            width="150">
+                                    @elseif ($user->avatar_url)
+                                        <img src="{{ Storage::url($user->avatar_url) }}" alt="Avatar"
+                                            class="img-thumbnail mt-2" width="150">
+                                    @else
+                                        <img src="{{ asset('storage/images/avatar-1.jpg') }}" alt="Default Avatar"
+                                            class="img-thumbnail mt-2" width="150">
+                                    @endif
 
-                                <!-- Menampilkan pesan kesalahan jika ada -->
-                                @error('avatar_url')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                                    <!-- Menampilkan pesan kesalahan jika ada -->
+                                    @error('avatar_url')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                    <div x-show="isUploading">
+                                        <progress max="100" x-bind:value="progress"></progress>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -175,7 +183,8 @@
                         </div>
                         {{-- select-marital-status --}}
                         <div class="row mb-4" wire:ignore>
-                            <label for="marital_status" class="col-form-label col-lg-2">Select Marital Status</label>
+                            <label for="marital_status" class="col-form-label col-lg-2">Select Marital
+                                Status</label>
                             <div class="col-lg-10">
                                 <select
                                     class="form-control select2 @error('marital_status') is-invalid @enderror select-marital-status"
