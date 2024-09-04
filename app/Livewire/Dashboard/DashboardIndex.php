@@ -12,6 +12,7 @@ class DashboardIndex extends Component
     public $position;
     public $totalProjects;
     public $myProjects;
+    public $ManageProjects;
 
     public function mount()
     {
@@ -23,15 +24,8 @@ class DashboardIndex extends Component
             $this->position = $employee->position;
 
             $this->totalProjects = \App\Models\Project::count();
-
-            // Determine the projects based on the user's position
-            if ($this->position === 'Project Manager') {
-                // Projects managed by the current employee (Project Manager)
-                $this->myProjects = $employee->managedProjects->count();
-            } else {
-                // Projects related to the logged-in employee if not a Project Manager
-                $this->myProjects = $employee->projects->count();
-            }
+            // $this->myProjects = $employee->projects->count();
+            $this->ManageProjects = $employee->managedProjects->count();
         }
     }
     public function render()
