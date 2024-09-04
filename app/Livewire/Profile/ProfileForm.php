@@ -10,27 +10,29 @@ use Str;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
+use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileForm extends Component
 {
-    use LivewireAlert;
+    use LivewireAlert, WithFileUploads;
     public $employee;
 
     public $name,
-    $username,
-    $email,
-    $password,
-    $citizen_id,
-    $leave_remaining,
-    $join_date,
-    $birth_date,
-    $place_of_birth,
-    $gender,
-    $marital_status,
-    $old_password, $new_password, $confirm_password, $password_string,
-    $religion;
+        $username,
+        $email,
+        $password,
+        $citizen_id,
+        $leave_remaining,
+        $join_date,
+        $birth_date,
+        $place_of_birth,
+        $gender,
+        $marital_status,
+        $old_password, $new_password, $confirm_password, $password_string,
+        $religion;
 
-
+    public $avatar_url;
     public $user;
 
     public function mount($id = null)
@@ -66,6 +68,7 @@ class ProfileForm extends Component
         $this->gender = $this->employee->gender;
         $this->marital_status = $this->employee->marital_status;
         $this->religion = $this->employee->religion;
+        $this->avatar_url = $this->user->avatar_url;
 
         $this->dispatch('change-select-form');
     }
@@ -84,6 +87,7 @@ class ProfileForm extends Component
                 'gender' => 'nullable|in:male,female',
                 'marital_status' => 'nullable|string|max:255',
                 'religion' => 'nullable|string|max:255',
+                'avatar_url' => 'nullable|image|max:5024',
             ]);
 
             if ($this->new_password || $this->confirm_password || $this->old_password) {
@@ -105,6 +109,14 @@ class ProfileForm extends Component
                 $this->user->password = Hash::make($this->new_password);
             }
 
+            if ($this->user->avatar_url && $this->avatar_url) {
+                Storage::disk('public')->delete($this->user->avatar_url);
+            }
+
+            if ($this->avatar_url) {
+                $avatarPath = $this->avatar_url->store('avatars', 'public');
+                $this->user->avatar_url = $avatarPath;
+            }
 
             $this->user->update([
                 'username' => $this->username,
@@ -112,6 +124,7 @@ class ProfileForm extends Component
                 'email' => $this->email,
                 'password_string' => $this->user->password_string,
                 'password' => $this->user->password,
+                'avatar_url' => $this->user->avatar_url,
             ]);
 
             $this->employee->update([

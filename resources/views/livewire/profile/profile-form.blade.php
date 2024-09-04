@@ -7,6 +7,37 @@
                 <div class="card-body">
                     <h4 class="card-title mb-4">Edit Profile</h4>
                     <form wire:submit.prevent="save" class="needs-validation" wire:ignore.self>
+
+                        {{-- Profile Image  --}}
+                        <div class="row mb-4">
+                            <label for="avatar_url" class="col-form-label col-lg-2">Profile Image</label>
+                            <div class="col-lg-10">
+                                <!-- Input file untuk gambar profil -->
+                                <input type="file" id="avatar_url" name="avatar_url" wire:model="avatar_url"
+                                    class="form-control @error('avatar_url') is-invalid @enderror">
+
+                                <!-- Pratayang gambar jika diunggah -->
+                                @if (isset($avatar_url) && strpos($avatar_url, 'http') === 0)
+                                    <img src="{{ $avatar_url }}" alt="Avatar Preview" class="img-thumbnail mt-2"
+                                        width="150">
+                                @elseif ($user->avatar_url)
+                                    <img src="{{ Storage::url($user->avatar_url) }}" alt="Avatar"
+                                        class="img-thumbnail mt-2" width="150">
+                                @else
+                                    <img src="{{ asset('images/avatar-1.jpg') }}" alt="Default Avatar"
+                                        class="img-thumbnail mt-2" width="150">
+                                @endif
+
+                                <!-- Menampilkan pesan kesalahan jika ada -->
+                                @error('avatar_url')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+
                         {{-- citizen  --}}
                         <div class="row mb-4">
                             <label for="citizen_id" class="col-form-label col-lg-2"> Citizen ID</label>
@@ -91,7 +122,8 @@
                         <div class="row mb-4" wire:ignore>
                             <label for="gender" class="col-form-label col-lg-2">Select Gender</label>
                             <div class="col-lg-10">
-                                <select class="form-control select2 @error('gender') is-invalid @enderror select-gender"
+                                <select
+                                    class="form-control select2 @error('gender') is-invalid @enderror select-gender"
                                     id="gender" wire:model="gender" data-placeholder="Select Gender">
                                     <option value="">Select Gender</option>
                                     <option value="male">Male</option>
