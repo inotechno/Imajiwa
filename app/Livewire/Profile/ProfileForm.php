@@ -30,7 +30,8 @@ class ProfileForm extends Component
         $gender,
         $marital_status,
         $old_password, $new_password, $confirm_password, $password_string,
-        $religion;
+        $religion,
+        $personal_information;
 
     public $avatar_url;
     public $user;
@@ -51,6 +52,7 @@ class ProfileForm extends Component
             $this->gender = $this->employee->gender;
             $this->marital_status = $this->employee->marital_status;
             $this->religion = $this->employee->religion;
+            $this->personal_information = $this->employee->personal_information;
 
             $this->dispatch('change-select-form');
         }
@@ -68,6 +70,7 @@ class ProfileForm extends Component
         $this->gender = $this->employee->gender;
         $this->marital_status = $this->employee->marital_status;
         $this->religion = $this->employee->religion;
+        $this->personal_information = $this->employee->personal_information;
         $this->avatar_url = $this->user->avatar_url;
 
         $this->dispatch('change-select-form');
@@ -87,8 +90,12 @@ class ProfileForm extends Component
                 'gender' => 'nullable|in:male,female',
                 'marital_status' => 'nullable|string|max:255',
                 'religion' => 'nullable|string|max:255',
-                'avatar_url' => 'nullable|image|max:5024',
+                'personal_information' => 'nullable|string',
             ]);
+
+            if ($this->avatar_url) {
+                $rules['avatar_url'] = 'image|max:5024';
+            }
 
             if ($this->new_password || $this->confirm_password || $this->old_password) {
                 $this->validate([
@@ -109,11 +116,13 @@ class ProfileForm extends Component
                 $this->user->password = Hash::make($this->new_password);
             }
 
-            if ($this->user->avatar_url && $this->avatar_url) {
-                Storage::disk('public')->delete($this->user->avatar_url);
-            }
-
-            if ($this->avatar_url) {
+            if ($this->avatar_url && $this->avatar_url instanceof \Illuminate\Http\UploadedFile) {
+                // Hapus avatar lama jika ada
+                if ($this->user->avatar_url) {
+                    Storage::disk('public')->delete($this->user->avatar_url);
+                }
+    
+                // Simpan avatar baru
                 $avatarPath = $this->avatar_url->store('avatars', 'public');
                 $this->user->avatar_url = $avatarPath;
             }
@@ -135,6 +144,7 @@ class ProfileForm extends Component
                 'gender' => $this->gender,
                 'marital_status' => $this->marital_status,
                 'religion' => $this->religion,
+                'personal_information' => $this->personal_information,
                 'leave_remaining' => $this->leave_remaining,
             ]);
 

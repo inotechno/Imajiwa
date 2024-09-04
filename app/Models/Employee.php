@@ -27,6 +27,7 @@ class Employee extends Model
         'marital_status',
         'religion',
         'position_id',
+        'personal_information'
     ];
 
     public function user()

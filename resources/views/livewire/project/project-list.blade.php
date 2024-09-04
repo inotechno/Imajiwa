@@ -12,9 +12,9 @@
                             <th scope="col">Status</th>
                             <th scope="col">Team</th>
 
-                            @can('update:project')
+                            {{-- @can('update:project') --}}
                                 <th scope="col">Action</th>
-                            @endcan
+                            {{-- @endcan --}}
                         </tr>
                     </thead>
                     <tbody>
