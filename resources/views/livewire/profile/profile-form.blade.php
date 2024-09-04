@@ -12,11 +12,9 @@
                         <div class="row mb-4">
                             <label for="avatar_url" class="col-form-label col-lg-2">Profile Image</label>
                             <div class="col-lg-10">
-                                <!-- Input file untuk gambar profil -->
                                 <input type="file" id="avatar_url" name="avatar_url" wire:model="avatar_url"
                                     class="form-control @error('avatar_url') is-invalid @enderror">
 
-                                <!-- Pratayang gambar jika diunggah -->
                                 @if (isset($avatar_url) && strpos($avatar_url, 'http') === 0)
                                     <img src="{{ $avatar_url }}" alt="Avatar Preview" class="img-thumbnail mt-2"
                                         width="150">

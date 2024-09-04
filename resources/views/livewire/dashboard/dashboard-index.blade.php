@@ -1,53 +1,53 @@
 <div>
     @livewire('component.page.breadcrumb', ['breadcrumbs' => [['name' => 'Dashboard', 'url' => '/']]])
-
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="d-flex">
-                                <div class="flex-shrink-0 me-3">
-                                    <img src="{{ asset('storage/' . ($user->avatar_url ?? 'images/avatar-1.jpg')) }}"
-                                        alt="" class="avatar-lg rounded-circle img-thumbnail">
-                                </div>
-                                <div class="flex-grow-1 align-self-center">
-                                    <div class="text-muted">
-                                        <p class="mb-2">Welcome to {{ config('app.name') }}</p>
-                                        <h5 class="mb-1">{{ $name }}</h5>
-                                        <p class="mb-0">{{ $position->name }}</p>
+    
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="d-flex">
+                                    <div class="flex-shrink-0 me-3">
+                                        <img src="{{ asset('storage/' . ($user->avatar_url ?? 'images/avatar-1.jpg')) }}"
+                                            alt="" class="avatar-lg rounded-circle img-thumbnail">
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6 align-self-center">
-                            <div class="text-lg-center mt-4 mt-lg-0">
-                                <div class="row">
-                                    <div class="col-4">
-                                        <div>
-                                            <p class="text-muted text-truncate mb-2">Total Projects</p>
-                                            <h5 class="mb-0">{{ $totalProjects }}</h5>
-                                        </div>
-                                    </div>
-                                    <div class="col-4">
-                                        <div>
-                                            <p class="text-muted text-truncate mb-2">Projects</p>
-                                            <h5 class="mb-0">{{ $myProjects }}</h5>
+                                    <div class="flex-grow-1 align-self-center">
+                                        <div class="text-muted">
+                                            <p class="mb-2">Welcome to {{ config('app.name') }}</p>
+                                            <h5 class="mb-1">{{ $name }}</h5>
+                                            <p class="mb-0">{{ $position->name ?? '' }}</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        
+                            <div class="col-lg-6 align-self-center">
+                                <div class="text-lg-center mt-4 mt-lg-0">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <div>
+                                                <p class="text-muted text-truncate mb-2">Total Projects</p>
+                                                <h5 class="mb-0">{{ $totalProjects }}</h5>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div>
+                                                <p class="text-muted text-truncate mb-2">Projects</p>
+                                                <h5 class="mb-0">{{ $myProjects }}</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <!-- end row -->
                     </div>
-                    <!-- end row -->
                 </div>
             </div>
         </div>
-    </div>
 
     {{-- <div class="row">
         <div class="col-xl-4">
