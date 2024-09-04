@@ -9,7 +9,7 @@
                         <div class="col-7">
                             <div class="text-primary p-3">
                                 <h5 class="text-primary">Welcome Back !</h5>
-                                <p>It will seem like simplified</p>
+                                {{-- <p>It will seem like simplified</p> --}}
                             </div>
                         </div>
                         <div class="col-5 align-self-end">
@@ -63,9 +63,9 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title mb-4">Personal Information</h4>
+                    
 
-                    <p class="text-muted mb-4">Hi I'm Cynthia Price,has been the industry's standard dummy text To an
-                        English person, it will seem like simplified English, as a skeptical Cambridge.</p>
+                    <p class="text-muted mb-4">{{$employee->personal_information ?? '-'}}</p>
                     <div class="table-responsive">
                         <table class="table table-nowrap mb-0">
                             <tbody>

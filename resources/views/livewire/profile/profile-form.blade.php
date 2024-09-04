@@ -35,6 +35,21 @@
                             </div>
                         </div>
 
+                        <div class="row mb-4">
+                            <label for="personal_information" class="col-form-label col-lg-2"> Personal
+                                Information</label>
+                            <div class="col-lg-10">
+                                <textarea id="personal_information" name="personal_information" wire:model="personal_information"
+                                    class="form-control @error('personal_information') is-invalid @enderror"
+                                    placeholder="Enter Personal Information ..." rows="5"></textarea>
+                                @error('personal_information')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
 
                         {{-- citizen  --}}
                         <div class="row mb-4">
