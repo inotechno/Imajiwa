@@ -9,14 +9,14 @@
                         <div class="col-lg-6">
                             <div class="d-flex">
                                 <div class="flex-shrink-0 me-3">
-                                    <img src="{{ asset('images/users/avatar-1.jpg') }}" alt=""
-                                        class="avatar-lg rounded-circle img-thumbnail">
+                                    <img src="{{ asset('storage/' . ($user->avatar_url ?? 'images/avatar-1.jpg')) }}"
+                                        alt="" class="avatar-lg rounded-circle img-thumbnail">
                                 </div>
                                 <div class="flex-grow-1 align-self-center">
                                     <div class="text-muted">
                                         <p class="mb-2">Welcome to {{ config('app.name') }}</p>
                                         <h5 class="mb-1">{{ $name }}</h5>
-                                        <p class="mb-0">UI / UX Designer</p>
+                                        <p class="mb-0">{{ $position->name }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -28,41 +28,20 @@
                                     <div class="col-4">
                                         <div>
                                             <p class="text-muted text-truncate mb-2">Total Projects</p>
-                                            <h5 class="mb-0">48</h5>
+                                            <h5 class="mb-0">{{ $totalProjects }}</h5>
                                         </div>
                                     </div>
                                     <div class="col-4">
                                         <div>
                                             <p class="text-muted text-truncate mb-2">Projects</p>
-                                            <h5 class="mb-0">40</h5>
-                                        </div>
-                                    </div>
-                                    <div class="col-4">
-                                        <div>
-                                            <p class="text-muted text-truncate mb-2">Clients</p>
-                                            <h5 class="mb-0">18</h5>
-
+                                            <h5 class="mb-0">{{ $myProjects }}</h5>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        {{-- <div class="col-lg-4 d-none d-lg-block">
-                            <div class="clearfix mt-4 mt-lg-0">
-                                <div class="dropdown float-end">
-                                    <button class="btn btn-primary" type="button" data-bs-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                        <i class="bx bxs-cog align-middle me-1"></i> Setting
-                                    </button>
-                                    <div class="dropdown-menu dropdown-menu-end">
-                                        <a class="dropdown-item" href="#">Action</a>
-                                        <a class="dropdown-item" href="#">Another action</a>
-                                        <a class="dropdown-item" href="#">Something else</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> --}}
+                        
                     </div>
                     <!-- end row -->
                 </div>
