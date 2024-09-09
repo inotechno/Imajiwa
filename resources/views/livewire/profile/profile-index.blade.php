@@ -151,11 +151,11 @@
                                 @if ($projects->count() > 0)
                                     @foreach ($projects as $project)
                                         <tr>
-                                            <th scope="row">{{ $project->id }}</th>
+                                            <th scope="row">{{ $loop->iteration }}</th>
                                             <td>{{ $project->name }}</td>
                                             <td>{{ $project->start_date }}</td>
                                             <td>{{ $project->end_date }}</td>
-                                            <td>{{ $project->status }}</td>
+                                            <td>{{ ucfirst(str_replace('_', ' ', $project->status)) }}</td>
                                         </tr>
                                     @endforeach
                                 @else
