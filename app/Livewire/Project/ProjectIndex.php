@@ -49,7 +49,7 @@ class ProjectIndex extends Component
                 ->orWhere('description', 'like', '%' . $this->search . '%');
         })->when($this->status, function ($query) {
             $query->where('status', $this->status);
-        })->orderBy('end_date', 'desc');
+        })->orderBy('end_date', 'asc');
 
         if(Auth::user()->can('view:project-all')) {
             $projects = $projects->paginate($this->perPage);

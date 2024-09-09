@@ -17,7 +17,7 @@ class ProjectSheetExport implements FromCollection, WithHeadings, WithMapping, W
      */
     public function collection()
     {
-        return Project::with('employees.user', 'projectManager.user')->get();
+        return Project::with('employees.user', 'projectManager.user')->orderBy('end_date', 'asc')->get();
     }
 
     public function map($project): array
