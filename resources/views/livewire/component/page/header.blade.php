@@ -313,7 +313,7 @@
             </button>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
                 aria-labelledby="page-header-notifications-dropdown">
-                {{-- <div class="p-3">
+                <div class="p-3">
                     <div class="row align-items-center">
                         <div class="col">
                             <h6 class="m-0" key="t-notifications"> Notifications </h6>
@@ -397,7 +397,7 @@
                         <i class="mdi mdi-arrow-right-circle me-1"></i> <span key="t-view-more">View
                             More..</span>
                     </a>
-                </div> --}}
+                </div>
             </div>
         </div>
 
