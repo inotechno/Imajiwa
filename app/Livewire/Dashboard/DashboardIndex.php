@@ -21,12 +21,20 @@ class DashboardIndex extends Component
     public $absentRequests;
     public $attendances;
     public $leaveRequests;
+    public $isEmployee;
+    public $isProjectManager;
+    public $isAdminsitrator;
 
     public function mount()
     {
         $this->user = Auth::user();
         $this->name = $this->user->name;
         $employee = $this->user->employee;
+
+        $this->isEmployee = $this->user->hasRole('Employee');
+        $this->isProjectManager = $this->user->hasRole('Project Manager');
+        $this->isAdminsitrator = $this->user->hasRole('Administrator');
+
 
         if ($employee) {
             $this->position = $employee->position;
@@ -48,7 +56,7 @@ class DashboardIndex extends Component
             $this->leaveRequests = LeaveRequest::where('employee_id', $employee->id)
                 ->whereMonth('start_date', now()->month)
                 ->get();
-        }else {
+        } else {
             $this->announcements = collect();
             $this->absentRequests = collect();
             $this->attendances = collect();

@@ -15,7 +15,7 @@ class ProjectItem extends Component
 
     // #[Reactive]
     public $project;
-    public $limitDisplay = 5;
+    public $limitDisplay = 3;
 
     public function mount(Project $project)
     {

@@ -22,34 +22,35 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-6 align-self-center">
-                            <div class="text-lg-center mt-4 mt-lg-0">
-                                <div class="row">
-                                    {{-- <div class="col-4">
-                                        <div>
-                                            <p class="text-muted text-truncate mb-2">Total Projects</p>
-                                            <h5 class="mb-0">{{ $totalProjects }}</h5>
+                        @unless ($isAdminsitrator)
+                            <div class="col-lg-6 align-self-center">
+                                <div class="text-lg-center mt-4 mt-lg-0">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <div>
+                                                <p class="text-muted text-truncate mb-2">Total Projects</p>
+                                                <h5 class="mb-0">{{ $totalProjects }}</h5>
+                                            </div>
                                         </div>
-                                    </div> --}}
-
-                                    {{-- ini khusus yang login employee --}}
-                                    {{-- <div class="col-4">
-                                        <div>
-                                            <p class="text-muted text-truncate mb-2">My Projects</p>
-                                            <h5 class="mb-0">{{ $myProjects }}</h5>
-                                        </div>
-                                    </div> --}}
-                                    {{-- ini khusus yang login project manager --}}
-                                    {{-- <div class="col-4">
-                                        <div>
-                                            <p class="text-muted text-truncate mb-2">Projects</p>
-                                            <h5 class="mb-0">{{ $ManageProjects }}</h5>
-                                        </div>
-                                    </div> --}}
+                                        @if ($isProjectManager)
+                                            <div class="col-4">
+                                                <div>
+                                                    <p class="text-muted text-truncate mb-2">Projects</p>
+                                                    <h5 class="mb-0">{{ $ManageProjects }}</h5>
+                                                </div>
+                                            </div>
+                                        @elseif($isEmployee)
+                                            <div class="col-4">
+                                                <div>
+                                                    <p class="text-muted text-truncate mb-2">Projects</p>
+                                                    <h5 class="mb-0">{{ $myProjects }}</h5>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-
+                        @endunless
 
                     </div>
                     <!-- end row -->
@@ -136,6 +137,19 @@
                 <div class="card-body">
                     <div class="d-sm-flex flex-wrap">
                         <h4 class="card-title mb-4">Announcements</h4>
+                        {{-- <div class="ms-auto">
+                            <ul class="nav nav-pills">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Week</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Month</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="#">Year</a>
+                                </li>
+                            </ul>
+                        </div> --}}
                     </div>
                     <div class="table-responsive">
                         <table class="table table-nowrap table-hover mb-0 table-striped">
