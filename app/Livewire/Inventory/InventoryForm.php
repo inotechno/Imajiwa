@@ -77,6 +77,6 @@ class InventoryForm extends Component
 
     public function render()
     {
-        return view('livewire.inventory.Inventory-form')->layout('layouts.app', ['title' => 'Inventory']);
+        return view('livewire.inventory.inventory-form')->layout('layouts.app', ['title' => 'Inventory']);
     }
 }
