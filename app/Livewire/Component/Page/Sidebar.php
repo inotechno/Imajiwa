@@ -84,6 +84,63 @@ class Sidebar extends Component
             ]
         ],
         [
+            'title' => 'Administrator',
+            'menus' => [
+                // [
+                //     'name' => 'Project',
+                //     'url' => '/project',
+                //     'route' => 'project.index',
+                //     'icon' => 'bx bx-briefcase-alt',
+                //     'permission' => 'view:project'
+                // ],
+                [
+                    'name' => 'Daily Report All',
+                    'url' => '/daily-report-all',
+                    'route' => 'daily-report.index',
+                    'icon' => 'bx bxs-report',
+                    'permission' => 'view:daily-report-all'
+                ],
+                
+                [
+                    'name' => 'Absent Request All',
+                    'url' => '/absent-request-all',
+                    'route' => 'absent-request.all',
+                    'icon' => 'bx bxs-tired',
+                    'permission' => 'view:absent-request-all',
+                ],
+                [
+                    'name' => 'Leave Request All',
+                    'url' => '/leave-request-all',
+                    'route' => 'leave-request.all',
+                    'icon' => 'bx bx-log-out-circle',
+                    'permission' => 'view:leave-request-all',
+                ],
+                [
+                    'name' => 'Inventory',
+                    'url' => '/inventory',
+                    'icon' => 'bx bx-building-house',
+                    'permission' => 'view:inventory',
+                    'subMenus' => [
+                        [
+                            'name' => 'Category Inventory',
+                            'url' => '/category-inventory',
+                            'route' => 'category.index',
+                            'icon' => 'bx bx-log-out-circle',
+                            'permission' => 'view:category-inventory'
+                        ],
+                        [
+                            'name' => 'Inventory',
+                            'url' => '/inventory',
+                            'route' => 'inventory.index',
+                            'icon' => 'bx bx-log-out-circle',
+                            'permission' => 'view:inventory'
+                        ],
+                    ],
+                ],
+                
+            ]
+        ],
+        [
             'title' => 'Application',
             'menus' => [
                 [
@@ -107,13 +164,13 @@ class Sidebar extends Component
                 //     'icon' => 'bx bxs-purchase-tag-alt',
                 //     'permission' => 'view:attendance-temp'
                 // ],
-                [
-                    'name' => 'Daily Report All',
-                    'url' => '/daily-report-all',
-                    'route' => 'daily-report.index',
-                    'icon' => 'bx bxs-report',
-                    'permission' => 'view:daily-report-all'
-                ],
+                // [
+                //     'name' => 'Daily Report All',
+                //     'url' => '/daily-report-all',
+                //     'route' => 'daily-report.index',
+                //     'icon' => 'bx bxs-report',
+                //     'permission' => 'view:daily-report-all'
+                // ],
                 [
                     'name' => 'Daily Report',
                     'icon' => 'bx bxs-report',
@@ -136,13 +193,13 @@ class Sidebar extends Component
                         ],
                     ],
                 ],
-                [
-                    'name' => 'Absent Request All',
-                    'url' => '/absent-request-all',
-                    'route' => 'absent-request.all',
-                    'icon' => 'bx bxs-tired',
-                    'permission' => 'view:absent-request-all',
-                ],
+                // [
+                //     'name' => 'Absent Request All',
+                //     'url' => '/absent-request-all',
+                //     'route' => 'absent-request.all',
+                //     'icon' => 'bx bxs-tired',
+                //     'permission' => 'view:absent-request-all',
+                // ],
                 [
                     'name' => 'Absent Request',
                     'icon' => 'bx bxs-tired',
@@ -165,13 +222,13 @@ class Sidebar extends Component
                         ],
                     ],
                 ],
-                [
-                    'name' => 'Leave Request All',
-                    'url' => '/leave-request-all',
-                    'route' => 'leave-request.all',
-                    'icon' => 'bx bx-log-out-circle',
-                    'permission' => 'view:leave-request-all',
-                ],
+                // [
+                //     'name' => 'Leave Request All',
+                //     'url' => '/leave-request-all',
+                //     'route' => 'leave-request.all',
+                //     'icon' => 'bx bx-log-out-circle',
+                //     'permission' => 'view:leave-request-all',
+                // ],
                 [
                     'name' => 'Leave Request',
                     'url' => '/leave-request',
@@ -194,6 +251,28 @@ class Sidebar extends Component
                         ],
                     ],
                 ],
+                // [
+                //     'name' => 'Inventory',
+                //     'url' => '/inventory',
+                //     'icon' => 'bx bx-building-house',
+                //     'permission' => 'view:inventory',
+                //     'subMenus' => [
+                //         [
+                //             'name' => 'Category Inventory',
+                //             'url' => '/category-inventory',
+                //             'route' => 'category.index',
+                //             'icon' => 'bx bx-log-out-circle',
+                //             'permission' => 'view:category-inventory'
+                //         ],
+                //         [
+                //             'name' => 'Inventory',
+                //             'url' => '/inventory',
+                //             'route' => 'inventory.index',
+                //             'icon' => 'bx bx-log-out-circle',
+                //             'permission' => 'view:inventory'
+                //         ],
+                //     ],
+                // ],
                 // [
                 //     'name' => 'Financial Request',
                 //     'url' => '/financial-request',
@@ -234,6 +313,13 @@ class Sidebar extends Component
                     'route' => 'email-template.index',
                     'icon' => 'bx bx-code-curly',
                     'permission' => 'view:email-template'
+                ],
+                [
+                    'name' => 'Announcement',
+                    'url' => '/announcement',
+                    'route' => 'announcement.index',
+                    'icon' => 'bx bx-error-circle',
+                    'permission' => 'view:announcement'
                 ],
             ]
         ],

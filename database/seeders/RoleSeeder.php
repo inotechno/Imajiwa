@@ -47,59 +47,59 @@ class RoleSeeder extends Seeder
             'view:dashboard' => ['Commissioner','Employee', 'HR', 'Finance', 'Director', 'Administrator', 'Project Manager'],
 
             // Import Master Data
-            'view:import_master_data' => ['HR', 'Administrator'],
+            'view:import_master_data' => ['Finance', 'Administrator'],
 
             // Export Master Data
-            'view:export_master_data' => ['HR', 'Administrator'],
+            'view:export_master_data' => ['Finance', 'Administrator'],
 
             // User
-            'view:user' => ['HR', 'Director', 'Administrator'],
-            'create:user' => ['HR', 'Administrator'],
-            'update:user' => ['HR', 'Administrator'],
-            'delete:user' => ['HR', 'Administrator'],
+            'view:user' => ['HR', 'Finance', 'Director', 'Administrator'],
+            'create:user' => ['HR', 'Finance', 'Administrator'],
+            'update:user' => ['HR', 'Finance', 'Administrator'],
+            'delete:user' => ['HR', 'Finance', 'Administrator'],
 
             // Employee
-            'view:employee' => ['HR', 'Director', 'Administrator'],
-            'create:employee' => ['HR', 'Administrator'],
-            'update:employee' => ['HR', 'Administrator'],
-            'delete:employee' => ['HR', 'Administrator'],
+            'view:employee' => ['HR', 'Finance', 'Director', 'Administrator'],
+            'create:employee' => ['HR', 'Finance', 'Administrator'],
+            'update:employee' => ['HR', 'Finance', 'Administrator'],
+            'delete:employee' => ['HR', 'Finance', 'Administrator'],
 
             // Position
-            'view:position' => ['HR', 'Director', 'Administrator'],
-            'create:position' => ['HR', 'Administrator'],
-            'update:position' => ['HR', 'Administrator'],
-            'delete:position' => ['HR', 'Administrator'],
+            'view:position' => ['HR','Finance', 'Director', 'Administrator'],
+            'create:position' => ['HR', 'Finance', 'Administrator'],
+            'update:position' => ['HR', 'Finance', 'Administrator'],
+            'delete:position' => ['HR', 'Finance', 'Administrator'],
 
             // Department
             'view:department' => ['Finance', 'HR', 'Director', 'Administrator'],
-            'create:department' => ['Administrator'],
-            'update:department' => ['Administrator'],
-            'delete:department' => ['Administrator'],
+            'create:department' => ['Finance','Administrator'],
+            'update:department' => ['Finance','Administrator'],
+            'delete:department' => ['Finance','Administrator'],
 
             // Site
-            'view:site' => ['HR', 'Director', 'Administrator'],
-            'create:site' => ['HR', 'Administrator'],
-            'update:site' => ['HR', 'Administrator'],
-            'delete:site' => ['HR', 'Administrator'],
+            'view:site' => ['Finance','HR', 'Director', 'Administrator'],
+            'create:site' => ['Finance','HR', 'Administrator'],
+            'update:site' => ['Finance','HR', 'Administrator'],
+            'delete:site' => ['Finance','HR', 'Administrator'],
 
             // Visit
-            'view:visit-all' => ['HR', 'Director', 'Administrator'],
-            'view:visit' => ['Employee', 'HR', 'Director', 'Administrator'],
-            'create:visit' => ['Employee', 'Administrator'],
-            'update:visit' => ['Administrator'],
-            'delete:visit' => ['Administrator'],
+            'view:visit-all' => ['Finance','HR', 'Director', 'Administrator'],
+            'view:visit' => ['Finance','Employee', 'HR', 'Director', 'Administrator'],
+            'create:visit' => ['Finance','Employee', 'Administrator'],
+            'update:visit' => ['Finance','Administrator'],
+            'delete:visit' => ['Finance','Administrator'],
 
             // Visit Category
-            'view:visit-category' => ['Administrator'],
-            'create:visit-category' => ['Administrator'],
-            'update:visit-category' => ['Administrator'],
-            'delete:visit-category' => ['Administrator'],
+            'view:visit-category' => ['Finance','Administrator'],
+            'create:visit-category' => ['Finance','Administrator'],
+            'update:visit-category' => ['Finance','Administrator'],
+            'delete:visit-category' => ['Finance','Administrator'],
 
             // Email Template
-            'view:email-template' => ['Administrator'],
-            'create:email-template' => ['Administrator'],
-            'update:email-template' => ['Administrator'],
-            'delete:email-template' => ['Administrator'],
+            'view:email-template' => ['Finance','Administrator'],
+            'create:email-template' => ['Finance','Administrator'],
+            'update:email-template' => ['Finance','Administrator'],
+            'delete:email-template' => ['Finance','Administrator'],
 
             // Machine
             'view:machine' => ['Administrator'],
@@ -111,16 +111,16 @@ class RoleSeeder extends Seeder
             'view:attendance-all' => ['Finance', 'Director', 'HR', 'Administrator'],
             'view:attendance' => ['Employee','Finance', 'Director', 'HR', 'Administrator'],
             'create:attendance' => ['Employee', 'Administrator'],
-            'update:attendance' => ['Administrator'],
-            'delete:attendance' => ['Administrator'],
+            'update:attendance' => ['Finance','Administrator'],
+            'delete:attendance' => ['Finance','Administrator'],
 
             // Attendance Temp
-            'view:attendance-temp-all' => ['HR', 'Administrator'],
-            'view:attendance-temp' => ['Employee','HR', 'Administrator'],
+            'view:attendance-temp-all' => ['Finance','HR', 'Administrator'],
+            'view:attendance-temp' => ['Finance','Employee','HR', 'Administrator'],
             'create:attendance-temp' => ['Employee', 'Administrator'],
             'update:attendance-temp' => ['Administrator'],
             'delete:attendance-temp' => ['Administrator'],
-            'approve:attendance-temp' => ['Administrator', 'HR'],
+            'approve:attendance-temp' => ['Administrator','Finance', 'HR'],
 
             // Role
             'view:role' => ['Administrator'],
@@ -141,17 +141,17 @@ class RoleSeeder extends Seeder
             'delete:setting' => ['Administrator'],
 
             // Daily Report
-            'view:daily-report-all' => ['HR', 'Director', 'Administrator'],
+            'view:daily-report-all' => ['Finance','HR', 'Director', 'Administrator'],
             'view:daily-report' => ['Employee'],
             'create:daily-report' => ['Employee'],
             'update:daily-report' => ['Employee', 'Administrator'],
             'delete:daily-report' => ['Employee', 'Administrator'],
 
             // Announcement
-            'view:announcement' => ['HR', 'Employee', 'Finance', 'Director', 'Administrator'],
-            'create:announcement' => ['HR', 'Administrator'],
-            'update:announcement' => ['HR', 'Administrator'],
-            'delete:announcement' => ['HR', 'Administrator'],
+            'view:announcement' => ['Finance', 'Administrator'],
+            'create:announcement' => ['Finance', 'Administrator'],
+            'update:announcement' => ['Finance', 'Administrator'],
+            'delete:announcement' => ['Finance', 'Administrator'],
 
             // Financial Request
             'view:financial-request-all' => ['HR', 'Director', 'Finance', 'Administrator'],
@@ -162,20 +162,20 @@ class RoleSeeder extends Seeder
             'approve:financial-request' => ['Employee', 'Finance', 'Director', 'Administrator'],
 
             // absent Request
-            'view:absent-request-all' => ['HR', 'Director', 'Administrator'],
+            'view:absent-request-all' => ['HR', 'Finance', 'Director', 'Administrator'],
             'view:absent-request' => ['Employee'],
             'create:absent-request' => ['Employee'],
-            'update:absent-request' => ['Employee', 'HR', 'Administrator'],
-            'delete:absent-request' => ['Employee', 'HR', 'Administrator'],
-            'approve:absent-request' => ['Employee', 'HR', 'Director', 'Administrator'],
+            'update:absent-request' => ['Employee', 'HR', 'Finance', 'Administrator'],
+            'delete:absent-request' => ['Employee', 'HR', 'Finance', 'Administrator'],
+            'approve:absent-request' => ['Employee', 'HR', 'Finance', 'Director', 'Administrator'],
 
             // Leave Request
-            'view:leave-request-all' => ['HR', 'Director', 'Administrator'],
+            'view:leave-request-all' => ['HR', 'Finance', 'Director', 'Administrator'],
             'view:leave-request' => ['Employee'],
             'create:leave-request' => ['Employee'],
-            'update:leave-request' => ['Employee', 'HR', 'Administrator'],
-            'delete:leave-request' => ['Employee', 'HR', 'Administrator'],
-            'approve:leave-request' => ['Employee', 'HR', 'Director', 'Administrator'],
+            'update:leave-request' => ['Employee', 'HR', 'Finance', 'Administrator'],
+            'delete:leave-request' => ['Employee', 'HR', 'Finance', 'Administrator'],
+            'approve:leave-request' => ['Employee', 'HR', 'Finance', 'Director', 'Administrator'],
 
             // Report
             'view:report-attendance' => ['Employee', 'Finance', 'HR', 'Director', 'Administrator'],
@@ -186,7 +186,7 @@ class RoleSeeder extends Seeder
             'view:report-visit' => ['Employee', 'HR', 'Director', 'Administrator'],
 
             // Project
-            'view:project-all' => ['HR', 'Director', 'Administrator' , 'Project Manager', 'Employee'],
+            'view:project-all' => ['HR', 'Finance', 'Director', 'Administrator' , 'Project Manager', 'Employee'],
             'view:project' => ['Employee', 'Project Manager'],
             'create:project' => ['Administrator', 'Project Manager'],
             'update:project' => ['Administrator', 'Project Manager'],
@@ -195,6 +195,30 @@ class RoleSeeder extends Seeder
             // Profile
             'view:profile' => ['Employee', 'HR', 'Director', 'Project Manager', 'Finance'],
             'update:profile' => ['Employee', 'HR', 'Director', 'Project Manager', 'Finance'],
+
+            //inventory
+            'view:category-inventory-all' => ['HR', 'Finance', 'Director', 'Administrator','commissioner'],
+            'view:category-inventory' => ['Finance', 'Administrator'],
+            'create:category-inventory' => ['Finance', 'Administrator'],
+            'update:category-inventory' => ['Finance', 'Administrator'],
+            'delete:category-inventory' => ['Finance', 'Administrator'],
+
+            //inventory
+            'view:inventory-all' => ['HR', 'Finance', 'Director', 'Administrator','commissioner'],
+            'view:inventory' => ['Finance', 'Administrator'],
+            'create:inventory' => ['Finance', 'Administrator'],
+            'update:inventory' => ['Finance', 'Administrator'],
+            'delete:inventory' => ['Finance', 'Administrator'],
+
+            //request item
+            'view:item-request-all' => ['HR', 'Finance', 'Director', 'Administrator','commissioner'],
+            'view:item-request' => ['Finance', 'Administrator'],
+            'create:item-request' => ['Finance', 'Administrator'],
+            'update:item-request' => ['Finance', 'Administrator'],
+            'delete:item-request' => ['Finance', 'Administrator'],
+            'approve:item-request' => ['Director', 'commissioner'],
+
+            
         ];
 
         foreach ($permissions as $permissionName => $roles) {

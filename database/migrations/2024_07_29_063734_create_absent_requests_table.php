@@ -22,12 +22,9 @@ return new class extends Migration
             $table->string('file_url')->nullable();
             $table->foreignId('director_id')->nullable()->constrained('employees')->nullOnDelete()->cascadeOnUpdate();
             $table->foreignId('supervisor_id')->nullable()->constrained('employees')->nullOnDelete()->cascadeOnUpdate();
-
             $table->timestamp('director_approved_at')->nullable();
             $table->timestamp('supervisor_approved_at')->nullable();
-
             $table->boolean('is_approved')->default(false);
-
             $table->timestamps();
         });
     }
