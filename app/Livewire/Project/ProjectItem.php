@@ -2,21 +2,59 @@
 
 namespace App\Livewire\Project;
 
+use App\Models\Project;
 use Carbon\Carbon;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\Reactive;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class ProjectItem extends Component
 {
-    #[Reactive]
+    use LivewireAlert;
+
+    // #[Reactive]
     public $project;
     public $limitDisplay = 5;
+
+    public function mount(Project $project)
+    {
+        $this->project = $project;
+    }
 
     public function generateDate($date)
     {
         Carbon::setLocale('id');
         $carbonDate = Carbon::parse($date);
         return $carbonDate->translatedFormat('d M Y');
+    }
+    public function deleteConfirm()
+    {
+        $this->alert('warning', 'Are you sure you want to delete this project?', [
+            'project' => 'center',
+            'timer' => null,
+            'toast' => false,
+
+            'showConfirmButton' => true,
+            'confirmButtonColor' => '#DD6B55',
+            'confirmButtonText' => 'Yes, Delete',
+            'cancelButtonText' => 'No',
+            'onConfirmed' => 'delete-project',
+            'showCancelButton' => true,
+
+            'allowOutsideClick' => false,
+            'allowEnterKey' => true,
+            'allowEscapeKey' => false,
+            'stopKeydownPropagation' => false,
+        ]);
+    }
+
+    #[On('delete-project')]
+    public function delete()
+    {
+        $this->project->delete();
+        $this->alert('success', 'Project deleted successfully');
+        $this->dispatch('refreshIndex');
     }
 
     public function generateStatus($status)

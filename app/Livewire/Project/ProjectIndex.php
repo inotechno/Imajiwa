@@ -34,6 +34,8 @@ class ProjectIndex extends Component
         $this->perPage = 10;
     }
 
+    
+
     public function render()
     {
         $projects = Project::with('employees.user', 'projectManager.user')->when($this->search, function ($query) {

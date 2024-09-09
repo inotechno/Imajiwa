@@ -2,10 +2,10 @@
 
 use App\Livewire\Auth\Login;
 use App\Livewire\LeaveRequest\LeaveRequestDetail;
+use App\Livewire\Role\RoleIndex;
 use App\Livewire\Role\RoleForm;
 use App\Livewire\Site\SiteForm;
 use App\Livewire\TestComponent;
-use App\Livewire\Role\RoleIndex;
 use App\Livewire\Site\SiteIndex;
 use App\Livewire\Site\SiteDetail;
 use App\Livewire\Profile\ProfileForm;
@@ -44,6 +44,13 @@ use App\Livewire\ImportMasterData\ImportMasterDataIndex;
 use App\Livewire\EmailTemplateManager\EmailTemplateManagerForm;
 use App\Livewire\EmailTemplateManager\EmailTemplateManagerIndex;
 use App\Livewire\LeaveRequest\LeaveRequestAll;
+use App\Livewire\Announcement\AnnouncementIndex;
+use App\Livewire\Announcement\AnnouncementForm;
+use App\Livewire\Announcement\AnnouncementDetail;
+use App\Livewire\Categoryinventory\CategoryinventoryIndex;
+use App\Livewire\Categoryinventory\CategoryinventoryForm;
+use App\Livewire\Inventory\InventoryIndex;
+use App\Livewire\Inventory\InventoryForm;
 
 /*
 |--------------------------------------------------------------------------
@@ -161,4 +168,24 @@ Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
         Route::get('create', EmailTemplateManagerForm::class)->name('email-template.create');
         Route::get('edit/{slug}', EmailTemplateManagerForm::class)->name('email-template.edit');
     });
+
+    Route::group(['prefix' => 'announcement'], function () {
+        Route::get('/', AnnouncementIndex::class)->name('announcement.index')->middleware('can:view:announcement');
+        Route::get('detail/{id}', AnnouncementDetail::class)->name('announcement.detail')->middleware('can:view:announcement');
+        Route::get('create', AnnouncementForm::class)->name('announcement.create')->middleware('can:create:announcement');
+        Route::get('edit/{id}', AnnouncementForm::class)->name('announcement.edit')->middleware('can:update:announcement');
+    });
+
+    Route::group(['prefix' => 'category-inventory'], function () {
+        Route::get('/', CategoryInventoryIndex::class)->name('category.index')->middleware('can:view:category-inventory');
+        Route::get('create', CategoryInventoryForm::class)->name('category.create')->middleware('can:create:category-inventory');
+        Route::get('edit/{id}', CategoryInventoryForm::class)->name('category.edit')->middleware('can:update:category-inventory');
+    });
+
+    Route::group(['prefix' => 'inventory'], function () {
+        Route::get('/', InventoryIndex::class)->name('inventory.index')->middleware('can:view:inventory');
+        Route::get('create', InventoryForm::class)->name('inventory.create')->middleware('can:create:inventory');
+        Route::get('edit/{id}', InventoryForm::class)->name('inventory.edit')->middleware('can:update:inventory');
+    });
+    
 });
