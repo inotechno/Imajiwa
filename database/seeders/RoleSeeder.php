@@ -191,6 +191,7 @@ class RoleSeeder extends Seeder
             'create:project' => ['Administrator', 'Project Manager'],
             'update:project' => ['Administrator', 'Project Manager'],
             'delete:project' => ['Administrator', 'Project Manager'],
+            'export:project' => ['Administrator', 'Finance'],
 
             // Profile
             'view:profile' => ['Employee', 'HR', 'Director', 'Project Manager', 'Finance'],

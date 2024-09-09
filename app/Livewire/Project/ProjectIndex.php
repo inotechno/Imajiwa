@@ -8,6 +8,8 @@ use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
+use App\Exports\ProjectSheetExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProjectIndex extends Component
 {
@@ -34,7 +36,11 @@ class ProjectIndex extends Component
         $this->perPage = 10;
     }
 
-    
+    public function export()
+    {
+        return Excel::download(new ProjectSheetExport(), 'projects.xlsx');
+    }
+
 
     public function render()
     {
