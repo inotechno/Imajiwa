@@ -54,7 +54,7 @@
     </td>
 
     <td>
-        @if ($project->employee_id == Auth::user()->employee->id)
+        @if (Auth::user()->employee && $project->employee_id == Auth::user()->employee->id)
             @can('update:project')
                 <a href="{{ route('project.edit', ['id' => $project->id]) }}"
                     class="btn btn-primary btn-sm waves-effect waves-light"><i class="bx bx-pencil me-1"></i> Edit</a>
