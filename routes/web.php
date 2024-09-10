@@ -51,6 +51,8 @@ use App\Livewire\Categoryinventory\CategoryinventoryIndex;
 use App\Livewire\Categoryinventory\CategoryinventoryForm;
 use App\Livewire\Inventory\InventoryIndex;
 use App\Livewire\Inventory\InventoryForm;
+use App\Livewire\ItemRequest\ItemrequestIndex;
+use App\Livewire\ItemRequest\ItemrequestForm;
 
 /*
 |--------------------------------------------------------------------------
@@ -186,6 +188,12 @@ Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
         Route::get('/', InventoryIndex::class)->name('inventory.index')->middleware('can:view:inventory');
         Route::get('create', InventoryForm::class)->name('inventory.create')->middleware('can:create:inventory');
         Route::get('edit/{id}', InventoryForm::class)->name('inventory.edit')->middleware('can:update:inventory');
+    });
+
+    Route::group(['prefix' => 'item-request'], function () {
+        Route::get('/', ItemrequestIndex::class)->name('item-request.index')->middleware('can:view:item-request');
+        Route::get('create', ItemrequestForm::class)->name('item-request.create')->middleware('can:create:item-request');
+        Route::get('edit/{id}', ItemrequestForm::class)->name('item-request.edit')->middleware('can:update:item-request');
     });
     
 });
