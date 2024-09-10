@@ -100,7 +100,7 @@ class Sidebar extends Component
                     'icon' => 'bx bxs-report',
                     'permission' => 'view:daily-report-all'
                 ],
-                
+
                 [
                     'name' => 'Absent Request All',
                     'url' => '/absent-request-all',
@@ -135,9 +135,16 @@ class Sidebar extends Component
                             'icon' => 'bx bx-log-out-circle',
                             'permission' => 'view:inventory'
                         ],
+                        // [
+                        //     'name' => 'Item Request',
+                        //     'url' => '/item-request',
+                        //     'route' => 'request-item.index',
+                        //     'icon' => 'bx bx-log-out-circle',
+                        //     'permission' => 'view:item-request'
+                        // ],
                     ],
                 ],
-                
+
             ]
         ],
         [

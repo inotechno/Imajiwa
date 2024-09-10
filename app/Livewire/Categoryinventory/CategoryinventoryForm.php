@@ -20,6 +20,7 @@ class CategoryinventoryForm extends Component
         $this->category = \App\Models\CategoryInventory::find($id);
         if ($this->category) {
             $this->name = $this->category->name;
+            $this->slug = $this->category->slug;
             $this->description = $this->category->description;
             $this->type = 'update';
         }
@@ -44,7 +45,7 @@ class CategoryinventoryForm extends Component
                 'description' => $this->description,
             ]);
         } else {
-            $this->project->update([
+            $this->category->update([
                 'name' => $this->name,
                 'slug' => $this->slug,
                 'description' => $this->description,
