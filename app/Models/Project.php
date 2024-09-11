@@ -20,4 +20,9 @@ class Project extends Model
     {
         return $this->belongsTo(Employee::class, 'employee_id');
     }
+
+    public function additionalProjectManagers()
+    {
+        return $this->belongsToMany(Employee::class, 'project_additional_managers', 'project_id', 'employee_id');
+    }
 }

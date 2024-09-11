@@ -62,30 +62,32 @@
                             </div>
                         </div>
 
-                        {{-- <div class="row mb-4" wire:ignore>
-                            <label for="status" class="col-form-label col-lg-2">Select Project Manager</label>
+                        <div class="row mb-4">
+                            <label for="status" class="col-form-label col-lg-2">Project Manager</label>
                             <div class="col-lg-10">
-                                <select class="form-control @error('employee_id') is-invalid @enderror" id="employee_id"
-                                    wire:model="employee_id" data-placeholder="Select Project Manager">
-                                    <option value="">Select Project Manager</option>
+                                <input type="text" class="form-control" readonly value="{{ $projectManagerName }}">
+                            </div>
+                        </div>
+
+                        <div class="row mb-4" wire:ignore>
+                            <label for="additional_project_manager" class="col-form-label col-lg-2">Additional Project
+                                Managers</label>
+                            <div class="col-lg-10">
+                                <select
+                                    class="form-control select2-multiple @error('additional_project_manager') is-invalid @enderror"
+                                    id="additional_project_manager" wire:model="additional_project_manager" multiple
+                                    data-placeholder="Select Additional Project Managers">
+                                    <option value="">Select Additional Project Managers</option>
                                     @foreach ($employees as $employee)
                                         <option value="{{ $employee->id }}">{{ $employee->user->name }}</option>
                                     @endforeach
                                 </select>
 
-                                @error('status')
+                                @error('additional_project_manager')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
-                            </div>
-                        </div> --}}
-
-
-                        <div class="row mb-4">
-                            <label for="status" class="col-form-label col-lg-2">Project Manager</label>
-                            <div class="col-lg-10">
-                                <input type="text" class="form-control" readonly value="{{ $projectManagerName }}">
                             </div>
                         </div>
 
@@ -98,8 +100,7 @@
                                     data-placeholder="Select Employee">
                                     <option value="">Select Employee</option>
                                     @foreach ($employees as $employee)
-                                        <option value="{{ $employee->id }}">{{ $employee->id }} -
-                                            {{ $employee->user->name }}</option>
+                                        <option value="{{ $employee->id }}">{{ $employee->user->name }}</option>
                                     @endforeach
                                 </select>
 
@@ -154,7 +155,8 @@
         <script>
             document.addEventListener('livewire:init', function() {
                 initDatePicker();
-                let selectElement = $('.select2-multiple');
+                let selectEmployeeElement = $('#employees');
+                let selectAdditionalManagerElement = $('#additional_project_manager');
 
                 function initDatePicker() {
                     $('#project-date-inputgroup').datepicker({
@@ -163,7 +165,6 @@
                         todayHighlight: true,
                         inputs: $('#project-date-inputgroup').find('input')
                     }).on('changeDate', function(e) {
-                        // Update the Livewire property when date is selected
                         let startDate = $('#project-date-inputgroup').find('input[name="start"]').val();
                         let endDate = $('#project-date-inputgroup').find('input[name="end"]').val();
 
@@ -176,33 +177,30 @@
                     width: '100%',
                 }).on('change', function() {
                     Livewire.dispatch('changeSelectForm', ['status', this.value]);
-                    // @this.set('status', this.value);
                 });
 
-                $('#employee_id').select2({
-                    width: '100%',
-                }).on('change', function() {
-                    Livewire.dispatch('changeSelectForm', ['employee_id', this.value]);
-                    // @this.set('employee_id', this.value);
-                });
-
-                selectElement.select2({
+                selectEmployeeElement.select2({
                     width: '100%',
                 }).on('change', function() {
                     let selectedValues = $(this).val();
                     Livewire.dispatch('changeSelectForm', ['selectedEmployees', selectedValues]);
+                });
 
-                    // @this.set('selectedEmployees', selectedValues);
+                selectAdditionalManagerElement.select2({
+                    width: '100%',
+                }).on('change', function() {
+                    let selectedValues = $(this).val();
+                    Livewire.dispatch('changeSelectForm', ['additional_project_manager', selectedValues]);
                 });
 
                 Livewire.on('change-select-form', () => {
                     var status = @json($status);
-                    var employee_id = @json($employee_id);
                     var selectedEmployees = @json($selectedEmployees);
+                    var additionalProjectManagers = @json($additional_project_manager);
 
                     $('#status').val(status).trigger('change');
-                    $('#employee_id').val(employee_id).trigger('change');
-                    selectElement.val(selectedEmployees).trigger('change');
+                    selectEmployeeElement.val(selectedEmployees).trigger('change');
+                    selectAdditionalManagerElement.val(additionalProjectManagers).trigger('change');
                 });
             });
         </script>
