@@ -15,6 +15,7 @@ class ProjectForm extends Component
     public $project;
     public $name, $description, $start_date, $end_date, $status, $employee_id;
     public $selectedEmployees = [];
+    public $additional_project_manager = [];
     public $projectManagerName;
     public $employees;
     public $type = 'create';
@@ -32,6 +33,7 @@ class ProjectForm extends Component
             $this->type = 'update';
 
             $this->projectManagerName = $this->project->projectManager->user->name ?? '';
+            $this->additional_project_manager = $this->project->additionalProjectManagers()->pluck('employee_id')->toArray();
             $this->selectedEmployees = $this->project->employees()->pluck('employee_id')->toArray();
             $this->dispatch('change-select-form');
         }else {
@@ -89,6 +91,7 @@ class ProjectForm extends Component
             $this->project->employees()->sync($this->selectedEmployees);
         }
 
+        $this->project->additionalProjectManagers()->sync($this->additional_project_manager);
         $this->alert('success', 'Project has been ' . $this->type . ' successfully');
         return redirect()->route('project.index');
     }
