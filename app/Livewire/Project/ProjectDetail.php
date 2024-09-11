@@ -10,6 +10,7 @@ class ProjectDetail extends Component
     public $project;
     public $name, $description, $start_date, $end_date, $status, $employee_id;
     public $selectedEmployees = [];
+    public $additional_project_manager = [];
     public $projectManagerName;
     public $employees;
 
@@ -25,6 +26,7 @@ class ProjectDetail extends Component
             $this->employee_id = $this->project->employee_id;
             $this->projectManagerName = $this->project->projectManager->user->name ?? '';
             $this->selectedEmployees = $this->project->employees()->pluck('employee_id')->toArray();
+            $this->additional_project_manager = $this->project->additionalProjectManagers()->pluck('employee_id')->toArray();
             $this->dispatch('change-select-form');
         }else {
             $this->employee_id = auth()->user()->employee->id;
