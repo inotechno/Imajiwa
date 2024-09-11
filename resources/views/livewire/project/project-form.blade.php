@@ -70,14 +70,13 @@
                         </div>
 
                         <div class="row mb-4" wire:ignore>
-                            <label for="additional_project_manager" class="col-form-label col-lg-2">Additional Project
-                                Managers</label>
+                            <label for="additional_project_manager" class="col-form-label col-lg-2">Another Project Manager</label>
                             <div class="col-lg-10">
                                 <select
                                     class="form-control select2-multiple @error('additional_project_manager') is-invalid @enderror"
                                     id="additional_project_manager" wire:model="additional_project_manager" multiple
-                                    data-placeholder="Select Additional Project Managers">
-                                    <option value="">Select Additional Project Managers</option>
+                                    data-placeholder="Select Another Project Manager">
+                                    <option value="">Select Another Project Manager</option>
                                     @foreach ($employees as $employee)
                                         <option value="{{ $employee->id }}">{{ $employee->user->name }}</option>
                                     @endforeach

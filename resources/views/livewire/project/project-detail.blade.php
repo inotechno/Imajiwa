@@ -42,7 +42,7 @@
                     </div>
 
                     <div class="row mb-4">
-                        <label for="employees" class="col-form-label col-lg-2">Additional Project Manager</label>
+                        <label for="employees" class="col-form-label col-lg-2">Another Project Manager</label>
                         <div class="col-lg-10">
                             @if (count($additional_project_manager) > 0)
                                 @php $counter = 1; @endphp
