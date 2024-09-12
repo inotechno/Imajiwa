@@ -3,7 +3,7 @@
         @if ($employee['avatar_url'])
             <a href="javascript: void(0);" class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top"
                 title="{{ $employee['name'] }}">
-                <img src="{{ $employee['avatar_url'] }}" alt="{{ $employee['name'] }}" class="rounded-circle avatar-sm">
+                <img src="{{ asset('storage/' . ( $employee['avatar_url'])) }}" alt="{{ $employee['name'] }}" class="rounded-circle avatar-sm">
             </a>
         @else
             <div class="avatar-sm">

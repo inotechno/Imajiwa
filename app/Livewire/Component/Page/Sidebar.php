@@ -135,13 +135,13 @@ class Sidebar extends Component
                             'icon' => 'bx bx-log-out-circle',
                             'permission' => 'view:inventory'
                         ],
-                        // [
-                        //     'name' => 'Item Request',
-                        //     'url' => '/item-request',
-                        //     'route' => 'request-item.index',
-                        //     'icon' => 'bx bx-log-out-circle',
-                        //     'permission' => 'view:item-request'
-                        // ],
+                        [
+                            'name' => 'Item Request',
+                            'url' => '/item-request',
+                            'route' => 'request-item.index',
+                            'icon' => 'bx bx-log-out-circle',
+                            'permission' => 'view:item-request'
+                        ],
                     ],
                 ],
 
