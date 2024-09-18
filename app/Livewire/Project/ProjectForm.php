@@ -3,6 +3,7 @@
 namespace App\Livewire\Project;
 
 use App\Models\Employee;
+use App\Models\Notification;
 use App\Models\Project;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\On;
@@ -36,7 +37,7 @@ class ProjectForm extends Component
             $this->additional_project_manager = $this->project->additionalProjectManagers()->pluck('employee_id')->toArray();
             $this->selectedEmployees = $this->project->employees()->pluck('employee_id')->toArray();
             $this->dispatch('change-select-form');
-        }else {
+        } else {
             $this->employee_id = auth()->user()->employee->id;
             $this->projectManagerName = auth()->user()->employee->user->name;
         }
@@ -89,6 +90,20 @@ class ProjectForm extends Component
             ]);
 
             $this->project->employees()->sync($this->selectedEmployees);
+        }
+
+        foreach ($this->selectedEmployees as $employeeId) {
+            $employee = Employee::find($employeeId);
+            if ($employee && $employee->user) {
+                Notification::create([
+                    'type' => 'project_assigned',
+                    'message' => 'You have been added to new project',
+                    'user_id' => $employee->user->id,
+                    'notifiable_type' => 'App\Models\Project',
+                    'notifiable_id' => $this->project->id,
+                    'url' => route('project.detail', $this->project->id)
+                ]);
+            }
         }
 
         $this->project->additionalProjectManagers()->sync($this->additional_project_manager);

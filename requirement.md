@@ -66,7 +66,7 @@ IP: 192.168.88.152
 - [ ] Blast email ke semua project manager
 - [ ] Export project detail ke Excel
 
-- notif ketika employee ketika di tambahkan kedalam proyek
-- notif ketika employee mengajukan absent kepada supervisor dan direktur departemen
-- notif ketika employee mengajuakan cuti kepada supervisor dan direktur departemen
-- notif ketika administrator pengajuan barang kepada direktur utama dan komisaris 
+- [x] notif ketika employee ketika di tambahkan kedalam proyek
+- [ ] notif ketika employee mengajukan absent kepada supervisor dan direktur departemen
+- [ ] notif ketika employee mengajuakan cuti kepada supervisor dan direktur departemen
+- [ ] notif ketika administrator pengajuan barang kepada direktur utama dan komisaris 
