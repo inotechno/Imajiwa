@@ -69,4 +69,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(DailyReportComment::class);
     }
+
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
+    }
 }

@@ -11,6 +11,7 @@ class Project extends Model
 
     protected $fillable = ['name', 'employee_id', 'code', 'description', 'start_date', 'end_date', 'status'];
 
+
     public function employees()
     {
         return $this->belongsToMany(Employee::class, 'projects_employees', 'project_id', 'employee_id');

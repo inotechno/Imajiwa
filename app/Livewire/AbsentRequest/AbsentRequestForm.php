@@ -4,6 +4,7 @@ namespace App\Livewire\AbsentRequest;
 
 use App\Models\AbsentRequest;
 use App\Models\Employee;
+use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
@@ -101,6 +102,7 @@ class AbsentRequestForm extends Component
                 'director_id' => $this->director_id,
                 'type_absent' => $this->type_absent
             ]);
+            $this->sendNotifications($this->absent_request);
 
             $this->reset();
             $this->alert('success', 'Absent Request created successfully');
@@ -123,6 +125,7 @@ class AbsentRequestForm extends Component
                 'director_id' => $this->director_id,
                 'type_absent' => $this->type_absent
             ]);
+            $this->sendNotifications($this->absent_request);
 
             $this->reset();
             $this->alert('success', 'Absent Request updated successfully');
@@ -130,6 +133,34 @@ class AbsentRequestForm extends Component
             return redirect()->route('absent-request.index');
         } catch (\Exception $e) {
             $this->alert('error', $e->getMessage());
+        }
+    }
+
+    protected function sendNotifications($absentRequest)
+    {
+        $supervisor = Employee::find($absentRequest->supervisor_id);
+        $director = Employee::find($absentRequest->director_id);
+
+        if ($supervisor && $supervisor->user) {
+            Notification::create([
+                'type' => 'absent_request',
+                'message' => 'A new absent request has been submitted by ' . $absentRequest->employee->user->name,
+                'user_id' => $supervisor->user->id,
+                'notifiable_type' => 'App\Models\AbsentRequest',
+                'notifiable_id' => $absentRequest->id,
+                'url' => route('team-absent-request.index') // URL untuk melihat detail absen
+            ]);
+        }
+
+        if ($director && $director->user) {
+            Notification::create([
+                'type' => 'absent_request',
+                'message' => 'A new absent request has been submitted by ' . $absentRequest->employee->user->name,
+                'user_id' => $director->user->id,
+                'notifiable_type' => 'App\Models\AbsentRequest',
+                'notifiable_id' => $absentRequest->id,
+                'url' => route('team-absent-request.index') // URL untuk melihat detail absen
+            ]);
         }
     }
 

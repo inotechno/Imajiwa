@@ -11,6 +11,8 @@
     },
     "dependencies": {
         "alpinejs": "^3.14.1",
+        "laravel-echo": "^1.16.1",
+        "pusher-js": "^8.4.0-rc2",
         "quill": "^2.0.2",
         "vuex": "^4.0.2"
     }
