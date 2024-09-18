@@ -61,12 +61,12 @@
 
     <div class="row">
         <div class="col-xl-6">
-            {{-- <div class="card">
+            <div class="card">
                 <div class="card-body">
                     <h4 class="card-title mb-4">Rekap Absen Bulan ini</h4>
                     <div id="donut_chart" class="apex-charts" dir="ltr"></div>
                 </div>
-            </div> --}}
+            </div>
         </div>
         <div class="col-xl-6">
             {{-- <div class="row">

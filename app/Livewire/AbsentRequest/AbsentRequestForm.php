@@ -42,6 +42,7 @@ class AbsentRequestForm extends Component
                 $department = $position->department;
                 if ($department) {
                     $this->supervisor_id = $department->supervisor_id ?? null;
+                    $this->director_id = $department->director_id ?? null;
                 }
             }
 
@@ -51,7 +52,7 @@ class AbsentRequestForm extends Component
             $this->start_date = '';
             $this->end_date = '';
             $this->supervisor_id = $this->supervisor_id ?? null;
-            $this->director_id = User::role('director')->first()->employee->id;
+            $this->director_id = $this->director_id ?? null;
         }
     }
 
@@ -70,10 +71,10 @@ class AbsentRequestForm extends Component
                 'employee_id' => 'required',
                 'start_date' => 'required|date|after_or_equal:today',
                 'end_date' => 'required|after_or_equal:start_date|date|after_or_equal:today',
-                'supervisor_id' => 'required|exists:employees,id',
+                'supervisor_id' => 'nullable|exists:employees,id',
                 'director_id' => 'required|exists:employees,id',
                 'type_absent' => 'required',
-            ],[
+            ], [
                 'supervisor_id.required' => 'Belum ada department, silahkan hubungi administrator',
                 'director_id.required' => 'Belum ada director, silahkan hubungi administrator',
             ]);

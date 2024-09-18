@@ -141,11 +141,11 @@ class RoleSeeder extends Seeder
             'delete:setting' => ['Administrator'],
 
             // Daily Report
-            'view:daily-report-all' => ['Finance','HR', 'Director', 'Administrator'],
-            'view:daily-report' => ['Employee'],
-            'create:daily-report' => ['Employee'],
-            'update:daily-report' => ['Employee', 'Administrator'],
-            'delete:daily-report' => ['Employee', 'Administrator'],
+            // 'view:daily-report-all' => ['Finance','HR', 'Director', 'Administrator'],
+            // 'view:daily-report' => ['Employee'],
+            // 'create:daily-report' => ['Employee'],
+            // 'update:daily-report' => ['Employee', 'Administrator'],
+            // 'delete:daily-report' => ['Employee', 'Administrator'],
 
             // Announcement
             'view:announcement' => ['Finance', 'Administrator'],
@@ -179,7 +179,7 @@ class RoleSeeder extends Seeder
 
             // Report
             'view:report-attendance' => ['Employee', 'Finance', 'HR', 'Director', 'Administrator'],
-            'view:report-daily-report' => ['Employee', 'Finance', 'HR', 'Director', 'Administrator'],
+            // 'view:report-daily-report' => ['Employee', 'Finance', 'HR', 'Director', 'Administrator'],
             'view:report-financial-request' => ['Employee', 'Finance', 'Director', 'Administrator'],
             'view:report-absent-request' => ['Employee', 'HR', 'Director', 'Administrator'],
             'view:report-leave-request' => ['Employee', 'HR', 'Director', 'Administrator'],

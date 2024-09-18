@@ -28,22 +28,22 @@ IP: 192.168.88.152
 
 ### Pengajuan Cuti
 - [ ] Pengajuan cuti bisa diakses oleh semua user
-- [x] Approval direktur
+- [ ] Approval direktur setiap department
 - [ ] Approval oleh pimpinan langsung
 
 ### Pengajuan Izin
 - [ ] Pengajuan izin bisa diakses oleh semua user
-- [x] Approval direktur
+- [ ] Approval direktur setiap department
 - [ ] Approval oleh pimpinan langsung
 
 
 ### Data Inventaris & Pengajuan Barang
 - Yang mengajukan: risma@imajiwa.id
-- [ ] Approval oleh direktur dan komisaris
+- [ ] Approval oleh direktur utama dan komisaris
 
 ### Task & Daily Report
 - [ ] Daily report ada
-- [ ] Task dan daily report dibuat oleh administrator dan bisa diakses oleh pekerja berdasarkan nama yang dipilih ==> **PLAN**
+- [ ] Task dan daily report dibuat oleh administrator dan bisa diakses oleh pekerja berdasarkan nama yang dipilih ==>**PLAN**
 
 ### Pengajuan Cuti
 - Jumlah cuti: 12 hari
@@ -60,8 +60,13 @@ IP: 192.168.88.152
 - [ ] Upload ke hosting (Jagoan Hosting)
 - [ ] Setup.exe link untuk akun hosting
 - [ ] Fitur announcement (Risma/admin), termasuk:
-  - Jadwal meeting
-  - Informasi hari libur dsb.
-  - Muncul pada notifikasi dan dashboard
+        - Jadwal meeting
+        - Informasi hari libur dsb.
+        - Muncul pada notifikasi dan dashboard
 - [ ] Blast email ke semua project manager
 - [ ] Export project detail ke Excel
+
+- notif ketika employee ketika di tambahkan kedalam proyek
+- notif ketika employee mengajukan absent kepada supervisor dan direktur departemen
+- notif ketika employee mengajuakan cuti kepada supervisor dan direktur departemen
+- notif ketika administrator pengajuan barang kepada direktur utama dan komisaris 

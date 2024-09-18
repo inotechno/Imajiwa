@@ -47,6 +47,7 @@ class LeaveRequestForm extends Component
                 $department = $position->department;
                 if ($department) {
                     $this->supervisor_id = $department->supervisor_id ?? null;
+                    $this->director_id = $department->director_id ?? null;
                 }
             }
 
@@ -56,7 +57,7 @@ class LeaveRequestForm extends Component
             $this->start_date = '';
             $this->end_date = '';
             $this->supervisor_id = $this->supervisor_id ?? null;
-            $this->director_id = User::role('director')->first()->employee->id;
+            $this->director_id = $this->director_id ?? null;
             $this->current_total_leave = $this->employee->leave_remaining;
             $this->leave_remaining = $this->employee->leave_remaining;
         }
@@ -80,7 +81,7 @@ class LeaveRequestForm extends Component
                 'employee_id' => 'required',
                 'start_date' => 'required|date|after_or_equal:today',
                 'end_date' => 'required|after_or_equal:start_date|date|after_or_equal:today',
-                'supervisor_id' => 'required|exists:employees,id',
+                'supervisor_id' => 'nullable|exists:employees,id',
                 'director_id' => 'required|exists:employees,id',
                 'leave_period' => 'required|integer|lte:current_total_leave',
             ], [

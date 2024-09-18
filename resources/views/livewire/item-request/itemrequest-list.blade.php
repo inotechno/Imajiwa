@@ -6,16 +6,13 @@
                     <thead>
                         <tr>
                             <th scope="col">Name</th>
-                            <th scope="col">Model</th>
-                            <th scope="col">Serial Number</th>
-                            <th scope="col">Qty</th>
-                            <th scope="col">Description</th>
+                            <th scope="col">Status</th>
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($inventories as $inventory)
-                            @livewire('inventory.inventory-item', ['inventory' => $inventory], key($inventory->id))
+                        @foreach ($requests as $request)
+                            @livewire('item-request.itemrequest-item', ['request' => $request], key($request->id))
                         @endforeach
                     </tbody>
                 </table>

@@ -39,6 +39,10 @@ class Employee extends Model
     {
         return $this->hasMany(Department::class, 'supervisor_id');
     }
+    public function director()
+    {
+        return $this->hasMany(Department::class, 'director_id');
+    }
 
     public function position()
     {
