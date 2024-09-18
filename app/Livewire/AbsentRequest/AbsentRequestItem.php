@@ -121,7 +121,7 @@ class AbsentRequestItem extends Component
     {
         $employee = $this->absent_request->employee;
         $user = $employee->user;
-        $supervisor = $this->absent_request->supervisor->user;
+        $supervisor = $this->absent_request->supervisor?->user;
         $director = $this->absent_request->director->user;
 
         return view('livewire.absent-request.absent-request-item', [

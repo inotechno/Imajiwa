@@ -17,17 +17,18 @@ class LeaveRequestItem extends Component
     public $approvedSupervisor = false;
     public $totalDays = 0;
     public $isSupervisor = false;
+    public $isDirector = false;
 
     public $disableUpdate = false;
 
     public function mount(LeaveRequest $leave_request)
     {
         $this->leave_request = $leave_request;
-        if($this->leave_request->director_approved_at){
+        if ($this->leave_request->director_approved_at) {
             $this->approvedDirector = true;
         }
 
-        if($this->leave_request->supervisor_approved_at){
+        if ($this->leave_request->supervisor_approved_at) {
             $this->approvedSupervisor = true;
         }
 
@@ -39,10 +40,20 @@ class LeaveRequestItem extends Component
             $this->disableUpdate = true;
         }
 
-        if (Auth::user()->employee) {
-            if ($this->leave_request->supervisor_id == Auth::user()->employee->id) {
-                $this->isSupervisor = true;
-            }
+        // if (Auth::user()->employee) {
+        //     if ($this->leave_request->supervisor_id == Auth::user()->employee->id) {
+        //         $this->isSupervisor = true;
+        //     }
+        // }
+
+        // Periksa apakah user login adalah direktur yang sama dengan yang tercatat di leave_request
+        if (Auth::user()->employee && $this->leave_request->director_id == Auth::user()->employee->id) {
+            $this->isDirector = true;
+        }
+
+        // Periksa apakah user login adalah supervisor yang sama dengan yang tercatat di leave_request
+        if (Auth::user()->employee && $this->leave_request->supervisor_id == Auth::user()->employee->id) {
+            $this->isSupervisor = true;
         }
 
         $this->totalDays = $this->leave_request->end_date->diffInDays($this->leave_request->start_date);
@@ -93,11 +104,25 @@ class LeaveRequestItem extends Component
     #[On('approve-leave-request')]
     public function approve()
     {
-        if ($this->isSupervisor == false) {
+        // if ($this->isSupervisor == false) {
+        //     $this->leave_request->update([
+        //         'director_approved_at' => now(),
+        //     ]);
+        // } else {
+        //     $this->leave_request->update([
+        //         'supervisor_approved_at' => now(),
+        //     ]);
+        // }
+
+        if ($this->isDirector) {
+            // Approve by Director
             $this->leave_request->update([
                 'director_approved_at' => now(),
             ]);
-        } else {
+        }
+
+        if ($this->isSupervisor) {
+            // Approve by Supervisor
             $this->leave_request->update([
                 'supervisor_approved_at' => now(),
             ]);

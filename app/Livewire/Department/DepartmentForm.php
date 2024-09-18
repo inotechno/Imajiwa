@@ -14,7 +14,7 @@ class DepartmentForm extends Component
     public $sites;
     public $employees;
     public $department;
-    public $name, $site_id, $supervisor_id;
+    public $name, $site_id, $supervisor_id , $director_id;
     public $mode = 'create';
 
     public function mount($employees, $sites)
@@ -28,6 +28,7 @@ class DepartmentForm extends Component
         $this->name = '';
         $this->site_id = '';
         $this->supervisor_id = '';
+        $this->director_id = '';
         $this->mode = 'create';
     }
 
@@ -38,6 +39,7 @@ class DepartmentForm extends Component
         $this->name = $this->department->name;
         $this->site_id = $this->department->site_id;
         $this->supervisor_id = $this->department->supervisor_id;
+        $this->director_id = $this->department->director_id;
 
         $this->mode = 'edit';
         $this->dispatch('change-status-form');
@@ -45,15 +47,15 @@ class DepartmentForm extends Component
 
     public function save()
     {
-        if($this->site_id == '' || $this->supervisor_id == '') {
-            $this->alert('error', 'Please select site and supervisor');
+        if($this->site_id == '' || $this->director_id == ''){
+            $this->alert('error', 'Please select site and director');
             return;
         }
 
         $this->validate([
             'name' => 'required',
             'site_id' => 'required',
-            'supervisor_id' => 'required',
+            'director_id' => 'required',
         ]);
 
         if ($this->mode == 'create') {
@@ -69,7 +71,8 @@ class DepartmentForm extends Component
             $department = Department::create([
                 'name' => $this->name,
                 'site_id' => $this->site_id,
-                'supervisor_id' => $this->supervisor_id,
+                'supervisor_id' => $this->supervisor_id ? $this->supervisor_id : null,
+                'director_id' => $this->director_id,
             ]);
 
             $this->alert('success', 'Department created successfully');
@@ -87,7 +90,8 @@ class DepartmentForm extends Component
             $this->department->update([
                 'name' => $this->name,
                 'site_id' => $this->site_id,
-                'supervisor_id' => $this->supervisor_id,
+                'supervisor_id' => $this->supervisor_id ? $this->supervisor_id : null,
+                'director_id' => $this->director_id,
             ]);
 
             $this->alert('success', 'Department updated successfully');

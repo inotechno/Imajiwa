@@ -2,7 +2,7 @@
 
 namespace App\Livewire\ItemRequest;
 
-use App\Models\Inventory;
+use App\Models\request;
 use Livewire\Component;
 use Livewire\Attributes\Url;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
@@ -40,10 +40,16 @@ class ItemrequestIndex extends Component
     }
     public function render()
     {
-        $inventories = Inventory::when($this->search, function ($query) {
-            $query->where('name', 'like', '%' . $this->search . '%');
-        })->paginate($this->perPage);
+        // Fetch requests with their inventories and apply search filter
+        $requests = Request::with(['inventories' => function($query) {
+                $query->when($this->search, function ($query) {
+                    $query->where('name', 'like', '%' . $this->search . '%');
+                });
+            }])
+            ->paginate($this->perPage);
 
-        return view('livewire.item-request.itemrequest-index' , compact('inventories'))->layout('layouts.app', ['title' => 'Item Request']);
+        return view('livewire.item-request.itemrequest-index', [
+            'requests' => $requests,
+        ])->layout('layouts.app', ['title' => 'Item Request']);
     }
 }

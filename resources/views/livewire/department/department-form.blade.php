@@ -45,6 +45,22 @@
                     </span>
                 @enderror
             </div>
+            <div class="col-md" wire:ignore>
+                <label for="form-label">Director</label>
+                <select class="form-select select2 select-director" wire:model="director_id"
+                    data-placeholder="Select Director">
+                    <option></option>
+                    @foreach ($employees as $director)
+                        <option value="{{ $director->id }}">{{ $director->user->name }}</option>
+                    @endforeach
+                </select>
+
+                @error('director_id')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
         </div>
 
         <button type="submit" class="btn btn-sm btn-primary mt-3">Submit</button>
@@ -60,6 +76,9 @@
                 $('.select-supervisor').on('change', function() {
                     @this.set('supervisor_id', this.value);
                 });
+                $('.select-director').on('change', function() {
+                    @this.set('director_id', this.value);
+                });
 
                 $('.select-site').on('change', function() {
                     @this.set('site_id', this.value);
@@ -68,9 +87,11 @@
                 Livewire.on('change-status-form', () => {
                     $('.select-site').val(@this.site_id).trigger('change');
                     $('.select-supervisor').val(@this.supervisor_id).trigger('change');
+                    $('.select-director').val(@this.director_id).trigger('change');
                 });
 
                 Livewire.on('refreshIndex', () => {
+                    $('.select-director').val(null).trigger('change');
                     $('.select-supervisor').val(null).trigger('change');
                     $('.select-site').val(null).trigger('change');
                 })

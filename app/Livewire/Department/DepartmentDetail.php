@@ -12,6 +12,7 @@ class DepartmentDetail extends Component
     public $positions;
     public $employees;
     public $supervisor;
+    public $director;
 
     public function mount($id)
     {
@@ -21,6 +22,7 @@ class DepartmentDetail extends Component
         $this->positions = $this->department->positions;
         $this->employees = $this->getEmployeesProperty();
         $this->supervisor = $this->department->supervisor;
+        $this->director = $this->department->director;
     }
 
     public function getEmployeesProperty()
