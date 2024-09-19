@@ -17,5 +17,7 @@
                 </button>
             </li>
         @endcan
+        <a href="{{ route('item-request.detail', ['id' => $request->id]) }}"
+            class="btn btn-primary btn-sm waves-effect waves-light"><i class="mdi mdi-eye me-1"></i> Form</a>
     </td>
 </tr>

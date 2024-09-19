@@ -321,7 +321,7 @@
                             <h6 class="m-0">Notifications</h6>
                         </div>
                         <div class="col-auto">
-                            <a href="#!" class="small">View All</a>
+                            <a href="{{ route('notification.index') }}" class="small">View All</a>
                         </div>
                     </div>
                 </div>
@@ -353,7 +353,7 @@
 
                 </div>
                 <div class="p-2 border-top d-grid">
-                    <a class="btn btn-sm btn-link font-size-14 text-center" href="javascript:void(0)">
+                    <a class="btn btn-sm btn-link font-size-14 text-center" href="{{ route('notification.index') }}">
                         <i class="mdi mdi-arrow-right-circle me-1"></i> View More
                     </a>
                 </div>
