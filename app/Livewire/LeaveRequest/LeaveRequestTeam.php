@@ -48,7 +48,10 @@ class LeaveRequestTeam extends Component
             $query->orWhereDate('end_date', '<=', $this->end_date);
         });
 
-        $leave_requests->where('supervisor_id', Auth::user()->employee->id);
+        $leave_requests->where(function($query) {
+            $query->where('supervisor_id', Auth::user()->employee->id)
+                  ->orWhere('director_id', Auth::user()->employee->id);
+        });
         $leave_requests = $leave_requests->paginate($this->perPage);
 
         return view('livewire.leave-request.leave-request-team', compact('leave_requests'))->layout('layouts.app', ['title' => 'Leave Request Team']);

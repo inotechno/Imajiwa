@@ -30,17 +30,18 @@ class RoleSeeder extends Seeder
             'name' => 'HR',
         ]);
 
-        $commissioner = Role::updateOrCreate([
-            'name' => 'Commissioner',
-        ]);
-
         $employee = Role::updateOrCreate([
             'name' => 'Employee',
+        ]);
+
+        $commissioner = Role::updateOrCreate([
+            'name' => 'Commissioner',
         ]);
 
         $project_manager = Role::updateOrCreate([
             'name' => 'Project Manager',
         ]);
+
 
         $permissions = [
             // Dashboard
@@ -53,38 +54,38 @@ class RoleSeeder extends Seeder
             'view:export_master_data' => ['Finance', 'Administrator'],
 
             // User
-            'view:user' => ['HR', 'Finance', 'Director', 'Administrator'],
+            'view:user' => ['HR', 'Finance', 'Administrator'],
             'create:user' => ['HR', 'Finance', 'Administrator'],
             'update:user' => ['HR', 'Finance', 'Administrator'],
             'delete:user' => ['HR', 'Finance', 'Administrator'],
 
             // Employee
-            'view:employee' => ['HR', 'Finance', 'Director', 'Administrator'],
+            'view:employee' => ['HR', 'Finance', 'Administrator'],
             'create:employee' => ['HR', 'Finance', 'Administrator'],
             'update:employee' => ['HR', 'Finance', 'Administrator'],
             'delete:employee' => ['HR', 'Finance', 'Administrator'],
 
             // Position
-            'view:position' => ['HR','Finance', 'Director', 'Administrator'],
+            'view:position' => ['HR','Finance', 'Administrator'],
             'create:position' => ['HR', 'Finance', 'Administrator'],
             'update:position' => ['HR', 'Finance', 'Administrator'],
             'delete:position' => ['HR', 'Finance', 'Administrator'],
 
             // Department
-            'view:department' => ['Finance', 'HR', 'Director', 'Administrator'],
+            'view:department' => ['Finance', 'HR', 'Administrator'],
             'create:department' => ['Finance','Administrator'],
             'update:department' => ['Finance','Administrator'],
             'delete:department' => ['Finance','Administrator'],
 
             // Site
-            'view:site' => ['Finance','HR', 'Director', 'Administrator'],
+            'view:site' => ['Finance','HR', 'Administrator'],
             'create:site' => ['Finance','HR', 'Administrator'],
             'update:site' => ['Finance','HR', 'Administrator'],
             'delete:site' => ['Finance','HR', 'Administrator'],
 
             // Visit
-            'view:visit-all' => ['Finance','HR', 'Director', 'Administrator'],
-            'view:visit' => ['Finance','Employee', 'HR', 'Director', 'Administrator'],
+            'view:visit-all' => ['Finance','HR', 'Administrator'],
+            'view:visit' => ['Finance','Employee', 'HR', 'Administrator'],
             'create:visit' => ['Finance','Employee', 'Administrator'],
             'update:visit' => ['Finance','Administrator'],
             'delete:visit' => ['Finance','Administrator'],
@@ -162,7 +163,7 @@ class RoleSeeder extends Seeder
             'approve:financial-request' => ['Employee', 'Finance', 'Director', 'Administrator'],
 
             // absent Request
-            'view:absent-request-all' => ['HR', 'Finance', 'Director', 'Administrator'],
+            'view:absent-request-all' => ['Finance', 'Administrator'],
             'view:absent-request' => ['Employee'],
             'create:absent-request' => ['Employee'],
             'update:absent-request' => ['Employee', 'HR', 'Finance', 'Administrator'],
@@ -170,7 +171,7 @@ class RoleSeeder extends Seeder
             'approve:absent-request' => ['Employee', 'HR', 'Finance', 'Director', 'Administrator'],
 
             // Leave Request
-            'view:leave-request-all' => ['HR', 'Finance', 'Director', 'Administrator'],
+            'view:leave-request-all' => ['Finance', 'Administrator'],
             'view:leave-request' => ['Employee'],
             'create:leave-request' => ['Employee'],
             'update:leave-request' => ['Employee', 'HR', 'Finance', 'Administrator'],
@@ -198,7 +199,7 @@ class RoleSeeder extends Seeder
             'update:profile' => ['Employee', 'HR', 'Director', 'Project Manager', 'Finance'],
 
             //inventory
-            'view:category-inventory-all' => ['HR', 'Finance', 'Director', 'Administrator','commissioner'],
+            'view:category-inventory-all' => ['Finance', 'Director', 'Administrator','commissioner'],
             'view:category-inventory' => ['Finance', 'Administrator'],
             'create:category-inventory' => ['Finance', 'Administrator'],
             'update:category-inventory' => ['Finance', 'Administrator'],

@@ -36,13 +36,12 @@
             </div>
 
             <div class="d-flex gap-2 justify-content-center flex-wrap mt-3">
-                @if(!$approvedDirector)
-                    @hasrole('Director')
-                        <a href="javascript:void(0)" class="btn btn-soft-info btn-sm"
-                            wire:click="approveConfirm({{ $absent_request->id }})"><i class="mdi mdi-check"></i>
-                            Approve</a>
-                    @endhasrole
-                @endif
+                @if (!$approvedDirector && $isDirector)
+                <a href="javascript:void(0)" class="btn btn-soft-info btn-sm"
+                    wire:click="approveConfirm({{ $absent_request->id }})">
+                    <i class="mdi mdi-check"></i> Approve as Director
+                </a>
+            @endif
 
                 @if(!$approvedSupervisor)
                     @if ($isSupervisor)

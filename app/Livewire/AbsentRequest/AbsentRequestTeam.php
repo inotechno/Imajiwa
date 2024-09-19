@@ -24,7 +24,7 @@ class AbsentRequestTeam extends Component
 
     public $employees;
 
-    protected $listeners =['refreshIndex' => '$refresh'];
+    protected $listeners = ['refreshIndex' => '$refresh'];
 
     public function mount()
     {
@@ -48,7 +48,10 @@ class AbsentRequestTeam extends Component
             $query->orWhereDate('end_date', '<=', $this->end_date);
         });
 
-        $absent_requests->where('supervisor_id', Auth::user()->employee->id);
+        $absent_requests->where(function ($query) {
+            $query->where('supervisor_id', Auth::user()->employee->id)
+                ->orWhere('director_id', Auth::user()->employee->id);
+        });
         $absent_requests = $absent_requests->paginate($this->perPage);
 
         return view('livewire.absent-request.absent-request-team', compact('absent_requests'))->layout('layouts.app', ['title' => 'Absent Request Team']);

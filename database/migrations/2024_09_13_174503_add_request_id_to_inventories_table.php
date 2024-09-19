@@ -42,21 +42,24 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('inventories', function (Blueprint $table) {
+            // Cek dan hapus foreign key jika ada
             if (Schema::hasColumn('inventories', 'request_id')) {
-                $table->dropForeign(['request_id']);
-                $table->dropColumn('request_id');
+                // Coba hapus foreign key berdasarkan nama yang benar
+                $table->dropForeign(['request_id']);  // Hapus foreign key jika ada
+                $table->dropColumn('request_id');    // Hapus kolom
             }
 
             if (Schema::hasColumn('inventories', 'director_id')) {
-                $table->dropForeign(['director_id']);
-                $table->dropColumn('director_id');
+                $table->dropForeign(['director_id']); // Hapus foreign key jika ada
+                $table->dropColumn('director_id');   // Hapus kolom
             }
 
             if (Schema::hasColumn('inventories', 'supervisor_id')) {
-                $table->dropForeign(['supervisor_id']);
-                $table->dropColumn('supervisor_id');
+                $table->dropForeign(['supervisor_id']); // Hapus foreign key jika ada
+                $table->dropColumn('supervisor_id');   // Hapus kolom
             }
 
+            // Hapus kolom tanpa foreign key
             if (Schema::hasColumn('inventories', 'director_approved_at')) {
                 $table->dropColumn('director_approved_at');
             }

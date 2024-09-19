@@ -44,6 +44,16 @@ class Employee extends Model
         return $this->hasMany(Department::class, 'director_id');
     }
 
+    public function directorApprovedItem()
+    {
+        return $this->belongsTo(User::class, 'director_id');
+    }
+    
+    public function commissionerApprovedItem()
+    {
+        return $this->belongsTo(User::class, 'commissioner_id');
+    }
+
     public function position()
     {
         return $this->belongsTo(Position::class);

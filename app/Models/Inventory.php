@@ -26,9 +26,9 @@ class Inventory extends Model
         'model',
         'qty',
         'director_id',
-        'supervisor_id',
+        'commissioner_id',
         'director_approved_at',
-        'supervisor_approved_at',
+        'commissioner_approved_at',
     ];
 
 
@@ -37,6 +37,15 @@ class Inventory extends Model
         return $this->belongsTo(Request::class);
     }
 
+    public function directorApprovedItem()
+    {
+        return $this->belongsTo(Employee::class, 'director_id');
+    }
+    
+    public function commissionerApprovedItem()
+    {
+        return $this->belongsTo(Employee::class, 'commissioner_id');
+    }
     public function isApproved()
     {
         return $this->is_approved_director && $this->is_approved_commissioner;
