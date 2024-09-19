@@ -4,6 +4,8 @@ namespace App\Livewire\ItemRequest;
 
 use App\Models\CategoryInventory;
 use App\Models\Inventory;
+use App\Models\Notification;
+use App\Models\User;
 use Livewire\Component;
 use Illuminate\Support\Str;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
@@ -112,9 +114,44 @@ class ItemrequestForm extends Component
             }
         }
 
+        $this->sendNotifications($request);
+
         $this->alert('success', 'Item Request has been ' . $this->type . ' successfully');
         return redirect()->route('item-request.index');
     }
+
+    protected function sendNotifications($request)
+    {
+        // Ambil direktur utama dan komisaris dari database atau konfigurasi
+        $chiefDirector = User::role('Director')->first();
+        $commissioners = User::role('Commissioner')->get();
+        
+        // Kirim notifikasi kepada direktur utama
+        if ($chiefDirector) {
+            Notification::create([
+                'type' => 'item_request',
+                'message' => 'A new item request has been submitted',
+                'user_id' => $chiefDirector->id,
+                'notifiable_type' => 'App\Models\Request',
+                'notifiable_id' => $request->id,
+                'url' => route('item-request.index', $request->id) // URL untuk melihat detail pengajuan barang
+            ]);
+        }
+
+        // Kirim notifikasi kepada komisaris
+        foreach ($commissioners as $commissioner) {
+            Notification::create([
+                'type' => 'item_request',
+                'message' => 'A new item request has been submitted',
+                'user_id' => $commissioner->id,
+                'notifiable_type' => 'App\Models\Request',
+                'notifiable_id' => $request->id,
+                'url' => route('item-request.index', $request->id) // URL untuk melihat detail pengajuan barang
+            ]);
+        }
+    }
+
+
     public function render()
     {
         return view('livewire.item-request.itemrequest-form')->layout('layouts.app', ['title' => 'Item Request']);

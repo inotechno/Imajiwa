@@ -53,6 +53,8 @@ use App\Livewire\Inventory\InventoryIndex;
 use App\Livewire\Inventory\InventoryForm;
 use App\Livewire\ItemRequest\ItemrequestIndex;
 use App\Livewire\ItemRequest\ItemrequestForm;
+use App\Livewire\ItemRequest\ItemrequestDetail;
+use App\Livewire\Notification\NotificationIndex;
 
 /*
 |--------------------------------------------------------------------------
@@ -192,8 +194,12 @@ Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
 
     Route::group(['prefix' => 'item-request'], function () {
         Route::get('/', ItemrequestIndex::class)->name('item-request.index')->middleware('can:view:item-request');
+        Route::get('detail/{id}', ItemrequestDetail::class)->name('item-request.detail')->middleware('can:view:item-request');
         Route::get('create', ItemrequestForm::class)->name('item-request.create')->middleware('can:create:item-request');
         Route::get('edit/{id}', ItemrequestForm::class)->name('item-request.edit')->middleware('can:update:item-request');
     });
-    
+
+    Route::group(['prefix' => 'notification'], function () {
+        Route::get('/', NotificationIndex::class)->name('notification.index');
+    });
 });

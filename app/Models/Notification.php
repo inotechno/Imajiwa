@@ -26,13 +26,11 @@ class Notification extends Model
         return $this->belongsTo(User::class);
     }
 
-    // Custom method to mark notification as read
     public function markAsRead()
     {
         $this->update(['is_read' => true]);
     }
 
-    // Custom method to check if notification is read
     public function isRead()
     {
         return $this->is_read;
