@@ -15,7 +15,7 @@ class ItemrequestForm extends Component
     use LivewireAlert;
     public $items = [];
     public $inventory;
-    public $name, $request_id, $description, $slug, $status_id, $category_inventory_id, $serial_number, $image_path, $image_url, $qr_code_path, $qr_code_url, $purchase_date, $price, $model, $qty;
+    public $name, $request_id, $description, $slug, $status_id, $category_inventory_id, $serial_number, $image_path, $image_url, $qr_code_path, $qr_code_url, $purchase_date, $price, $model, $qty,  $commissioner_id, $director_id;
     public $categories;
     public $type = 'create';
 
@@ -27,7 +27,7 @@ class ItemrequestForm extends Component
         if ($request) {
             $this->request_id = $request->id;
             $this->name = $request->name;
-
+            
             foreach ($request->inventories as $inventory) {
                 $this->items[] = [
                     'id' => $inventory->id,  // Pastikan ID item disimpan
@@ -39,6 +39,8 @@ class ItemrequestForm extends Component
                     'price' => $inventory->price,
                     'purchase_date' => $inventory->purchase_date,
                     'category_inventory_id' => $inventory->category_inventory_id,
+                    'commissioner_id' => $inventory->commissioner_id,
+                    'director_id' => $inventory->director_id,
                 ];
             }
             $this->type = 'update';
@@ -103,6 +105,8 @@ class ItemrequestForm extends Component
         foreach ($this->items as $item) {
             $item['request_id'] = $request->id;
             $item['slug'] = Str::slug($item['name']);
+            $item['director_id'] = $this->director_id;
+            $item['commissioner_id'] = $this->commissioner_id;
             if ($this->type == 'create') {
                 Inventory::create($item);
             } else {
@@ -125,7 +129,7 @@ class ItemrequestForm extends Component
         // Ambil direktur utama dan komisaris dari database atau konfigurasi
         $chiefDirector = User::role('Director')->first();
         $commissioners = User::role('Commissioner')->get();
-        
+
         // Kirim notifikasi kepada direktur utama
         if ($chiefDirector) {
             Notification::create([
@@ -134,7 +138,7 @@ class ItemrequestForm extends Component
                 'user_id' => $chiefDirector->id,
                 'notifiable_type' => 'App\Models\Request',
                 'notifiable_id' => $request->id,
-                'url' => route('item-request.index', $request->id) // URL untuk melihat detail pengajuan barang
+                'url' => route('item-request.detail', $request->id) // URL untuk melihat detail pengajuan barang
             ]);
         }
 
@@ -146,7 +150,7 @@ class ItemrequestForm extends Component
                 'user_id' => $commissioner->id,
                 'notifiable_type' => 'App\Models\Request',
                 'notifiable_id' => $request->id,
-                'url' => route('item-request.index', $request->id) // URL untuk melihat detail pengajuan barang
+                'url' => route('item-request.detail', $request->id) // URL untuk melihat detail pengajuan barang
             ]);
         }
     }

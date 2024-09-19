@@ -20,11 +20,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php $no = 1; $grandTotal = 0; ?>
+                            <?php $no = 1;
+                            $grandTotal = 0; ?>
                             @forelse ($items as $item)
                                 <?php
-                                    $itemTotal = $item['qty'] * $item['price'];
-                                    $grandTotal += $itemTotal;
+                                $itemTotal = $item['qty'] * $item['price'];
+                                $grandTotal += $itemTotal;
                                 ?>
                                 <tr>
                                     <td>{{ $no++ }}</td>
@@ -51,17 +52,39 @@
                         </tfoot>
                     </table>
 
-                    <a href="javascript:void(0)" class="btn btn-soft-info btn-sm"
-                    wire:click="approveConfirm()">
-                    <i class="mdi mdi-check"></i> Approve as Director
-                </a>
-
-                <a href="javascript:void(0)" class="btn btn-soft-info btn-sm"
-                wire:click="approveConfirm()">
-                <i class="mdi mdi-check"></i> Approve as Supervisor
-            </a>
-                    
-
+                    <div class="mt-4">
+                        <div class="row">
+                            <div class="col-md-6 text-center">
+                                @if ($inventory && $inventory->director)
+                                    <p><strong>Direktur Utama:</strong> {{ $inventory->director->name }}</p>
+                                    @if (!$inventory->director_approved_at)
+                                        <button wire:click="approveDirector" class="btn btn-primary">Approve</button>
+                                    @else
+                                        <p class="text-success">Approved on
+                                            {{ \Carbon\Carbon::parse($inventory->director_approved_at)->format('Y-m-d') }}
+                                        </p>
+                                    @endif
+                                @else
+                                    <p><strong>Direktur Utama:</strong> Tidak tersedia</p>
+                                @endif
+                            </div>
+                            <div class="col-md-6 text-center">
+                                @if ($inventory && $inventory->commissioner)
+                                    <p><strong>Komisaris:</strong> {{ $inventory->commissioner->name }}</p>
+                                    @if (!$inventory->commissioner_approved_at)
+                                        <button wire:click="approveCommissioner"
+                                            class="btn btn-primary">Approve</button>
+                                    @else
+                                        <p class="text-success">Approved on
+                                            {{ \Carbon\Carbon::parse($inventory->commissioner_approved_at)->format('Y-m-d') }}
+                                        </p>
+                                    @endif
+                                @else
+                                    <p><strong>Komisaris:</strong> Tidak tersedia</p>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
