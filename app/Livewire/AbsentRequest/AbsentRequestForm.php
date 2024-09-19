@@ -4,6 +4,7 @@ namespace App\Livewire\AbsentRequest;
 
 use App\Models\AbsentRequest;
 use App\Models\Employee;
+use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
@@ -42,6 +43,7 @@ class AbsentRequestForm extends Component
                 $department = $position->department;
                 if ($department) {
                     $this->supervisor_id = $department->supervisor_id ?? null;
+                    $this->director_id = $department->director_id ?? null;
                 }
             }
 
@@ -51,7 +53,7 @@ class AbsentRequestForm extends Component
             $this->start_date = '';
             $this->end_date = '';
             $this->supervisor_id = $this->supervisor_id ?? null;
-            $this->director_id = User::role('director')->first()->employee->id;
+            $this->director_id = $this->director_id ?? null;
         }
     }
 
@@ -70,10 +72,10 @@ class AbsentRequestForm extends Component
                 'employee_id' => 'required',
                 'start_date' => 'required|date|after_or_equal:today',
                 'end_date' => 'required|after_or_equal:start_date|date|after_or_equal:today',
-                'supervisor_id' => 'required|exists:employees,id',
+                'supervisor_id' => 'nullable|exists:employees,id',
                 'director_id' => 'required|exists:employees,id',
                 'type_absent' => 'required',
-            ],[
+            ], [
                 'supervisor_id.required' => 'Belum ada department, silahkan hubungi administrator',
                 'director_id.required' => 'Belum ada director, silahkan hubungi administrator',
             ]);
@@ -100,6 +102,7 @@ class AbsentRequestForm extends Component
                 'director_id' => $this->director_id,
                 'type_absent' => $this->type_absent
             ]);
+            $this->sendNotifications($this->absent_request);
 
             $this->reset();
             $this->alert('success', 'Absent Request created successfully');
@@ -122,6 +125,7 @@ class AbsentRequestForm extends Component
                 'director_id' => $this->director_id,
                 'type_absent' => $this->type_absent
             ]);
+            $this->sendNotifications($this->absent_request);
 
             $this->reset();
             $this->alert('success', 'Absent Request updated successfully');
@@ -129,6 +133,34 @@ class AbsentRequestForm extends Component
             return redirect()->route('absent-request.index');
         } catch (\Exception $e) {
             $this->alert('error', $e->getMessage());
+        }
+    }
+
+    protected function sendNotifications($absentRequest)
+    {
+        $supervisor = Employee::find($absentRequest->supervisor_id);
+        $director = Employee::find($absentRequest->director_id);
+
+        if ($supervisor && $supervisor->user) {
+            Notification::create([
+                'type' => 'absent_request',
+                'message' => 'A new absent request has been submitted by ' . $absentRequest->employee->user->name,
+                'user_id' => $supervisor->user->id,
+                'notifiable_type' => 'App\Models\AbsentRequest',
+                'notifiable_id' => $absentRequest->id,
+                'url' => route('team-absent-request.index') // URL untuk melihat detail absen
+            ]);
+        }
+
+        if ($director && $director->user) {
+            Notification::create([
+                'type' => 'absent_request',
+                'message' => 'A new absent request has been submitted by ' . $absentRequest->employee->user->name,
+                'user_id' => $director->user->id,
+                'notifiable_type' => 'App\Models\AbsentRequest',
+                'notifiable_id' => $absentRequest->id,
+                'url' => route('team-absent-request.index') // URL untuk melihat detail absen
+            ]);
         }
     }
 

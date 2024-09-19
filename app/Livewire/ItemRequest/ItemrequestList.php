@@ -10,7 +10,7 @@ class ItemrequestList extends Component
 {
 
     #[Reactive]
-    public $inventories;
+    public $requests;
 
     public function render()
     {

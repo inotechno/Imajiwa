@@ -19,15 +19,17 @@ class AbsentRequestItem extends Component
     public $approvedDirector = false;
     public $approvedSupervisor = false;
     public $disableUpdate = false;
+    public $isDirector = false;
+
 
     public function mount(AbsentRequest $absent_request)
     {
         $this->absent_request = $absent_request;
-        if($this->absent_request->director_approved_at){
+        if ($this->absent_request->director_approved_at) {
             $this->approvedDirector = true;
         }
 
-        if($this->absent_request->supervisor_approved_at){
+        if ($this->absent_request->supervisor_approved_at) {
             $this->approvedSupervisor = true;
         }
 
@@ -39,11 +41,19 @@ class AbsentRequestItem extends Component
             $this->disableUpdate = true;
         }
 
-        if(Auth::user()->employee){
-            if($this->absent_request->supervisor_id == Auth::user()->employee->id){
-                $this->isSupervisor = true;
-            }
+        if (Auth::user()->employee && $this->absent_request->director_id == Auth::user()->employee->id) {
+            $this->isDirector = true;
         }
+
+        if (Auth::user()->employee && $this->absent_request->supervisor_id == Auth::user()->employee->id) {
+            $this->isSupervisor = true;
+        }
+
+        // if (Auth::user()->employee) {
+        //     if ($this->absent_request->supervisor_id == Auth::user()->employee->id) {
+        //         $this->isSupervisor = true;
+        //     }
+        // }
 
         $this->totalDays = $this->absent_request->end_date->diffInDays($this->absent_request->start_date);
     }
@@ -93,11 +103,25 @@ class AbsentRequestItem extends Component
     #[On('approve-absent-request')]
     public function approve()
     {
-        if($this->isSupervisor == false){
+        // if ($this->isSupervisor == false) {
+        //     $this->absent_request->update([
+        //         'director_approved_at' => now(),
+        //     ]);
+        // } else {
+        //     $this->absent_request->update([
+        //         'supervisor_approved_at' => now(),
+        //     ]);
+        // }
+
+        if ($this->isDirector) {
+            // Approve by Director
             $this->absent_request->update([
                 'director_approved_at' => now(),
             ]);
-        }else{
+        }
+
+        if ($this->isSupervisor) {
+            // Approve by Supervisor
             $this->absent_request->update([
                 'supervisor_approved_at' => now(),
             ]);
@@ -121,7 +145,7 @@ class AbsentRequestItem extends Component
     {
         $employee = $this->absent_request->employee;
         $user = $employee->user;
-        $supervisor = $this->absent_request->supervisor->user;
+        $supervisor = $this->absent_request->supervisor?->user;
         $director = $this->absent_request->director->user;
 
         return view('livewire.absent-request.absent-request-item', [

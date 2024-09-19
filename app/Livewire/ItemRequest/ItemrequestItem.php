@@ -12,6 +12,7 @@ class ItemrequestItem extends Component
 
     use LivewireAlert;
     public $inventory;
+    public $request;
     public $iteration;
     public $limitDisplay = 5;
 

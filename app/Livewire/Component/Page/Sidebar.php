@@ -93,13 +93,13 @@ class Sidebar extends Component
                 //     'icon' => 'bx bx-briefcase-alt',
                 //     'permission' => 'view:project'
                 // ],
-                [
-                    'name' => 'Daily Report All',
-                    'url' => '/daily-report-all',
-                    'route' => 'daily-report.index',
-                    'icon' => 'bx bxs-report',
-                    'permission' => 'view:daily-report-all'
-                ],
+                // [
+                //     'name' => 'Daily Report All',
+                //     'url' => '/daily-report-all',
+                //     'route' => 'daily-report.index',
+                //     'icon' => 'bx bxs-report',
+                //     'permission' => 'view:daily-report-all'
+                // ],
 
                 [
                     'name' => 'Absent Request All',
@@ -135,13 +135,13 @@ class Sidebar extends Component
                             'icon' => 'bx bx-log-out-circle',
                             'permission' => 'view:inventory'
                         ],
-                        // [
-                        //     'name' => 'Item Request',
-                        //     'url' => '/item-request',
-                        //     'route' => 'request-item.index',
-                        //     'icon' => 'bx bx-log-out-circle',
-                        //     'permission' => 'view:item-request'
-                        // ],
+                        [
+                            'name' => 'Item Request',
+                            'url' => '/item-request',
+                            'route' => 'request-item.index',
+                            'icon' => 'bx bx-log-out-circle',
+                            'permission' => 'view:item-request'
+                        ],
                     ],
                 ],
 
@@ -178,28 +178,28 @@ class Sidebar extends Component
                 //     'icon' => 'bx bxs-report',
                 //     'permission' => 'view:daily-report-all'
                 // ],
-                [
-                    'name' => 'Daily Report',
-                    'icon' => 'bx bxs-report',
-                    'url' => '/daily-report',
-                    'permission' => 'view:daily-report',
-                    'subMenus' => [
-                        [
-                            'name' => 'My Daily Report',
-                            'url' => '/daily-report',
-                            'route' => 'daily-report.index',
-                            'icon' => 'bx bxs-report',
-                            'permission' => 'view:daily-report'
-                        ],
-                        [
-                            'name' => 'Team Daily Report ',
-                            'url' => '/daily-report/team',
-                            'route' => 'team-daily-report.index',
-                            'icon' => 'bx bxs-report',
-                            'permission' => 'view:daily-report'
-                        ],
-                    ],
-                ],
+                // [
+                //     'name' => 'Daily Report',
+                //     'icon' => 'bx bxs-report',
+                //     'url' => '/daily-report',
+                //     'permission' => 'view:daily-report',
+                //     'subMenus' => [
+                //         [
+                //             'name' => 'My Daily Report',
+                //             'url' => '/daily-report',
+                //             'route' => 'daily-report.index',
+                //             'icon' => 'bx bxs-report',
+                //             'permission' => 'view:daily-report'
+                //         ],
+                //         [
+                //             'name' => 'Team Daily Report ',
+                //             'url' => '/daily-report/team',
+                //             'route' => 'team-daily-report.index',
+                //             'icon' => 'bx bxs-report',
+                //             'permission' => 'view:daily-report'
+                //         ],
+                //     ],
+                // ],
                 // [
                 //     'name' => 'Absent Request All',
                 //     'url' => '/absent-request-all',

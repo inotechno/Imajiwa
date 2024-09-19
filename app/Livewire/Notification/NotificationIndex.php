@@ -1,22 +1,23 @@
 <?php
 
-namespace App\Livewire\Component\Page;
+namespace App\Livewire\Notification;
 
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
-class Header extends Component
+class NotificationIndex extends Component
 {
     public $user;
     public $name;
     public $notifications;
     public $unreadCount;
 
+
     public function mount()
     {
         $this->user = Auth::user();
         $this->name = $this->user->name;
-        $this->notifications = $this->user->notifications()->latest()->limit(5)->get();
+        $this->notifications = $this->user->notifications()->get();
         $this->unreadCount = $this->user->notifications()->where('is_read', false)->count();
     }
 
@@ -25,7 +26,7 @@ class Header extends Component
         $notification = $this->user->notifications()->find($notificationId);
         if ($notification) {
             $notification->markAsRead();
-            $this->notifications = $this->user->notifications()->latest()->limit(5)->get();
+            $this->notifications = $this->user->notifications()->get();
             $this->unreadCount = $this->user->notifications()->where('is_read', false)->count();
             $url = $notification->url;
             if ($url) {
@@ -34,11 +35,12 @@ class Header extends Component
         }
     }
 
+
     public function render()
     {
-        return view('livewire.component.page.header', [
+        return view('livewire.notification.notification-index', [
             'notifications' => $this->notifications,
             'unreadCount' => $this->unreadCount,
-        ]);
+        ])->layout('layouts.app', ['title' => 'Notifications']);
     }
 }

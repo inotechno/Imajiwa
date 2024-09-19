@@ -2,7 +2,9 @@
 
 namespace App\Livewire\LeaveRequest;
 
+use App\Models\Employee;
 use App\Models\LeaveRequest;
+use App\Models\Notification;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -47,6 +49,7 @@ class LeaveRequestForm extends Component
                 $department = $position->department;
                 if ($department) {
                     $this->supervisor_id = $department->supervisor_id ?? null;
+                    $this->director_id = $department->director_id ?? null;
                 }
             }
 
@@ -56,7 +59,7 @@ class LeaveRequestForm extends Component
             $this->start_date = '';
             $this->end_date = '';
             $this->supervisor_id = $this->supervisor_id ?? null;
-            $this->director_id = User::role('director')->first()->employee->id;
+            $this->director_id = $this->director_id ?? null;
             $this->current_total_leave = $this->employee->leave_remaining;
             $this->leave_remaining = $this->employee->leave_remaining;
         }
@@ -80,7 +83,7 @@ class LeaveRequestForm extends Component
                 'employee_id' => 'required',
                 'start_date' => 'required|date|after_or_equal:today',
                 'end_date' => 'required|after_or_equal:start_date|date|after_or_equal:today',
-                'supervisor_id' => 'required|exists:employees,id',
+                'supervisor_id' => 'nullable|exists:employees,id',
                 'director_id' => 'required|exists:employees,id',
                 'leave_period' => 'required|integer|lte:current_total_leave',
             ], [
@@ -114,6 +117,7 @@ class LeaveRequestForm extends Component
                 'current_total_leave' => $this->current_total_leave,
                 'total_leave_after_request' => $this->current_total_leave - $period,
             ]);
+            $this->sendNotifications($this->leave_request);
 
             $this->reset();
             $this->alert('success', 'Absent Request created successfully');
@@ -140,6 +144,7 @@ class LeaveRequestForm extends Component
                 'total_leave_after_request' => $this->current_total_leave - $period,
                 'current_total_leave' => $this->current_total_leave,
             ]);
+            $this->sendNotifications($this->leave_request);
 
             $this->reset();
             $this->alert('success', 'Absent Request updated successfully');
@@ -147,6 +152,34 @@ class LeaveRequestForm extends Component
             return redirect()->route('leave-request.index');
         } catch (\Exception $e) {
             $this->alert('error', $e->getMessage());
+        }
+    }
+
+    protected function sendNotifications($leaveRequest)
+    {
+        $supervisor = Employee::find($leaveRequest->supervisor_id);
+        $director = Employee::find($leaveRequest->director_id);
+
+        if ($supervisor && $supervisor->user) {
+            Notification::create([
+                'type' => 'leave_request',
+                'message' => 'A new leave request has been submitted by ' . $leaveRequest->employee->user->name,
+                'user_id' => $supervisor->user->id,
+                'notifiable_type' => 'App\Models\LeaveRequest',
+                'notifiable_id' => $leaveRequest->id,
+                'url' => route('team-leave-request.index') 
+            ]);
+        }
+
+        if ($director && $director->user) {
+            Notification::create([
+                'type' => 'leave_request',
+                'message' => 'A new leave request has been submitted by ' . $leaveRequest->employee->user->name,
+                'user_id' => $director->user->id,
+                'notifiable_type' => 'App\Models\LeaveRequest',
+                'notifiable_id' => $leaveRequest->id,
+                'url' => route('team-leave-request.index')
+            ]);
         }
     }
 

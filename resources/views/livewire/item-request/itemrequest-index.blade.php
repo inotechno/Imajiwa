@@ -34,8 +34,8 @@
 
     <div class="row">
         <div class="col-lg">
-            @livewire('item-request.itemrequest-list', ['inventories' => $inventories->getCollection()], key('itemrequest-list'))
-            {{ $inventories->links() }}
+            @livewire('item-request.itemrequest-list', ['requests' => $requests->getCollection()], key('itemrequest-list'))
+            {{ $requests->links() }}
         </div>
     </div>
 

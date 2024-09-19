@@ -14,6 +14,7 @@ class Department extends Model
         'name',
         'site_id',
         'supervisor_id',
+        'director_id',
     ];
 
     public function site()
@@ -24,6 +25,10 @@ class Department extends Model
     public function supervisor()
     {
         return $this->belongsTo(Employee::class, 'supervisor_id');
+    }
+    public function director()
+    {
+        return $this->belongsTo(Employee::class, 'director_id');
     }
 
     public function positions()

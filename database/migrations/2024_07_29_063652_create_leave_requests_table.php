@@ -22,7 +22,6 @@ return new class extends Migration
             $table->integer('total_leave_after_request')->unsigned();
             $table->foreignId('director_id')->nullable()->constrained('employees')->nullOnDelete()->cascadeOnUpdate();
             $table->foreignId('supervisor_id')->nullable()->constrained('employees')->nullOnDelete()->cascadeOnUpdate();
-
             $table->timestamp('director_approved_at')->nullable();
             $table->timestamp('supervisor_approved_at')->nullable();
 

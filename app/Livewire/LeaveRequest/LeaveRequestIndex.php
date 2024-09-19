@@ -30,6 +30,7 @@ class LeaveRequestIndex extends Component
     {
         $this->employees = Employee::with('user')->get();
     }
+
     public function render()
     {
         $leave_requests = LeaveRequest::with('employee.user', 'supervisor.user', 'director.user')->when($this->search, function ($query) {

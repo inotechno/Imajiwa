@@ -17,17 +17,17 @@ class LeaveRequestItem extends Component
     public $approvedSupervisor = false;
     public $totalDays = 0;
     public $isSupervisor = false;
-
+    public $isDirector = false;
     public $disableUpdate = false;
 
     public function mount(LeaveRequest $leave_request)
     {
         $this->leave_request = $leave_request;
-        if($this->leave_request->director_approved_at){
+        if ($this->leave_request->director_approved_at) {
             $this->approvedDirector = true;
         }
 
-        if($this->leave_request->supervisor_approved_at){
+        if ($this->leave_request->supervisor_approved_at) {
             $this->approvedSupervisor = true;
         }
 
@@ -39,10 +39,12 @@ class LeaveRequestItem extends Component
             $this->disableUpdate = true;
         }
 
-        if (Auth::user()->employee) {
-            if ($this->leave_request->supervisor_id == Auth::user()->employee->id) {
-                $this->isSupervisor = true;
-            }
+        if (Auth::user()->employee && $this->leave_request->director_id == Auth::user()->employee->id) {
+            $this->isDirector = true;
+        }
+        
+        if (Auth::user()->employee && $this->leave_request->supervisor_id == Auth::user()->employee->id) {
+            $this->isSupervisor = true;
         }
 
         $this->totalDays = $this->leave_request->end_date->diffInDays($this->leave_request->start_date);
@@ -93,11 +95,13 @@ class LeaveRequestItem extends Component
     #[On('approve-leave-request')]
     public function approve()
     {
-        if ($this->isSupervisor == false) {
+        if ($this->isDirector) {
             $this->leave_request->update([
                 'director_approved_at' => now(),
             ]);
-        } else {
+        }
+
+        if ($this->isSupervisor) {
             $this->leave_request->update([
                 'supervisor_approved_at' => now(),
             ]);
@@ -110,7 +114,6 @@ class LeaveRequestItem extends Component
     #[On('delete-leave-request')]
     public function delete()
     {
-        // dd($this->leave_request);
         $this->leave_request->delete();
         $this->alert('success', 'Leave Request deleted successfully');
 
@@ -121,7 +124,7 @@ class LeaveRequestItem extends Component
     {
         $employee = $this->leave_request->employee;
         $user = $employee->user;
-        $supervisor = $this->leave_request->supervisor->user;
+        $supervisor = $this->leave_request->supervisor?->user;
         $director = $this->leave_request->director->user;
 
         return view('livewire.leave-request.leave-request-item', [
