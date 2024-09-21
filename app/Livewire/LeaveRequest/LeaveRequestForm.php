@@ -35,7 +35,6 @@ class LeaveRequestForm extends Component
             $this->supervisor_id = $this->leave_request->supervisor_id;
             $this->director_id = $this->leave_request->director_id;
             $this->current_total_leave = $this->employee->leave_remaining;
-
             $this->leave_remaining = $this->employee->leave_remaining;
             $this->leave_taken = $this->getAlreadyTaken();
             $this->leave_period = $this->leave_request->total_days;
@@ -76,7 +75,6 @@ class LeaveRequestForm extends Component
 
     public function save()
     {
-        // dd($this->type_leave);
         try {
             $this->validate([
                 'notes' => 'required',

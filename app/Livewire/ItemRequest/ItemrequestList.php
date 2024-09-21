@@ -8,7 +8,6 @@ use Livewire\Attributes\Reactive;
 
 class ItemrequestList extends Component
 {
-
     #[Reactive]
     public $requests;
 

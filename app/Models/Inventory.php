@@ -37,17 +37,33 @@ class Inventory extends Model
         return $this->belongsTo(Request::class);
     }
 
-    public function directorApprovedItem()
+    // Check if approved by director
+    public function isApprovedByDirector()
     {
-        return $this->belongsTo(Employee::class, 'director_id');
+        return !is_null($this->director_approved_at);
     }
-    
-    public function commissionerApprovedItem()
+
+    // Check if approved by commissioner
+    public function isApprovedByCommissioner()
     {
-        return $this->belongsTo(Employee::class, 'commissioner_id');
+        return !is_null($this->commissioner_approved_at);
     }
-    public function isApproved()
+
+    // Approve by director
+    public function approveByDirector($directorId)
     {
-        return $this->is_approved_director && $this->is_approved_commissioner;
+        $this->update([
+            'director_approved_at' => now(),
+            'director_id' => $directorId
+        ]);
+    }
+
+    // Approve by commissioner
+    public function approveByCommissioner($commissionerId)
+    {
+        $this->update([
+            'commissioner_approved_at' => now(),
+            'commissioner_id' => $commissionerId
+        ]);
     }
 }

@@ -20,13 +20,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php $no = 1;
-                            $grandTotal = 0; ?>
+                            @php
+                                $no = 1;
+                                $grandTotal = 0;
+                            @endphp
                             @forelse ($items as $item)
-                                <?php
-                                $itemTotal = $item['qty'] * $item['price'];
-                                $grandTotal += $itemTotal;
-                                ?>
+                                @php
+                                    $itemTotal = $item['qty'] * $item['price'];
+                                    $grandTotal += $itemTotal;
+                                @endphp
                                 <tr>
                                     <td>{{ $no++ }}</td>
                                     <td>{{ $item['name'] }}</td>
@@ -53,38 +55,48 @@
                     </table>
 
                     <div class="mt-4">
-                        <div class="row">
-                            <div class="col-md-6 text-center">
-                                @if ($inventory && $inventory->director)
-                                    <p><strong>Direktur Utama:</strong> {{ $inventory->director->name }}</p>
-                                    @if (!$inventory->director_approved_at)
-                                        <button wire:click="approveDirector" class="btn btn-primary">Approve</button>
-                                    @else
-                                        <p class="text-success">Approved on
-                                            {{ \Carbon\Carbon::parse($inventory->director_approved_at)->format('Y-m-d') }}
-                                        </p>
-                                    @endif
-                                @else
-                                    <p><strong>Direktur Utama:</strong> Tidak tersedia</p>
-                                @endif
+                        <div class="row text-center">
+
+                            <!-- Director -->
+                            <div class="col-md-6 mb-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Director: {{ $directorName }}</h5>
+                                        @if ($isDirector && !$items[0]['director_approved_at'])
+                                            <button class="btn btn-primary"
+                                                wire:click="approveDirector({{ $items[0]['id'] }})">
+                                                Approve as Director
+                                            </button>
+                                        @elseif ($items[0]['director_approved_at'])
+                                            <span class="text-success">Approved</span>
+                                        @else
+                                            <span class="text-danger">Not Approved</span>
+                                        @endif
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-6 text-center">
-                                @if ($inventory && $inventory->commissioner)
-                                    <p><strong>Komisaris:</strong> {{ $inventory->commissioner->name }}</p>
-                                    @if (!$inventory->commissioner_approved_at)
-                                        <button wire:click="approveCommissioner"
-                                            class="btn btn-primary">Approve</button>
-                                    @else
-                                        <p class="text-success">Approved on
-                                            {{ \Carbon\Carbon::parse($inventory->commissioner_approved_at)->format('Y-m-d') }}
-                                        </p>
-                                    @endif
-                                @else
-                                    <p><strong>Komisaris:</strong> Tidak tersedia</p>
-                                @endif
+
+                            <!-- Commissioner -->
+                            <div class="col-md-6 mb-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Board Of Director: {{ $commissionerName }}</h5>
+                                        @if ($isCommissioner && !$items[0]['commissioner_approved_at'])
+                                            <button class="btn btn-primary"
+                                                wire:click="approveCommissioner({{ $items[0]['id'] }})">
+                                                Approve as Commissioner
+                                            </button>
+                                        @elseif ($items[0]['commissioner_approved_at'])
+                                            <span class="text-success">Approved</span>
+                                        @else
+                                            <span class="text-danger">Not Approved</span>
+                                        @endif
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
