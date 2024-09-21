@@ -40,12 +40,11 @@ class ItemrequestIndex extends Component
     }
     public function render()
     {
-        // Fetch requests with their inventories and apply search filter
-        $requests = Request::with(['inventories' => function($query) {
-                $query->when($this->search, function ($query) {
-                    $query->where('name', 'like', '%' . $this->search . '%');
-                });
-            }])
+        $requests = Request::with(['inventories' => function ($query) {
+            $query->when($this->search, function ($query) {
+                $query->where('name', 'like', '%' . $this->search . '%');
+            });
+        }])
             ->paginate($this->perPage);
 
         return view('livewire.item-request.itemrequest-index', [
