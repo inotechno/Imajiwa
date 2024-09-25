@@ -15,6 +15,7 @@ use App\Livewire\Machine\MachineIndex;
 use App\Livewire\Profile\ProfileIndex;
 use App\Livewire\Project\ProjectIndex;
 use App\Livewire\Employee\EmployeeForm;
+use App\Livewire\Employee\EmployeePermission;
 use App\Livewire\Project\ProjectDetail;
 use App\Livewire\Employee\EmployeeIndex;
 use App\Livewire\Position\PositionIndex;
@@ -116,6 +117,7 @@ Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
         Route::get('detail/{id}', EmployeeDetail::class)->name('employee.detail')->middleware('can:view:employee');
         Route::get('create', EmployeeForm::class)->name('employee.create')->middleware('can:create:employee');
         Route::get('edit/{id}', EmployeeForm::class)->name('employee.edit')->middleware('can:update:employee');
+        Route::get('permission/{id}', EmployeePermission::class)->name('employee.permission')->middleware('can:permission:employee');
     });
 
     Route::group(['prefix' => 'profile'], function () {

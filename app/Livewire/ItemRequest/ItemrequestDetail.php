@@ -3,7 +3,9 @@
 namespace App\Livewire\ItemRequest;
 
 use App\Models\CategoryInventory;
+use App\Models\Employee;
 use App\Models\Inventory;
+use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -20,7 +22,7 @@ class ItemrequestDetail extends Component
     public $isDirector = false;
     public $directorName;
     public $commissionerName;
-    
+
     public function mount($id = null)
     {
         $this->categories = CategoryInventory::all();
@@ -64,6 +66,9 @@ class ItemrequestDetail extends Component
             $inventory->approveByDirector(Auth::id());
             $this->alert('success', 'Inventory approved by Director!');
             $this->updateItems();
+
+            // Send notification using the request associated with the inventory
+            $this->sendNotifications($inventory->request, 'Director');
         }
     }
 
@@ -74,8 +79,36 @@ class ItemrequestDetail extends Component
             $inventory->approveByCommissioner(Auth::id());
             $this->alert('success', 'Inventory approved by Commissioner!');
             $this->updateItems();
+
+            // Send notification using the request associated with the inventory
+            $this->sendNotifications($inventory->request, 'Commissioner');
         }
     }
+
+    protected function sendNotifications($request, $role)
+    {
+        $administrator = Employee::whereHas('position', function ($query) {
+            $query->where('name', 'Administrator');
+        })->first();
+
+        if ($administrator) {
+            $message = ($role === 'Director')
+                ? 'Item request has been approved by Director'
+                : 'Item request has been approved by Board Of Director';
+
+            Notification::create([
+                'type' => 'item_request',
+                'message' => $message,
+                'user_id' => $administrator->user_id,
+                'notifiable_type' => 'App\Models\Request',
+                'notifiable_id' => $request->id, // Use request ID here
+                'url' => route('item-request.detail', $request->id)
+            ]);
+        }
+    }
+
+
+
 
     public function updateItems()
     {

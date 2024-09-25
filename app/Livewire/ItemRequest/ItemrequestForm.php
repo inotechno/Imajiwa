@@ -96,10 +96,7 @@ class ItemrequestForm extends Component
         $this->validate([
             'items.*.name' => 'required',
             'items.*.description' => 'required',
-            'items.*.serial_number' => 'required',
-            'items.*.model' => 'required',
             'items.*.qty' => 'required',
-            'items.*.purchase_date' => 'required',
             'items.*.category_inventory_id' => 'required',
         ]);
 
@@ -150,8 +147,6 @@ class ItemrequestForm extends Component
                 Inventory::create($item);
             }
         }
-
-        $this->sendNotifications($request);
 
         $this->alert('success', 'Item Request has been updated successfully');
         return redirect()->route('item-request.index');

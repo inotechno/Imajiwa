@@ -64,6 +64,7 @@ class RoleSeeder extends Seeder
             'create:employee' => ['HR', 'Finance', 'Administrator'],
             'update:employee' => ['HR', 'Finance', 'Administrator'],
             'delete:employee' => ['HR', 'Finance', 'Administrator'],
+            'permission:employee' => ['Administrator'],
 
             // Position
             'view:position' => ['HR','Finance', 'Administrator'],
