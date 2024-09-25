@@ -23,6 +23,7 @@ use App\Livewire\Employee\EmployeeDetail;
 use App\Livewire\Dashboard\DashboardIndex;
 use App\Livewire\Attendance\AttendanceForm;
 use App\Livewire\Attendance\AttendanceIndex;
+use App\Livewire\Attendance\AttendanceAll;
 use App\Livewire\DailyReport\DailyReportAll;
 use App\Livewire\Department\DepartmentIndex;
 use App\Http\Controllers\SendEmailController;
@@ -134,6 +135,7 @@ Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
     });
 
     Route::get('/daily-report-all', DailyReportAll::class)->name('daily-report.all')->middleware('can:view:daily-report-all');
+    Route::get('/attendance-all', AttendanceAll::class)->name('attendance.all')->middleware('can:view:attendance-all');
     Route::get('/absent-request-all', AbsentRequestAll::class)->name('absent-request.all')->middleware('can:view:absent-request-all');
     Route::get('/leave-request-all', LeaveRequestAll::class)->name('leave-request.all')->middleware('can:view:leave-request-all');
 

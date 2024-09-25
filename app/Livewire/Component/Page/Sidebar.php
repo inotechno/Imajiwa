@@ -94,6 +94,13 @@ class Sidebar extends Component
                 //     'permission' => 'view:daily-report-all'
                 // ],
                 [
+                    'name' => 'Attendance All',
+                    'url' => '/attendance-all',
+                    'route' => 'attendance.all',
+                    'icon' => 'bx bx-purchase-tag-alt',
+                    'permission' => 'view:attendance-all',
+                ],
+                [
                     'name' => 'Absent Request All',
                     'url' => '/absent-request-all',
                     'route' => 'absent-request.all',
