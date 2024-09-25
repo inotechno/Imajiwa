@@ -12,15 +12,16 @@
                         <div class="row mb-4" wire:ignore>
                             <label for="status" class="col-form-label col-lg-2">Select Category</label>
                             <div class="col-lg-10">
-                                <select class="form-control @error('category_inventory_id') is-invalid @enderror" id="category_inventory_id"
-                                    wire:model="category_inventory_id" data-placeholder="Select Category">
+                                <select class="form-control @error('category_inventory_id') is-invalid @enderror"
+                                    id="category_inventory_id" wire:model="category_inventory_id"
+                                    data-placeholder="Select Category">
                                     <option value="">Select Category</option>
                                     @foreach ($categories as $category)
                                         <option value="{{ $category->id }}">{{ $category->name }}</option>
                                     @endforeach
                                 </select>
 
-                                @error('status')
+                                @error('category_inventory_id')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -59,8 +60,7 @@
                             <label for="qty" class="col-form-label col-lg-2">Qty</label>
                             <div class="col-lg-10">
                                 <input id="qty" name="qty" wire:model="qty" type="number"
-                                    class="form-control @error('qty') is-invalid @enderror"
-                                    placeholder="Enter Qty...">
+                                    class="form-control @error('qty') is-invalid @enderror" placeholder="Enter Qty...">
 
                                 @error('qty')
                                     <span class="invalid-feedback" role="alert">
@@ -98,11 +98,12 @@
                         </div>
                         <div class="row justify-content-end">
                             <div class="col-lg-10">
-                                <button type="submit" class="btn btn-primary">Create Inventory</button>
+                                <button type="submit"class="btn btn-primary">
+                                    {{ $type == 'create' ? 'Create Inventory' : 'Update Inventory' }}
+                                </button>
                             </div>
                         </div>
                     </form>
-
                 </div>
             </div>
         </div>

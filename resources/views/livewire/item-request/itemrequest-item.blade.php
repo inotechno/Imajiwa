@@ -3,9 +3,6 @@
         {{ $request->name }}
     </td>
     <td>
-        {{ $request->status }}
-    </td>
-    <td>
         @can('update:item-request')
             <a href="{{ route('item-request.edit', ['id' => $request->id]) }}"
                 class="btn btn-primary btn-sm waves-effect waves-light"><i class="bx bx-pencil me-1"></i> Edit</a>

@@ -44,7 +44,10 @@ class InventoryIndex extends Component
     {
         $inventories = Inventory::when($this->search, function ($query) {
             $query->where('name', 'like', '%' . $this->search . '%');
-        })->paginate($this->perPage);
+        })
+            ->whereNotNull('director_approved_at')
+            ->whereNotNull('commissioner_approved_at')
+            ->paginate($this->perPage);
 
         return view('livewire.inventory.inventory-index', compact('inventories'))->layout('layouts.app', ['title' => 'Inventory']);
     }
