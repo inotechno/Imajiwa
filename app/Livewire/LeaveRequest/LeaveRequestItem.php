@@ -2,8 +2,10 @@
 
 namespace App\Livewire\LeaveRequest;
 
+use App\Models\Employee;
 use Livewire\Component;
 use App\Models\LeaveRequest;
+use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\On;
@@ -107,8 +109,37 @@ class LeaveRequestItem extends Component
             ]);
         }
 
+        $this->sendNotifications($this->leave_request);
+
         $this->alert('success', 'Leave Request approved successfully');
-        return redirect()->route('leave-request.index');
+        return redirect()->route('team-leave-request.index');
+    }
+
+    protected function sendNotifications($leave_request)
+    {
+        $employee = Employee::find($leave_request->employee_id);
+
+        if ($this->isSupervisor) {
+            Notification::create([
+                'type' => 'leave_request',
+                'message' => 'Your leave request has been approved by Supervisor',
+                'user_id' => $employee->user->id, 
+                'notifiable_type' => 'App\Models\LeaveRequest',
+                'notifiable_id' => $leave_request->id,
+                'url' => route('leave-request.index')
+            ]);
+        }
+
+        if ($this->isDirector) {
+            Notification::create([
+                'type' => 'leave_request',
+                'message' => 'Your leave request has been approved by Director',
+                'user_id' => $employee->user->id, 
+                'notifiable_type' => 'App\Models\LeaveRequest',
+                'notifiable_id' => $leave_request->id,
+                'url' => route('leave-request.index')
+            ]);
+        }
     }
 
     #[On('delete-leave-request')]
