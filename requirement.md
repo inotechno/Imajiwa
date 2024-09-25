@@ -39,7 +39,7 @@
 
 ### Data Inventaris & Pengajuan Barang
 - [x] Yang mengajukan: risma@imajiwa.id
-- [ ] Approval oleh direktur utama dan komisaris
+- [x] Approval oleh direktur utama dan komisaris
 
 ### Task & Daily Report
 - [ ] Daily report ada
@@ -69,4 +69,6 @@
 - [x] notif ketika employee ketika di tambahkan kedalam proyek
 - [x] notif ketika employee mengajukan absent kepada supervisor dan direktur departemen
 - [x] notif ketika employee mengajuakan cuti kepada supervisor dan direktur departemen
-- [ ] notif ketika administrator pengajuan barang kepada direktur utama dan komisaris 
+- [x] notif ketika administrator pengajuan barang kepada direktur utama dan komisaris 
+
+- [ ] Permission employee

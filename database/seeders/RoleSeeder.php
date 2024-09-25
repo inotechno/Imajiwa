@@ -64,6 +64,7 @@ class RoleSeeder extends Seeder
             'create:employee' => ['HR', 'Finance', 'Administrator'],
             'update:employee' => ['HR', 'Finance', 'Administrator'],
             'delete:employee' => ['HR', 'Finance', 'Administrator'],
+            'permission:employee' => ['Administrator'],
 
             // Position
             'view:position' => ['HR','Finance', 'Administrator'],
@@ -109,8 +110,8 @@ class RoleSeeder extends Seeder
             'delete:machine' => ['Administrator'],
 
             // Attendance
-            'view:attendance-all' => ['Finance', 'Director', 'HR', 'Administrator'],
-            'view:attendance' => ['Employee','Finance', 'Director', 'HR', 'Administrator'],
+            'view:attendance-all' => ['Finance', 'Administrator'],
+            'view:attendance' => ['Employee','Finance', 'Director','Administrator'],
             'create:attendance' => ['Employee', 'Administrator'],
             'update:attendance' => ['Finance','Administrator'],
             'delete:attendance' => ['Finance','Administrator'],

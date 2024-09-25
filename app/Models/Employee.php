@@ -6,11 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\Permission\Traits\HasPermissions;
+use Spatie\Permission\Traits\HasRoles;
 
 class Employee extends Model
 {
-    use HasFactory;
+    use HasFactory , HasPermissions , HasRoles;
 
+    protected $guard_name = 'web';
     protected $primaryKey = 'id';
     public $incrementing = false;
     protected $keyType = 'string';
@@ -42,16 +45,6 @@ class Employee extends Model
     public function director()
     {
         return $this->hasMany(Department::class, 'director_id');
-    }
-
-    public function directorApprovedItem()
-    {
-        return $this->belongsTo(User::class, 'director_id');
-    }
-    
-    public function commissionerApprovedItem()
-    {
-        return $this->belongsTo(User::class, 'commissioner_id');
     }
 
     public function position()
@@ -120,5 +113,10 @@ class Employee extends Model
     public function requestValidates(): HasMany
     {
         return $this->hasMany(RequestValidate::class);
+    }
+
+    public function hasPermissionTo($permission)
+    {
+        return $this->permissions()->where('name', $permission)->exists();
     }
 }

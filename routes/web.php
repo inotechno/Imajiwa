@@ -15,6 +15,7 @@ use App\Livewire\Machine\MachineIndex;
 use App\Livewire\Profile\ProfileIndex;
 use App\Livewire\Project\ProjectIndex;
 use App\Livewire\Employee\EmployeeForm;
+use App\Livewire\Employee\EmployeePermission;
 use App\Livewire\Project\ProjectDetail;
 use App\Livewire\Employee\EmployeeIndex;
 use App\Livewire\Position\PositionIndex;
@@ -22,6 +23,7 @@ use App\Livewire\Employee\EmployeeDetail;
 use App\Livewire\Dashboard\DashboardIndex;
 use App\Livewire\Attendance\AttendanceForm;
 use App\Livewire\Attendance\AttendanceIndex;
+use App\Livewire\Attendance\AttendanceAll;
 use App\Livewire\DailyReport\DailyReportAll;
 use App\Livewire\Department\DepartmentIndex;
 use App\Http\Controllers\SendEmailController;
@@ -116,6 +118,7 @@ Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
         Route::get('detail/{id}', EmployeeDetail::class)->name('employee.detail')->middleware('can:view:employee');
         Route::get('create', EmployeeForm::class)->name('employee.create')->middleware('can:create:employee');
         Route::get('edit/{id}', EmployeeForm::class)->name('employee.edit')->middleware('can:update:employee');
+        Route::get('permission/{id}', EmployeePermission::class)->name('employee.permission')->middleware('can:permission:employee');
     });
 
     Route::group(['prefix' => 'profile'], function () {
@@ -132,6 +135,7 @@ Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
     });
 
     Route::get('/daily-report-all', DailyReportAll::class)->name('daily-report.all')->middleware('can:view:daily-report-all');
+    Route::get('/attendance-all', AttendanceAll::class)->name('attendance.all')->middleware('can:view:attendance-all');
     Route::get('/absent-request-all', AbsentRequestAll::class)->name('absent-request.all')->middleware('can:view:absent-request-all');
     Route::get('/leave-request-all', LeaveRequestAll::class)->name('leave-request.all')->middleware('can:view:leave-request-all');
 

@@ -3,6 +3,8 @@
 namespace App\Livewire\AbsentRequest;
 
 use App\Models\AbsentRequest;
+use App\Models\Employee;
+use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\On;
@@ -103,33 +105,51 @@ class AbsentRequestItem extends Component
     #[On('approve-absent-request')]
     public function approve()
     {
-        // if ($this->isSupervisor == false) {
-        //     $this->absent_request->update([
-        //         'director_approved_at' => now(),
-        //     ]);
-        // } else {
-        //     $this->absent_request->update([
-        //         'supervisor_approved_at' => now(),
-        //     ]);
-        // }
-
         if ($this->isDirector) {
-            // Approve by Director
             $this->absent_request->update([
                 'director_approved_at' => now(),
             ]);
         }
 
         if ($this->isSupervisor) {
-            // Approve by Supervisor
             $this->absent_request->update([
                 'supervisor_approved_at' => now(),
             ]);
         }
 
+        $this->sendNotifications($this->absent_request);
+
         $this->alert('success', 'Absent Request approved successfully');
-        return redirect()->route('leave-request.index');
+        return redirect()->route('team-absent-request.index');
     }
+
+    protected function sendNotifications($absentRequest)
+    {
+        $employee = Employee::find($absentRequest->employee_id);
+
+        if ($this->isSupervisor) {
+            Notification::create([
+                'type' => 'absent_request',
+                'message' => 'Your absent request has been approved by Supervisor',
+                'user_id' => $employee->user->id, 
+                'notifiable_type' => 'App\Models\AbsentRequest',
+                'notifiable_id' => $absentRequest->id,
+                'url' => route('absent-request.index')
+            ]);
+        }
+
+        if ($this->isDirector) {
+            Notification::create([
+                'type' => 'absent_request',
+                'message' => 'Your absent request has been approved by Director',
+                'user_id' => $employee->user->id, 
+                'notifiable_type' => 'App\Models\AbsentRequest',
+                'notifiable_id' => $absentRequest->id,
+                'url' => route('absent-request.index')
+            ]);
+        }
+    }
+
 
     #[On('delete-absent-request')]
     public function delete()

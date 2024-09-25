@@ -87,20 +87,19 @@ class Sidebar extends Component
             'title' => 'Administrator',
             'menus' => [
                 // [
-                //     'name' => 'Project',
-                //     'url' => '/project',
-                //     'route' => 'project.index',
-                //     'icon' => 'bx bx-briefcase-alt',
-                //     'permission' => 'view:project'
-                // ],
-                // [
                 //     'name' => 'Daily Report All',
                 //     'url' => '/daily-report-all',
                 //     'route' => 'daily-report.index',
                 //     'icon' => 'bx bxs-report',
                 //     'permission' => 'view:daily-report-all'
                 // ],
-
+                [
+                    'name' => 'Attendance All',
+                    'url' => '/attendance-all',
+                    'route' => 'attendance.all',
+                    'icon' => 'bx bx-purchase-tag-alt',
+                    'permission' => 'view:attendance-all',
+                ],
                 [
                     'name' => 'Absent Request All',
                     'url' => '/absent-request-all',
@@ -114,6 +113,69 @@ class Sidebar extends Component
                     'route' => 'leave-request.all',
                     'icon' => 'bx bx-log-out-circle',
                     'permission' => 'view:leave-request-all',
+                ],
+            ]
+        ],
+        [
+            'title' => 'Application',
+            'menus' => [
+                [
+                    'name' => 'Project',
+                    'url' => '/project',
+                    'route' => 'project.index',
+                    'icon' => 'bx bx-briefcase-alt',
+                    'permission' => 'view:project'
+                ],
+                [
+                    'name' => 'Attendance',
+                    'url' => '/attendance',
+                    'route' => 'attendance.index',
+                    'icon' => 'bx bx-purchase-tag-alt',
+                    'permission' => 'view:attendance'
+                ],
+                [
+                    'name' => 'Absent Request',
+                    'icon' => 'bx bxs-tired',
+                    'url' => '/absent-request',
+                    'permission' => 'view:absent-request',
+                    'subMenus' => [
+                        [
+                            'name' => 'My Absent Request',
+                            'url' => '/absent-request',
+                            'route' => 'absent-request.index',
+                            'icon' => 'bx bxs-tired',
+                            'permission' => 'view:absent-request'
+                        ],
+                        [
+                            'name' => 'Team Absent Request',
+                            'url' => '/absent-request/team',
+                            'route' => 'team-absent-request.index',
+                            'icon' => 'bx bxs-tired',
+                            'permission' => 'view:absent-request'
+                        ],
+                    ],
+                ],
+                [
+                    'name' => 'Leave Request',
+                    'url' => '/leave-request',
+                    'icon' => 'bx bx-log-out-circle',
+                    'permission' => 'view:leave-request',
+                    'subMenus' => [
+                        [
+                            'name' => 'My Leave Request',
+                            'url' => '/leave-request',
+                            'route' => 'leave-request.index',
+                            'icon' => 'bx bx-log-out-circle',
+                            'permission' => 'view:leave-request'
+                        ],
+                        [
+                            'name' => 'Team Leave Request',
+                            'url' => '/leave-request/team',
+                            'route' => 'team-leave-request.index',
+                            'icon' => 'bx bx-log-out-circle',
+                            'permission' => 'view:leave-request'
+                        ],
+                    ],
                 ],
                 [
                     'name' => 'Inventory',
@@ -144,142 +206,13 @@ class Sidebar extends Component
                         ],
                     ],
                 ],
-
-            ]
-        ],
-        [
-            'title' => 'Application',
-            'menus' => [
                 [
-                    'name' => 'Project',
-                    'url' => '/project',
-                    'route' => 'project.index',
-                    'icon' => 'bx bx-briefcase-alt',
-                    'permission' => 'view:project'
+                    'name' => 'Announcement',
+                    'url' => '/announcement',
+                    'route' => 'announcement.index',
+                    'icon' => 'bx bx-error-circle',
+                    'permission' => 'view:announcement'
                 ],
-                [
-                    'name' => 'Attendance',
-                    'url' => '/attendance',
-                    'route' => 'attendance.index',
-                    'icon' => 'bx bx-purchase-tag-alt',
-                    'permission' => 'view:attendance'
-                ],
-                // [
-                //     'name' => 'Attendance Temporary',
-                //     'url' => '/attendance-temporary',
-                //     'route' => 'attendance-temporary.index',
-                //     'icon' => 'bx bxs-purchase-tag-alt',
-                //     'permission' => 'view:attendance-temp'
-                // ],
-                // [
-                //     'name' => 'Daily Report All',
-                //     'url' => '/daily-report-all',
-                //     'route' => 'daily-report.index',
-                //     'icon' => 'bx bxs-report',
-                //     'permission' => 'view:daily-report-all'
-                // ],
-                // [
-                //     'name' => 'Daily Report',
-                //     'icon' => 'bx bxs-report',
-                //     'url' => '/daily-report',
-                //     'permission' => 'view:daily-report',
-                //     'subMenus' => [
-                //         [
-                //             'name' => 'My Daily Report',
-                //             'url' => '/daily-report',
-                //             'route' => 'daily-report.index',
-                //             'icon' => 'bx bxs-report',
-                //             'permission' => 'view:daily-report'
-                //         ],
-                //         [
-                //             'name' => 'Team Daily Report ',
-                //             'url' => '/daily-report/team',
-                //             'route' => 'team-daily-report.index',
-                //             'icon' => 'bx bxs-report',
-                //             'permission' => 'view:daily-report'
-                //         ],
-                //     ],
-                // ],
-                // [
-                //     'name' => 'Absent Request All',
-                //     'url' => '/absent-request-all',
-                //     'route' => 'absent-request.all',
-                //     'icon' => 'bx bxs-tired',
-                //     'permission' => 'view:absent-request-all',
-                // ],
-                [
-                    'name' => 'Absent Request',
-                    'icon' => 'bx bxs-tired',
-                    'url' => '/absent-request',
-                    'permission' => 'view:absent-request',
-                    'subMenus' => [
-                        [
-                            'name' => 'My Absent Request',
-                            'url' => '/absent-request',
-                            'route' => 'absent-request.index',
-                            'icon' => 'bx bxs-tired',
-                            'permission' => 'view:absent-request'
-                        ],
-                        [
-                            'name' => 'Team Absent Request',
-                            'url' => '/absent-request/team',
-                            'route' => 'team-absent-request.index',
-                            'icon' => 'bx bxs-tired',
-                            'permission' => 'view:absent-request'
-                        ],
-                    ],
-                ],
-                // [
-                //     'name' => 'Leave Request All',
-                //     'url' => '/leave-request-all',
-                //     'route' => 'leave-request.all',
-                //     'icon' => 'bx bx-log-out-circle',
-                //     'permission' => 'view:leave-request-all',
-                // ],
-                [
-                    'name' => 'Leave Request',
-                    'url' => '/leave-request',
-                    'icon' => 'bx bx-log-out-circle',
-                    'permission' => 'view:leave-request',
-                    'subMenus' => [
-                        [
-                            'name' => 'My Leave Request',
-                            'url' => '/leave-request',
-                            'route' => 'leave-request.index',
-                            'icon' => 'bx bx-log-out-circle',
-                            'permission' => 'view:leave-request'
-                        ],
-                        [
-                            'name' => 'Team Leave Request',
-                            'url' => '/leave-request/team',
-                            'route' => 'team-leave-request.index',
-                            'icon' => 'bx bx-log-out-circle',
-                            'permission' => 'view:leave-request'
-                        ],
-                    ],
-                ],
-                // [
-                //     'name' => 'Inventory',
-                //     'url' => '/inventory',
-                //     'icon' => 'bx bx-building-house',
-                //     'permission' => 'view:inventory',
-                //     'subMenus' => [
-                //         [
-                //             'name' => 'Category Inventory',
-                //             'url' => '/category-inventory',
-                //             'route' => 'category.index',
-                //             'icon' => 'bx bx-log-out-circle',
-                //             'permission' => 'view:category-inventory'
-                //         ],
-                //         [
-                //             'name' => 'Inventory',
-                //             'url' => '/inventory',
-                //             'route' => 'inventory.index',
-                //             'icon' => 'bx bx-log-out-circle',
-                //             'permission' => 'view:inventory'
-                //         ],
-                //     ],
-                // ],
                 // [
                 //     'name' => 'Financial Request',
                 //     'url' => '/financial-request',
@@ -320,13 +253,6 @@ class Sidebar extends Component
                     'route' => 'email-template.index',
                     'icon' => 'bx bx-code-curly',
                     'permission' => 'view:email-template'
-                ],
-                [
-                    'name' => 'Announcement',
-                    'url' => '/announcement',
-                    'route' => 'announcement.index',
-                    'icon' => 'bx bx-error-circle',
-                    'permission' => 'view:announcement'
                 ],
             ]
         ],

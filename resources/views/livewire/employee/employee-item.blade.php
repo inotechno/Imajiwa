@@ -50,6 +50,10 @@
                         <a href="{{ route('employee.edit', ['id' => $employee->id]) }}" class="btn btn-soft-warning">Edit
                             Profile</a>
                     @endcan
+                    @can('permission:employee')
+                        <a href="{{ route('employee.permission', ['id' => $employee->id]) }}" class="btn btn-soft-warning">Edit
+                            Permission</a>
+                    @endcan
                 </div>
             </div>
         </div>

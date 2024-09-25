@@ -8,8 +8,9 @@ use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class AttendanceIndex extends Component
+class AttendanceAll extends Component
 {
+
     use WithPagination;
 
     public $search = '';
@@ -66,7 +67,11 @@ class AttendanceIndex extends Component
             ->groupBy('employee_id', 'date')
             ->orderBy('date', 'desc');
 
-        $attendances = $attendances->where('employee_id', Auth::user()->employee->id)->paginate($this->perPage);
+        if (Auth::user()->can('view:attendance-all')) {
+            $attendances = $attendances->paginate($this->perPage);
+        } else {
+            $attendances = $attendances->where('employee_id', Auth::user()->employee->id)->paginate($this->perPage);
+        }
 
         // Fetch all check-in and check-out records at once with relations
         $checkInDetails = Attendance::whereIn('timestamp', $attendances->pluck('check_in'))
@@ -168,8 +173,8 @@ class AttendanceIndex extends Component
 
         // dd($attendances);
 
-        return view('livewire.attendance.attendance-index', [
+        return view('livewire.attendance.attendance-all', [
             'attendances' => $attendances
-        ])->layout('layouts.app', ['title' => 'Attendance List']);
+        ])->layout('layouts.app', ['title' => 'Attendance All']);
     }
 }

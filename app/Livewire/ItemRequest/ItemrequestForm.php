@@ -15,7 +15,7 @@ class ItemrequestForm extends Component
     use LivewireAlert;
     public $items = [];
     public $inventory;
-    public $name, $request_id, $description, $slug, $status_id, $category_inventory_id, $serial_number, $image_path, $image_url, $qr_code_path, $qr_code_url, $purchase_date, $price, $model, $qty,  $commissioner_id, $director_id;
+    public $name, $request_id, $description, $slug, $status_id, $category_inventory_id, $serial_number, $purchase_date, $price, $model, $qty,  $commissioner_id, $director_id;
     public $categories;
     public $type = 'create';
 
@@ -24,13 +24,19 @@ class ItemrequestForm extends Component
         $this->categories = CategoryInventory::get();
         $request = \App\Models\Request::with('inventories')->find($id);
 
+        $chiefDirector = User::role('Director')->first();
+        $this->director_id = $chiefDirector ? $chiefDirector->id : null;
+
+        $commissioner = User::role('Commissioner')->first();
+        $this->commissioner_id = $commissioner ? $commissioner->id : null;
+
         if ($request) {
             $this->request_id = $request->id;
             $this->name = $request->name;
-            
+
             foreach ($request->inventories as $inventory) {
                 $this->items[] = [
-                    'id' => $inventory->id,  // Pastikan ID item disimpan
+                    'id' => $inventory->id,
                     'name' => $inventory->name,
                     'description' => $inventory->description,
                     'serial_number' => $inventory->serial_number,
@@ -90,37 +96,59 @@ class ItemrequestForm extends Component
         $this->validate([
             'items.*.name' => 'required',
             'items.*.description' => 'required',
-            'items.*.serial_number' => 'required',
-            'items.*.model' => 'required',
             'items.*.qty' => 'required',
-            'items.*.purchase_date' => 'required',
             'items.*.category_inventory_id' => 'required',
         ]);
 
-        $request = \App\Models\Request::updateOrCreate(
-            ['id' => $this->request_id],
-            ['name' => $this->name]
-        );
+        if ($this->type == 'create') {
+            $this->store();
+        } else {
+            $this->update();
+        }
+    }
+
+    public function store()
+    {
+        $request = \App\Models\Request::create([
+            'name' => $this->name,
+        ]);
 
         foreach ($this->items as $item) {
             $item['request_id'] = $request->id;
             $item['slug'] = Str::slug($item['name']);
             $item['director_id'] = $this->director_id;
             $item['commissioner_id'] = $this->commissioner_id;
-            if ($this->type == 'create') {
-                Inventory::create($item);
-            } else {
-                if (isset($item['id'])) {
-                    Inventory::where('id', $item['id'])->update($item);
-                } else {
-                    Inventory::create($item);
-                }
-            }
+
+            Inventory::create($item);
         }
 
         $this->sendNotifications($request);
 
-        $this->alert('success', 'Item Request has been ' . $this->type . ' successfully');
+        $this->alert('success', 'Item Request has been created successfully');
+        return redirect()->route('item-request.index');
+    }
+
+    public function update()
+    {
+        $request = \App\Models\Request::find($this->request_id);
+        $request->update([
+            'name' => $this->name,
+        ]);
+
+        foreach ($this->items as $item) {
+            $item['request_id'] = $request->id;
+            $item['slug'] = Str::slug($item['name']);
+            $item['director_id'] = $this->director_id;
+            $item['commissioner_id'] = $this->commissioner_id;
+
+            if (isset($item['id'])) {
+                Inventory::where('id', $item['id'])->update($item);
+            } else {
+                Inventory::create($item);
+            }
+        }
+
+        $this->alert('success', 'Item Request has been updated successfully');
         return redirect()->route('item-request.index');
     }
 
@@ -154,7 +182,6 @@ class ItemrequestForm extends Component
             ]);
         }
     }
-
 
     public function render()
     {
