@@ -17,7 +17,7 @@ class NotificationIndex extends Component
     {
         $this->user = Auth::user();
         $this->name = $this->user->name;
-        $this->notifications = $this->user->notifications()->get();
+        $this->notifications = $this->user->notifications()->orderBy('created_at', 'desc')->get();
         $this->unreadCount = $this->user->notifications()->where('is_read', false)->count();
     }
 
