@@ -72,3 +72,5 @@
 - [x] notif ketika administrator pengajuan barang kepada direktur utama dan komisaris 
 
 - [ ] Permission employee
+- [ ] Reject Request
+- [ ] Menyesuaikan Dashboard sesuai role
