@@ -16,6 +16,12 @@ class Header extends Component
     {
         $this->user = Auth::user();
         $this->name = $this->user->name;
+        // $this->notifications = $this->user->notifications()->latest()->limit(5)->get();
+        // $this->unreadCount = $this->user->notifications()->where('is_read', false)->count();
+    }
+
+    public function getNotifications()
+    {
         $this->notifications = $this->user->notifications()->latest()->limit(5)->get();
         $this->unreadCount = $this->user->notifications()->where('is_read', false)->count();
     }
@@ -36,6 +42,7 @@ class Header extends Component
 
     public function render()
     {
+        $this->getNotifications();
         return view('livewire.component.page.header', [
             'notifications' => $this->notifications,
             'unreadCount' => $this->unreadCount,

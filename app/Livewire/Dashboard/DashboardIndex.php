@@ -22,6 +22,9 @@ class DashboardIndex extends Component
     public $attendances;
     public $leaveRequests;
     public $isEmployee;
+    public $isFinance;
+    public $isCommissioner;
+    public $isDirector;
     public $isProjectManager;
     public $isAdminsitrator;
 
@@ -34,6 +37,9 @@ class DashboardIndex extends Component
         $this->isEmployee = $this->user->hasRole('Employee');
         $this->isProjectManager = $this->user->hasRole('Project Manager');
         $this->isAdminsitrator = $this->user->hasRole('Administrator');
+        $this->isFinance = $this->user->hasRole('Finance');
+        $this->isDirector = $this->user->hasRole('Director');
+        $this->isCommissioner = $this->user->hasRole('Commissioner');
 
 
         if ($employee) {
@@ -63,6 +69,7 @@ class DashboardIndex extends Component
             $this->leaveRequests = collect();
         }
     }
+
     public function render()
     {
         return view('livewire.dashboard.dashboard-index')->layout('layouts.app', ['title' => 'Dashboard']);
