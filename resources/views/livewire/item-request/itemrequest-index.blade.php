@@ -22,13 +22,13 @@
                         </div>
                         <div class="flex-shrink-0">
                             <button class="btn btn-warning me-3" wire:click="resetFilter">Reset Filter</button>
-                            <a href="{{ route('item-request.create') }}" class="btn btn-primary">Create</a>
+                            @can('create:item-request')
+                                <a href="{{ route('item-request.create') }}" class="btn btn-primary">Create</a>
+                            @endcan
                         </div>
-
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 
