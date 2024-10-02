@@ -3,6 +3,7 @@
 namespace App\Livewire\ItemRequest;
 
 use App\Models\Inventory;
+use App\Models\Notification;
 use Livewire\Component;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\On;
@@ -45,6 +46,10 @@ class ItemrequestItem extends Component
     #[On('delete-inventory')]
     public function delete()
     {
+        Notification::where('notifiable_type', 'App\Models\ItemRequest')
+            ->where('notifiable_id', $this->item_request->id)
+            ->delete();
+        $this->item_request->delete();
         $this->inventory->delete();
         $this->alert('success', 'request item deleted successfully');
         $this->dispatch('refreshIndex');

@@ -145,6 +145,9 @@ class LeaveRequestItem extends Component
     #[On('delete-leave-request')]
     public function delete()
     {
+        Notification::where('notifiable_type', 'App\Models\LeaveRequest')
+            ->where('notifiable_id', $this->leave_request->id)
+            ->delete();
         $this->leave_request->delete();
         $this->alert('success', 'Leave Request deleted successfully');
 
