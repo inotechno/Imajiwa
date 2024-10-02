@@ -42,7 +42,13 @@ class ProjectForm extends Component
             $this->projectManagerName = auth()->user()->employee->user->name;
         }
 
-        $this->employees = Employee::with('user')->get();
+        $this->employees = Employee::with('user', 'position') // Mengambil relasi user dan position
+            ->join('users', 'employees.user_id', '=', 'users.id') // Join ke tabel users
+            ->whereNotNull('employees.position_id') // Hanya ambil employee yang punya posisi
+            ->orderBy('users.name', 'asc') // Urutkan berdasarkan kolom name dari tabel users
+            ->select('employees.*') // Pastikan hanya data dari tabel employees yang dipilih
+            ->get();
+
         if (!$this->employee_id) {
             $this->projectManagerName = auth()->user()->employee->user->name;
         }
