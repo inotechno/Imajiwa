@@ -45,15 +45,28 @@
                         <div class="row mb-4">
                             <label for="serial_number" class="col-form-label col-lg-2">Serial Number</label>
                             <div class="col-lg-10">
-                                <input id="serial_number" name="serial_number" wire:model="serial_number" type="text"
-                                    class="form-control @error('serial_number') is-invalid @enderror"
-                                    placeholder="Enter Serial Number...">
-
-                                @error('serial_number')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                                <div>
+                                    @foreach ($serial_numbers as $index => $serial)
+                                        <div class="input-group mb-2">
+                                            <input id="serial_number_{{ $index }}"
+                                                name="serial_numbers[{{ $index }}]"
+                                                wire:model="serial_numbers.{{ $index }}" type="text"
+                                                class="form-control @error('serial_numbers.' . $index) is-invalid @enderror"
+                                                placeholder="Enter Serial Number...">
+                                            <div class="input-group-append">
+                                                <button type="button" class="btn btn-danger"
+                                                    wire:click="removeSerialNumber({{ $index }})">Remove</button>
+                                            </div>
+                                        </div>
+                                        @error('serial_numbers.' . $index)
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    @endforeach
+                                </div>
+                                <button type="button" class="btn btn-secondary" wire:click="addSerialNumber">Add Serial
+                                    Number</button>
                             </div>
                         </div>
                         <div class="row mb-4">

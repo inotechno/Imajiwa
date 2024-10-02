@@ -154,11 +154,20 @@ class AbsentRequestItem extends Component
     #[On('delete-absent-request')]
     public function delete()
     {
-        // dd($this->absent_request);
-        $this->absent_request->delete();
-        $this->alert('success', 'Absent Request deleted successfully');
-
-        return redirect()->route('absent-request.index');
+        try {
+            Notification::where('notifiable_type', 'App\Models\AbsentRequest')
+                ->where('notifiable_id', $this->absent_request->id)
+                ->delete();
+    
+            // Hapus absent_request
+            $this->absent_request->delete();
+    
+            $this->alert('success', 'Absent Request deleted successfully');
+            
+            return redirect()->route('absent-request.index');
+        } catch (\Exception $e) {
+            $this->alert('error', 'Failed to delete absent request: ' . $e->getMessage());
+        }
     }
 
     public function render()

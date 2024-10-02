@@ -13,6 +13,7 @@ class InventoryForm extends Component
 {
     use LivewireAlert;
     public $inventory;
+    public $serial_numbers;
     public $name, $description, $director_id, $commissioner_id, $director_approved_at, $commissioner_approved_at, $slug, $status_id, $category_inventory_id, $serial_number, $image_path, $image_url, $qr_code_path, $qr_code_url, $purchase_date, $price, $model, $qty;
     public $categories;
     public $type = 'create';
@@ -32,14 +33,27 @@ class InventoryForm extends Component
             $this->description = $this->inventory->description;
             $this->slug = $this->inventory->slug;
             $this->status_id = $this->inventory->status_id;
-            $this->serial_number = $this->inventory->serial_number;
+            $this->serial_numbers = explode(',', $this->inventory->serial_number);
             $this->model = $this->inventory->model;
             $this->qty = $this->inventory->qty;
             $this->director_id = $this->inventory->director_id;
             $this->commissioner_id = $this->inventory->commissioner_id;
             $this->category_inventory_id = $this->inventory->category_inventory_id;
             $this->type = 'update';
+        } else {
+            $this->serial_numbers = [''];
         }
+    }
+
+    public function addSerialNumber()
+    {
+        $this->serial_numbers[] = ''; // Add a new empty input field
+    }
+
+    public function removeSerialNumber($index)
+    {
+        unset($this->serial_numbers[$index]);
+        $this->serial_numbers = array_values($this->serial_numbers); // Reindex the array
     }
 
     public function updatedName($value)
@@ -52,20 +66,21 @@ class InventoryForm extends Component
         $this->validate([
             'name' => 'required',
             'description' => 'required',
-            'serial_number' => 'required',
+            'serial_numbers.*' => 'required|string',
             'model' => 'required',
             'qty' => 'required',
             'category_inventory_id' => 'required',
         ]);
 
         try {
+            $serial_numbers = implode(',', $this->serial_numbers);
             if ($this->type == 'create') {
                 $this->inventory = Inventory::create([
                     'category_inventory_id' => $this->category_inventory_id,
                     'name' => $this->name,
                     'slug' => $this->slug,
                     'description' => $this->description,
-                    'serial_number' => $this->serial_number,
+                    'serial_number' => $serial_numbers,
                     'model' => $this->model,
                     'qty' => $this->qty,
                     'commissioner_id' => $this->commissioner_id,
@@ -80,7 +95,7 @@ class InventoryForm extends Component
                         'name' => $this->name,
                         'slug' => $this->slug,
                         'description' => $this->description,
-                        'serial_number' => $this->serial_number,
+                        'serial_number' => $serial_numbers,
                         'model' => $this->model,
                         'qty' => $this->qty,
                     ]);
