@@ -18,10 +18,12 @@ class AbsentRequestItem extends Component
     public $isApproved = false;
     public $totalDays = 0;
     public $isSupervisor = false;
+    public $isDirector = false;
+    public $isHrd = false;
     public $approvedDirector = false;
     public $approvedSupervisor = false;
+    public $approvedHrd = false;
     public $disableUpdate = false;
-    public $isDirector = false;
 
 
     public function mount(AbsentRequest $absent_request)
@@ -35,11 +37,15 @@ class AbsentRequestItem extends Component
             $this->approvedSupervisor = true;
         }
 
-        if ($this->approvedDirector && $this->approvedSupervisor) {
+        if ($this->absent_request->hrd_approved_at) {
+            $this->approvedHrd = true;
+        }
+
+        if ($this->approvedDirector && $this->approvedSupervisor && $this->approvedHrd) {
             $this->isApproved = true;
         }
 
-        if ($this->approvedDirector || $this->approvedSupervisor) {
+        if ($this->approvedDirector || $this->approvedSupervisor || $this->approvedHrd) {
             $this->disableUpdate = true;
         }
 
@@ -49,6 +55,10 @@ class AbsentRequestItem extends Component
 
         if (Auth::user()->employee && $this->absent_request->supervisor_id == Auth::user()->employee->id) {
             $this->isSupervisor = true;
+        }
+
+        if (Auth::user()->employee && $this->absent_request->hrd_id == Auth::user()->employee->id) {
+            $this->isHrd = true;
         }
 
         // if (Auth::user()->employee) {
@@ -117,6 +127,12 @@ class AbsentRequestItem extends Component
             ]);
         }
 
+        if ($this->isHrd) {
+            $this->absent_request->update([
+                'hrd_approved_at' => now(),
+            ]);
+        }
+
         $this->sendNotifications($this->absent_request);
 
         $this->alert('success', 'Absent Request approved successfully');
@@ -131,6 +147,17 @@ class AbsentRequestItem extends Component
             Notification::create([
                 'type' => 'absent_request',
                 'message' => 'Your absent request has been approved by Supervisor',
+                'user_id' => $employee->user->id, 
+                'notifiable_type' => 'App\Models\AbsentRequest',
+                'notifiable_id' => $absentRequest->id,
+                'url' => route('absent-request.index')
+            ]);
+        }
+
+        if ($this->isHrd) {
+            Notification::create([
+                'type' => 'absent_request',
+                'message' => 'Your absent request has been approved by Hrd',
                 'user_id' => $employee->user->id, 
                 'notifiable_type' => 'App\Models\AbsentRequest',
                 'notifiable_id' => $absentRequest->id,
