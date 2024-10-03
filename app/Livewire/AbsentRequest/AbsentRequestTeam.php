@@ -35,6 +35,8 @@ class AbsentRequestTeam extends Component
         $absent_requests = AbsentRequest::with('employee.user', 'supervisor.user', 'director.user')->when($this->search, function ($query) {
             $query->whereHas('employee.user', function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%');
+            })->orWhereHas('hrd.user', function ($query) {
+                $query->where('name', 'like', '%' . $this->search . '%');
             })->orWhereHas('director.user', function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%');
             })->orWhereHas('supervisor.user', function ($query) {
@@ -50,6 +52,7 @@ class AbsentRequestTeam extends Component
 
         $absent_requests->where(function ($query) {
             $query->where('supervisor_id', Auth::user()->employee->id)
+                ->orWhere('hrd_id', Auth::user()->employee->id)
                 ->orWhere('director_id', Auth::user()->employee->id);
         });
         $absent_requests = $absent_requests->paginate($this->perPage);

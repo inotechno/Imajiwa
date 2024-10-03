@@ -29,6 +29,11 @@
                         title="{{ $leave_request->director_approved_at }}">Director Approved</span>
                 @endif
 
+                @if ($leave_request->hrd_approved_at)
+                    <span class="badge badge-soft-info" data-bs-toggle="tooltip" data-bs-placement="top"
+                        title="{{ $leave_request->hrd_approved_at }}">Hr Approved</span>
+                @endif
+
                 @if ($leave_request->supervisor_approved_at)
                     <span class="badge badge-soft-info" data-bs-toggle="tooltip" data-bs-placement="top"
                         title="{{ $leave_request->supervisor_approved_at }}">Supervisor Approved</span>
@@ -47,6 +52,13 @@
                     <a href="javascript:void(0)" class="btn btn-soft-info btn-sm"
                         wire:click="approveConfirm({{ $leave_request->id }})">
                         <i class="mdi mdi-check"></i> Approve as Supervisor
+                    </a>
+                @endif
+
+                @if (!$approvedHrd && $isHrd)
+                    <a href="javascript:void(0)" class="btn btn-soft-info btn-sm"
+                        wire:click="approveConfirm({{ $leave_request->id }})">
+                        <i class="mdi mdi-check"></i> Approve as Hr
                     </a>
                 @endif
 

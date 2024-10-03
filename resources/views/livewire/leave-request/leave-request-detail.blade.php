@@ -45,6 +45,13 @@
                                 </div>
                             </div>
 
+                            <div class="mb-3 mt-3">
+                                <label class="mb-3">Status Approve</label>
+                                <p>Supervisor : {{ $leave_request->supervisor_approved_at ?? '-' }}</p>
+                                <p>Hrd : {{ $leave_request->hrd_approved_at ?? '-' }}</p>
+                                <p>Director : {{ $leave_request->director_approved_at ?? '-' }}</p>
+                            </div>
+
                         </div>
 
                         <div class="col-md-6">

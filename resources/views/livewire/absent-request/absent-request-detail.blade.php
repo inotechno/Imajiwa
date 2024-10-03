@@ -12,8 +12,9 @@
 
                     <div class="mb-3">
                         <label class="mb-3">Status Approve</label>
-                        <p>Director : {{ $absent_request->director_approved_at ?? '-' }}</p>
                         <p>Supervisor : {{ $absent_request->supervisor_approved_at ?? '-' }}</p>
+                        <p>Hrd : {{ $absent_request->hrd_approved_at ?? '-' }}</p>
+                        <p>Director : {{ $absent_request->director_approved_at ?? '-' }}</p>
                     </div>
                 </div>
             </div>
