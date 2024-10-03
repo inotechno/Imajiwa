@@ -23,7 +23,9 @@ class AbsentRequest extends Model
         'file_url',
         'director_id',
         'supervisor_id',
+        'hrd_id',
         'director_approved_at',
+        'hrd_approved_at',
         'supervisor_approved_at',
     ];
 
@@ -32,6 +34,7 @@ class AbsentRequest extends Model
         'end_date' => 'date',
         'director_approved_at' => 'datetime',
         'supervisor_approved_at' => 'datetime',
+        'hrd_approved_at' => 'datetime',
     ];
 
     public function employee()
@@ -47,6 +50,11 @@ class AbsentRequest extends Model
     public function supervisor()
     {
         return $this->belongsTo(Employee::class, 'supervisor_id');
+    }
+    
+    public function hrd()
+    {
+        return $this->belongsTo(Employee::class, 'hrd_id');
     }
 
     public function recipients(): MorphMany

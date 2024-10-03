@@ -18,7 +18,7 @@ class LeaveRequestForm extends Component
 
     public $mode = 'Create';
     public $leave_request;
-    public $notes, $employee_id, $start_date, $current_total_leave, $total_leave_after_request, $end_date, $supervisor_id, $director_id;
+    public $notes, $employee_id, $start_date, $current_total_leave, $total_leave_after_request, $end_date, $supervisor_id, $director_id, $hrd_id;
     public $employee;
     public $leave_remaining = 0, $leave_taken = 0, $leave_period = 0;
 
@@ -34,6 +34,7 @@ class LeaveRequestForm extends Component
             $this->end_date = $this->leave_request->end_date->format('Y-m-d');
             $this->supervisor_id = $this->leave_request->supervisor_id;
             $this->director_id = $this->leave_request->director_id;
+            $this->hrd_id = $this->leave_request->hrd_id;
             $this->current_total_leave = $this->employee->leave_remaining;
             $this->leave_remaining = $this->employee->leave_remaining;
             $this->leave_taken = $this->getAlreadyTaken();
@@ -52,6 +53,11 @@ class LeaveRequestForm extends Component
                 }
             }
 
+            $hrd = User::role('HR')->first();
+            if ($hrd && $hrd->employee) {
+                $this->hrd_id = $hrd->employee->id;
+            }
+
             $this->mode = 'Create';
             $this->notes = '';
             $this->employee_id = $this->employee->id;
@@ -59,6 +65,7 @@ class LeaveRequestForm extends Component
             $this->end_date = '';
             $this->supervisor_id = $this->supervisor_id ?? null;
             $this->director_id = $this->director_id ?? null;
+            $this->hrd_id = $this->hrd_id ?? null;
             $this->current_total_leave = $this->employee->leave_remaining;
             $this->leave_remaining = $this->employee->leave_remaining;
         }
@@ -83,10 +90,12 @@ class LeaveRequestForm extends Component
                 'end_date' => 'required|after_or_equal:start_date|date|after_or_equal:today',
                 'supervisor_id' => 'nullable|exists:employees,id',
                 'director_id' => 'required|exists:employees,id',
+                'hrd_id' => 'required|exists:employees,id',
                 'leave_period' => 'required|integer|lte:current_total_leave',
             ], [
                 'supervisor_id.required' => 'Belum ada department, silahkan hubungi administrator',
                 'director_id.required' => 'Belum ada director, silahkan hubungi administrator',
+                'hrd_id.required' => 'Belum ada hrd, silahkan hubungi administrator',
                 'leave_period.lte' => 'Jumlah cuti yang diminta tidak boleh melebihi jumlah cuti yang tersedia',
             ]);
 
@@ -111,6 +120,7 @@ class LeaveRequestForm extends Component
                 'end_date' => $this->end_date,
                 'supervisor_id' => $this->supervisor_id,
                 'director_id' => $this->director_id,
+                'hrd_id' => $this->hrd_id,
                 'total_days' => $period,
                 'current_total_leave' => $this->current_total_leave,
                 'total_leave_after_request' => $this->current_total_leave - $period,
@@ -118,7 +128,7 @@ class LeaveRequestForm extends Component
             $this->sendNotifications($this->leave_request);
 
             $this->reset();
-            $this->alert('success', 'Absent Request created successfully');
+            $this->alert('success', 'Leave Request created successfully');
 
             return redirect()->route('leave-request.index');
         } catch (\Exception $e) {
@@ -138,6 +148,7 @@ class LeaveRequestForm extends Component
                 'end_date' => $this->end_date,
                 'supervisor_id' => $this->supervisor_id,
                 'director_id' => $this->director_id,
+                'hrd_id' => $this->hrd_id,
                 'total_days' => $period,
                 'total_leave_after_request' => $this->current_total_leave - $period,
                 'current_total_leave' => $this->current_total_leave,
@@ -145,7 +156,7 @@ class LeaveRequestForm extends Component
             $this->sendNotifications($this->leave_request);
 
             $this->reset();
-            $this->alert('success', 'Absent Request updated successfully');
+            $this->alert('success', 'Leave Request updated successfully');
 
             return redirect()->route('leave-request.index');
         } catch (\Exception $e) {
@@ -157,6 +168,8 @@ class LeaveRequestForm extends Component
     {
         $supervisor = Employee::find($leaveRequest->supervisor_id);
         $director = Employee::find($leaveRequest->director_id);
+        $hrd = Employee::find($leaveRequest->hrd_id);
+
 
         if ($supervisor && $supervisor->user) {
             Notification::create([
@@ -174,6 +187,17 @@ class LeaveRequestForm extends Component
                 'type' => 'leave_request',
                 'message' => 'A new leave request has been submitted by ' . $leaveRequest->employee->user->name,
                 'user_id' => $director->user->id,
+                'notifiable_type' => 'App\Models\LeaveRequest',
+                'notifiable_id' => $leaveRequest->id,
+                'url' => route('team-leave-request.index')
+            ]);
+        }
+
+        if ($hrd && $hrd->user) {
+            Notification::create([
+                'type' => 'leave_request',
+                'message' => 'A new leave request has been submitted by ' . $leaveRequest->employee->user->name,
+                'user_id' => $hrd->user->id,
                 'notifiable_type' => 'App\Models\LeaveRequest',
                 'notifiable_id' => $leaveRequest->id,
                 'url' => route('team-leave-request.index')

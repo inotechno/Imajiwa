@@ -17,7 +17,7 @@ class AbsentRequestForm extends Component
 
     public $mode = 'Create';
     public $absent_request;
-    public $notes, $employee_id, $start_date, $end_date, $supervisor_id, $director_id, $type_absent;
+    public $notes, $employee_id, $start_date, $end_date, $supervisor_id, $director_id, $hrd_id, $type_absent;
     public $employee;
 
     public function mount($id = null)
@@ -32,6 +32,7 @@ class AbsentRequestForm extends Component
             $this->end_date = $this->absent_request->end_date->format('Y-m-d');
             $this->supervisor_id = $this->absent_request->supervisor_id;
             $this->director_id = $this->absent_request->director_id;
+            $this->hrd_id = $this->absent_request->hrd_id;
             $this->type_absent = $this->absent_request->type_absent;
 
             $this->dispatch('change-default');
@@ -47,6 +48,11 @@ class AbsentRequestForm extends Component
                 }
             }
 
+            $hrd = User::role('HR')->first();
+            if ($hrd && $hrd->employee) {
+                $this->hrd_id = $hrd->employee->id;
+            }
+
             $this->mode = 'Create';
             $this->notes = '';
             $this->employee_id = $this->employee->id;
@@ -54,6 +60,7 @@ class AbsentRequestForm extends Component
             $this->end_date = '';
             $this->supervisor_id = $this->supervisor_id ?? null;
             $this->director_id = $this->director_id ?? null;
+            $this->hrd_id = $this->hrd_id ?? null;
         }
     }
 
@@ -74,10 +81,12 @@ class AbsentRequestForm extends Component
                 'end_date' => 'required|after_or_equal:start_date|date|after_or_equal:today',
                 'supervisor_id' => 'nullable|exists:employees,id',
                 'director_id' => 'required|exists:employees,id',
+                'hrd_id' => 'required|exists:employees,id',
                 'type_absent' => 'required',
             ], [
                 'supervisor_id.required' => 'Belum ada department, silahkan hubungi administrator',
                 'director_id.required' => 'Belum ada director, silahkan hubungi administrator',
+                'hrd_id.required' => 'Belum ada hrd, silahkan hubungi administrator',
             ]);
 
             if ($this->mode == 'Create') {
@@ -100,6 +109,7 @@ class AbsentRequestForm extends Component
                 'end_date' => $this->end_date,
                 'supervisor_id' => $this->supervisor_id,
                 'director_id' => $this->director_id,
+                'hrd_id' => $this->hrd_id,
                 'type_absent' => $this->type_absent
             ]);
             $this->sendNotifications($this->absent_request);
@@ -123,6 +133,7 @@ class AbsentRequestForm extends Component
                 'end_date' => $this->end_date,
                 'supervisor_id' => $this->supervisor_id,
                 'director_id' => $this->director_id,
+                'hrd_id' => $this->hrd_id,
                 'type_absent' => $this->type_absent
             ]);
             $this->sendNotifications($this->absent_request);
@@ -140,6 +151,7 @@ class AbsentRequestForm extends Component
     {
         $supervisor = Employee::find($absentRequest->supervisor_id);
         $director = Employee::find($absentRequest->director_id);
+        $hrd = Employee::find($absentRequest->hrd_id);
 
         if ($supervisor && $supervisor->user) {
             Notification::create([
@@ -157,6 +169,17 @@ class AbsentRequestForm extends Component
                 'type' => 'absent_request',
                 'message' => 'A new absent request has been submitted by ' . $absentRequest->employee->user->name,
                 'user_id' => $director->user->id,
+                'notifiable_type' => 'App\Models\AbsentRequest',
+                'notifiable_id' => $absentRequest->id,
+                'url' => route('team-absent-request.index') // URL untuk melihat detail absen
+            ]);
+        }
+        
+        if ($hrd && $hrd->user) {
+            Notification::create([
+                'type' => 'absent_request',
+                'message' => 'A new absent request has been submitted by ' . $absentRequest->employee->user->name,
+                'user_id' => $hrd->user->id,
                 'notifiable_type' => 'App\Models\AbsentRequest',
                 'notifiable_id' => $absentRequest->id,
                 'url' => route('team-absent-request.index') // URL untuk melihat detail absen

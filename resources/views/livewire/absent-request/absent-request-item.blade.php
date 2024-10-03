@@ -29,6 +29,11 @@
                         title="{{ $absent_request->director_approved_at }}">Director Approved</span>
                 @endif
 
+                @if ($absent_request->hrd_approved_at)
+                    <span class="badge badge-soft-info" data-bs-toggle="tooltip" data-bs-placement="top"
+                        title="{{ $absent_request->hrd_approved_at }}">HR Approved</span>
+                @endif
+
                 @if ($absent_request->supervisor_approved_at)
                     <span class="badge badge-soft-info" data-bs-toggle="tooltip" data-bs-placement="top"
                         title="{{ $absent_request->supervisor_approved_at }}">Supervisor Approved</span>
@@ -37,13 +42,20 @@
 
             <div class="d-flex gap-2 justify-content-center flex-wrap mt-3">
                 @if (!$approvedDirector && $isDirector)
-                <a href="javascript:void(0)" class="btn btn-soft-info btn-sm"
-                    wire:click="approveConfirm({{ $absent_request->id }})">
-                    <i class="mdi mdi-check"></i> Approve as Director
-                </a>
-            @endif
+                    <a href="javascript:void(0)" class="btn btn-soft-info btn-sm"
+                        wire:click="approveConfirm({{ $absent_request->id }})">
+                        <i class="mdi mdi-check"></i> Approve as Director
+                    </a>
+                @endif
 
-                @if(!$approvedSupervisor)
+                @if (!$approvedHrd && $isHrd)
+                    <a href="javascript:void(0)" class="btn btn-soft-info btn-sm"
+                        wire:click="approveConfirm({{ $absent_request->id }})">
+                        <i class="mdi mdi-check"></i> Approve as Hrd
+                    </a>
+                @endif
+
+                @if (!$approvedSupervisor)
                     @if ($isSupervisor)
                         <a href="javascript:void(0)" class="btn btn-soft-info btn-sm"
                             wire:click="approveConfirm({{ $absent_request->id }})"><i class="mdi mdi-check"></i>

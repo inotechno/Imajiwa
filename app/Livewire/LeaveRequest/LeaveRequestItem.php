@@ -15,12 +15,16 @@ class LeaveRequestItem extends Component
     use LivewireAlert;
     public $leave_request;
     public $isApproved = false;
+    public $isSupervisor = false;
+    public $isHrd = false;
+    public $isDirector = false;
     public $approvedDirector = false;
+    public $approvedHrd = false;
     public $approvedSupervisor = false;
     public $totalDays = 0;
-    public $isSupervisor = false;
-    public $isDirector = false;
+    
     public $disableUpdate = false;
+
 
     public function mount(LeaveRequest $leave_request)
     {
@@ -33,11 +37,15 @@ class LeaveRequestItem extends Component
             $this->approvedSupervisor = true;
         }
 
-        if ($this->approvedDirector && $this->approvedSupervisor) {
+        if ($this->leave_request->hrd_approved_at) {
+            $this->approvedHrd = true;
+        }
+
+        if ($this->approvedDirector && $this->approvedSupervisor && $this->approvedHrd) {
             $this->isApproved = true;
         }
 
-        if ($this->approvedDirector || $this->approvedSupervisor) {
+        if ($this->approvedDirector || $this->approvedSupervisor || $this->approvedHrd) {
             $this->disableUpdate = true;
         }
 
@@ -47,6 +55,10 @@ class LeaveRequestItem extends Component
         
         if (Auth::user()->employee && $this->leave_request->supervisor_id == Auth::user()->employee->id) {
             $this->isSupervisor = true;
+        }
+
+        if (Auth::user()->employee && $this->leave_request->hrd_id == Auth::user()->employee->id) {
+            $this->isHrd = true;
         }
 
         $this->totalDays = $this->leave_request->end_date->diffInDays($this->leave_request->start_date);
@@ -103,6 +115,12 @@ class LeaveRequestItem extends Component
             ]);
         }
 
+        if ($this->isHrd) {
+            $this->leave_request->update([
+                'hrd_approved_at' => now(),
+            ]);
+        }
+
         if ($this->isSupervisor) {
             $this->leave_request->update([
                 'supervisor_approved_at' => now(),
@@ -123,6 +141,17 @@ class LeaveRequestItem extends Component
             Notification::create([
                 'type' => 'leave_request',
                 'message' => 'Your leave request has been approved by Supervisor',
+                'user_id' => $employee->user->id, 
+                'notifiable_type' => 'App\Models\LeaveRequest',
+                'notifiable_id' => $leave_request->id,
+                'url' => route('leave-request.index')
+            ]);
+        }
+
+        if ($this->isHrd) {
+            Notification::create([
+                'type' => 'leave_request',
+                'message' => 'Your leave request has been approved by Hr',
                 'user_id' => $employee->user->id, 
                 'notifiable_type' => 'App\Models\LeaveRequest',
                 'notifiable_id' => $leave_request->id,
@@ -160,12 +189,14 @@ class LeaveRequestItem extends Component
         $user = $employee->user;
         $supervisor = $this->leave_request->supervisor?->user;
         $director = $this->leave_request->director->user;
+        // $hrd = $this->leave_request->hrd->user;
 
         return view('livewire.leave-request.leave-request-item', [
             'leave_request' => $this->leave_request,
             'employee' => $employee,
             'user' => $user,
             'supervisor' => $supervisor,
+            // 'hrd' => $hrd,
             'director' => $director
         ]);
     }

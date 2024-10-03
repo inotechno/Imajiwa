@@ -31,8 +31,10 @@ class LeaveRequestAll extends Component
     }
     public function render()
     {
-        $leave_requests = LeaveRequest::with('employee.user', 'supervisor.user', 'director.user')->when($this->search, function ($query) {
+        $leave_requests = LeaveRequest::with('employee.user', 'supervisor.user', 'director.user', 'hrd.user')->when($this->search, function ($query) {
             $query->whereHas('employee.user', function ($query) {
+                $query->where('name', 'like', '%' . $this->search . '%');
+            })->orWhereHas('hrd.user', function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%');
             })->orWhereHas('director.user', function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%');

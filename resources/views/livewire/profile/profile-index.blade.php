@@ -106,33 +106,58 @@
 
         </div>
 
+        @if (!$isFinance && !$isCommissioner && !$isHR)
         <div class="col-xl-6">
-
             <div class="row">
-                @foreach ($project_status as $key => $value)
-                    <div class="col-md-6">
-                        <div class="card mini-stats-wid">
-                            <div class="card-body">
-                                <div class="d-flex">
-                                    <div class="flex-grow-1">
-                                        <p class="text-muted fw-medium mb-2">{{ $key }}</p>
-                                        <h4 class="mb-0">{{ $value['count'] }}</h4>
-                                    </div>
-
-                                    <div class="flex-shrink-0 align-self-center">
-                                        <div class="mini-stat-icon avatar-sm rounded-circle bg-primary">
-                                            <span class="avatar-title">
-                                                <i class="{{ $value['icon'] }} font-size-24"></i>
-                                            </span>
+                @if ($isProjectManager)
+                    @foreach ($manage_project_status as $key => $value)
+                        <div class="col-md-6">
+                            <div class="card mini-stats-wid">
+                                <div class="card-body">
+                                    <div class="d-flex">
+                                        <div class="flex-grow-1">
+                                            <p class="text-muted fw-medium mb-2">{{ $key }}</p>
+                                            <h4 class="mb-0">{{ $value['count'] }}</h4>
+                                        </div>
+        
+                                        <div class="flex-shrink-0 align-self-center">
+                                            <div class="mini-stat-icon avatar-sm rounded-circle bg-primary">
+                                                <span class="avatar-title">
+                                                    <i class="{{ $value['icon'] }} font-size-24"></i>
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                @endforeach
+                    @endforeach
+                @else
+                    @foreach ($project_status as $key => $value)
+                        <div class="col-md-6">
+                            <div class="card mini-stats-wid">
+                                <div class="card-body">
+                                    <div class="d-flex">
+                                        <div class="flex-grow-1">
+                                            <p class="text-muted fw-medium mb-2">{{ $key }}</p>
+                                            <h4 class="mb-0">{{ $value['count'] }}</h4>
+                                        </div>
+        
+                                        <div class="flex-shrink-0 align-self-center">
+                                            <div class="mini-stat-icon avatar-sm rounded-circle bg-primary">
+                                                <span class="avatar-title">
+                                                    <i class="{{ $value['icon'] }} font-size-24"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                @endif
             </div>
-
+        
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title mb-4">My Projects</h4>
@@ -148,7 +173,17 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if ($projects->count() > 0)
+                                @if ($isProjectManager && $Manageprojects->count() > 0)
+                                    @foreach ($Manageprojects as $project)
+                                        <tr>
+                                            <th scope="row">{{ $loop->iteration }}</th>
+                                            <td>{{ $project->name }}</td>
+                                            <td>{{ $project->start_date }}</td>
+                                            <td>{{ $project->end_date }}</td>
+                                            <td>{{ ucfirst(str_replace('_', ' ', $project->status)) }}</td>
+                                        </tr>
+                                    @endforeach
+                                @elseif ($projects->count() > 0)
                                     @foreach ($projects as $project)
                                         <tr>
                                             <th scope="row">{{ $loop->iteration }}</th>
@@ -169,5 +204,7 @@
                 </div>
             </div>
         </div>
+        @endif
+        
     </div>
 </div>
