@@ -15,7 +15,6 @@ return new class extends Migration
             $table->string('type_absent')->nullable();
             $table->foreignId('hrd_id')->nullable()->constrained('employees')->nullOnDelete()->cascadeOnUpdate();
             $table->timestamp('hrd_approved_at')->nullable();
-
         });
     }
 
@@ -26,8 +25,12 @@ return new class extends Migration
     {
         Schema::table('absent_requests', function (Blueprint $table) {
             $table->dropColumn('type_absent');
-            $table->dropColumn('hrd_id');
-            $table->dropColumn('hrd_approved_at');
+            if (Schema::hasColumn('absent_requests', 'hrd_id')) {
+                $table->dropColumn('hrd_id');
+            }
+            if (Schema::hasColumn('absent_requests', 'hrd_approved_at')) {
+                $table->dropColumn('hrd_approved_at');
+            }
         });
     }
 };

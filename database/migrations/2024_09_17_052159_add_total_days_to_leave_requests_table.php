@@ -13,8 +13,12 @@ return new class extends Migration
     {
         Schema::table('leave_requests', function (Blueprint $table) {
             $table->integer('total_days')->unsigned();
-            $table->foreignId('hrd_id')->nullable()->constrained('employees')->nullOnDelete()->cascadeOnUpdate();
-            $table->timestamp('hrd_approved_at')->nullable();
+            if (Schema::hasColumn('leave_requests', 'hrd_id')) {
+                $table->foreignId('hrd_id')->nullable()->constrained('employees')->nullOnDelete()->cascadeOnUpdate();
+            }
+            if (Schema::hasColumn('leave_requests', 'hrd_approved_at')) {
+                $table->timestamp('hrd_approved_at')->nullable();
+            }
         });
     }
 
@@ -25,8 +29,14 @@ return new class extends Migration
     {
         Schema::table('leave_requests', function (Blueprint $table) {
             $table->dropColumn('total_days');
-            $table->dropColumn('hrd_id');
-            $table->dropColumn('hrd_approved_at');
+            Schema::table('leave_requests', function (Blueprint $table) {
+                if (!Schema::hasColumn('leave_requests', 'hrd_id')) {
+                    $table->unsignedBigInteger('hrd_id')->nullable();
+                }
+                if (!Schema::hasColumn('leave_requests', 'hrd_approved_at')) {
+                    $table->timestamp('hrd_approved_at')->nullable();
+                }
+            });
         });
     }
 };
