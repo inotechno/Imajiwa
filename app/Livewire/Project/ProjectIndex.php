@@ -46,17 +46,22 @@ class ProjectIndex extends Component
     {
         $projects = Project::with('employees.user', 'projectManager.user')->when($this->search, function ($query) {
             $query->where('name', 'like', '%' . $this->search . '%')
-                ->orWhere('description', 'like', '%' . $this->search . '%');
+                ->orWhere('description', 'like', '%' . $this->search . '%')
+                ->orWhereHas('projectManager', function ($q) {
+                    $q->whereHas('user', function ($q2) {
+                        $q2->where('name', 'like', '%' . $this->search . '%');
+                    });
+                });
         })->when($this->status, function ($query) {
             $query->where('status', $this->status);
         })->orderBy('end_date', 'asc');
 
-        if(Auth::user()->can('view:project-all')) {
+        if (Auth::user()->can('view:project-all')) {
             $projects = $projects->paginate($this->perPage);
-        }else if(Auth::user()->hasRole('Project Manager')) {
+        } else if (Auth::user()->hasRole('Project Manager')) {
             $projects = $projects->where('employee_id', Auth::user()->employee->id)->paginate($this->perPage);
-        }else {
-            $projects = $projects->whereHas('employees', function($query) {
+        } else {
+            $projects = $projects->whereHas('employees', function ($query) {
                 $query->where('employee_id', Auth::user()->employee->id);
             })->paginate($this->perPage);
         }

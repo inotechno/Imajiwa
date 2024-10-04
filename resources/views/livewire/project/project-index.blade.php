@@ -9,7 +9,7 @@
                     <div class="d-flex align-content-stretch gap-3 flex-column flex-md-row">
                         <div class="flex-grow-1">
                             <input type="search" class="form-control" id="searchInput" wire:model.live="search"
-                                placeholder="Search for ...">
+                                placeholder="Search for Name Project Manager, Project Name">
                         </div>
                         <div class="flex-shrink-0" wire:ignore>
                             <select class="form-control select2 select-status" wire:model.live="status"
