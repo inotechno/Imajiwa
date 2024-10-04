@@ -7,7 +7,7 @@
         </div>
     </td>
     <td>
-        <h5 class="text-truncate font-size-14"><a href="javascript: void(0);" class="text-dark">{{ $project->name }}</a>
+        <h5 class="text-truncate font-size-14"><a href="{{ route('project.detail', ['id' => $project->id]) }}" class="text-dark">{{ $project->name }}</a>
         </h5>
         <p class="text-muted mb-0">{{ $projectManager->name }}</p>
     </td>
@@ -54,18 +54,21 @@
     </td>
 
     <td>
-        @if (Auth::user()->employee && $project->employee_id == Auth::user()->employee->id)
-            @can('update:project')
-                <a href="{{ route('project.edit', ['id' => $project->id]) }}"
-                    class="btn btn-primary btn-sm waves-effect waves-light"><i class="bx bx-pencil me-1"></i> Edit</a>
-            @endcan
-            @can('delete:project')
-                <button type="button" wire:click="deleteConfirm()" class="btn btn-danger btn-sm waves-effect waves-light">
-                    <i class="mdi mdi-delete me-1"></i> Delete
-                </button>
-            @endcan
-        @endif
-        <a href="{{ route('project.detail', ['id' => $project->id]) }}"
-            class="btn btn-primary btn-sm waves-effect waves-light"><i class="mdi mdi-eye me-1"></i> Detail</a>
+        <div class="dropdown">
+            <a href="#" class="dropdown-toggle card-drop" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="mdi mdi-dots-horizontal font-size-18"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end">
+                @if (Auth::user()->employee && $project->employee_id == Auth::user()->employee->id)
+                    @can('update:project')
+                        <a class="dropdown-item" href="{{ route('project.edit', ['id' => $project->id]) }}">Edit</a>
+                    @endcan
+                    @can('delete:project')
+                        <a class="dropdown-item" href="#" wire:click="deleteConfirm()">Delete</a>
+                    @endcan
+                @endif
+                <a class="dropdown-item" href="{{ route('project.detail', ['id' => $project->id]) }}">Detail</a>
+            </div>
+        </div>
     </td>
 </tr>
