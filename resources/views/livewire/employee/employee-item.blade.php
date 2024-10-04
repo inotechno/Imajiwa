@@ -10,10 +10,10 @@
                 </div>
                 <div class="text-center mb-3">
                     {{-- <img src="assets/images/users/avatar-1.jpg" alt="" class="avatar-sm rounded-circle" /> --}}
-                    @if ($user->avatar)
+                    @if ($user->avatar_url)
                         <a href="javascript: void(0);" class="d-inline-block" data-bs-toggle="tooltip"
                             data-bs-placement="top" title="{{ $user->name }}">
-                            <img src="{{ $user->avatar }}" alt="{{ $user->name }}" class="rounded-circle avatar-sm">
+                            <img src="{{ asset('storage/' . ($user->avatar_url)) }}" alt="{{ $user->name }}" class="rounded-circle avatar-sm">
                         </a>
                     @else
                         <a href="javascript: void(0);" class="d-inline-block" data-bs-toggle="tooltip"
