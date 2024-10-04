@@ -17,11 +17,11 @@
     <td>
         <div class="avatar-group">
             @foreach ($employees->take($limitDisplay) as $employee)
-                @if ($employee->user->avatar)
+                @if ($employee->user->avatar_url)
                     <div class="avatar-group-item" wire:key="avatar-item-{{ $employee->id }}">
                         <a href="javascript: void(0);" class="d-inline-block" data-bs-toggle="tooltip"
                             data-bs-placement="top" title="{{ $employee->user->name }}">
-                            <img src="{{ $employee->user->avatar }}" alt="{{ $employee->user->name }}"
+                            <img src="{{ asset('storage/' . ($employee->user->avatar_url)) }}" alt="{{ $employee->user->name }}"
                                 class="rounded-circle avatar-xs">
                         </a>
                     </div>
