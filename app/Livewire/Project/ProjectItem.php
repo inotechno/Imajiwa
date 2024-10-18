@@ -31,7 +31,7 @@ class ProjectItem extends Component
     public function deleteConfirm()
     {
         $this->alert('warning', 'Are you sure you want to delete this project?', [
-            'project' => 'center',
+            'position' => 'center',
             'timer' => null,
             'toast' => false,
 

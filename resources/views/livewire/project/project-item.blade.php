@@ -53,10 +53,10 @@
         </div>
     </td>
 
-    <td>
-        <div class="dropdown">
+    <td class="">
+        <div class="dropdown" livewire:ignore>
             <a href="#" class="dropdown-toggle card-drop" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="mdi mdi-dots-horizontal font-size-18"></i>
+                <i class="mdi mdi-cog-outline font-size-20 text-white"></i>
             </a>
             <div class="dropdown-menu dropdown-menu-end">
                 @if (Auth::user()->employee && $project->employee_id == Auth::user()->employee->id)
@@ -64,7 +64,7 @@
                         <a class="dropdown-item" href="{{ route('project.edit', ['id' => $project->id]) }}">Edit</a>
                     @endcan
                     @can('delete:project')
-                        <a class="dropdown-item" href="#" wire:click="deleteConfirm()">Delete</a>
+                        <a class="dropdown-item" href="#" wire:click.prevent="deleteConfirm()">Delete</a>
                     @endcan
                 @endif
                 <a class="dropdown-item" href="{{ route('project.detail', ['id' => $project->id]) }}">Detail</a>
