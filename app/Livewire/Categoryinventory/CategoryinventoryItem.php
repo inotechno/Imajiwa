@@ -23,7 +23,7 @@ class CategoryinventoryItem extends Component
     public function deleteConfirm()
     {
         $this->alert('warning', 'Are you sure you want to delete this category?', [
-            'category' => 'center',
+            'position' => 'center',
             'timer' => null,
             'toast' => false,
 
