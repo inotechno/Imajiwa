@@ -5,7 +5,7 @@ namespace App\Livewire\ItemRequest;
 use App\Models\CategoryInventory;
 use App\Models\Employee;
 use App\Models\Inventory;
-use App\Models\Request;
+use App\Models\RequestItem;
 use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -27,7 +27,7 @@ class ItemrequestDetail extends Component
     public function mount($id = null)
     {
         $this->categories = CategoryInventory::all();
-        $request = \App\Models\Request::with('inventories')->find($id);
+        $request = RequestItem::with('inventories')->find($id);
 
         $user = Auth::user();
         $this->isCommissioner = $user->hasRole('Commissioner');
@@ -113,7 +113,7 @@ class ItemrequestDetail extends Component
 
     public function updateItems()
     {
-        $request = Request::with('inventories')->find($this->request_id);
+        $request = RequestItem::with('inventories')->find($this->request_id);
         $this->items = [];
         foreach ($request->inventories as $inventory) {
             $this->items[] = [

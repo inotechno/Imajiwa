@@ -4,7 +4,7 @@ namespace App\Livewire\ItemRequest;
 
 use App\Models\CategoryInventory;
 use App\Models\Inventory;
-use App\Models\Request;
+use App\Models\RequestItem;
 use App\Models\Notification;
 use App\Models\User;
 use Livewire\Component;
@@ -23,7 +23,7 @@ class ItemrequestForm extends Component
     public function mount($id = null)
     {
         $this->categories = CategoryInventory::get();
-        $request = Request::with('inventories')->find($id);
+        $request = RequestItem::with('inventories')->find($id);
 
         $chiefDirector = User::role('Director')->first();
         $this->director_id = $chiefDirector ? $chiefDirector->id : null;
