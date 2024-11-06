@@ -2,7 +2,7 @@
 
 namespace App\Livewire\ItemRequest;
 
-use App\Models\request;
+use App\Models\RequestItem;
 use Livewire\Component;
 use Livewire\Attributes\Url;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
@@ -40,7 +40,7 @@ class ItemrequestIndex extends Component
     }
     public function render()
     {
-        $requests = Request::with(['inventories' => function ($query) {
+        $requests = RequestItem::with(['inventories' => function ($query) {
             $query->when($this->search, function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%');
             });
