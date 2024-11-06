@@ -22,7 +22,7 @@ class AnnouncementItem extends Component
     public function deleteConfirm()
     {
         $this->alert('warning', 'Are you sure you want to delete this announcement?', [
-            'announcement' => 'center',
+            'position' => 'center',
             'timer' => null,
             'toast' => false,
 

@@ -22,7 +22,7 @@ class InventoryItem extends Component
     public function deleteConfirm()
     {
         $this->alert('warning', 'Are you sure you want to delete this inventory?', [
-            'inventory' => 'center',
+            'position' => 'center',
             'timer' => null,
             'toast' => false,
 
