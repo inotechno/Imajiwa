@@ -16,6 +16,6 @@ class RequestItem extends Model
 
     public function inventories()
     {
-        return $this->hasMany(Inventory::class);
+        return $this->hasMany(Inventory::class, 'request_id');
     }
 }

@@ -109,6 +109,44 @@
                                 @enderror
                             </div>
                         </div>
+                        <div class="row mb-4">
+                            <label for="images" class="col-form-label col-lg-2">Upload Images</label>
+                            <div class="col-lg-10">
+                                <input type="file" wire:model="images" multiple
+                                    class="form-control @error('images.*') is-invalid @enderror">
+                                @error('images.*')
+                                    <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <label for="preview" class="col-form-label col-lg-2">Image Preview</label>
+                            <div class="col-lg-10">
+                                <div class="d-flex flex-wrap">
+                                    @foreach ($images as $index => $image)
+                                        <div class="me-3 mb-3">
+                                            <img src="{{ $image->temporaryUrl() }}" alt="Image Preview"
+                                                class="img-thumbnail" width="100">
+                                            <button type="button" class="btn btn-danger btn-sm mt-1 m-2"
+                                                wire:click="removeImage({{ $index }})"><i
+                                                    class="fa fa-trash"></i></button>
+                                        </div>
+                                    @endforeach
+
+                                    @foreach ($existingImages ?? [] as $index => $existingImage)
+                                        <div class="me-3 mb-3">
+                                            <img src="{{ Storage::url($existingImage) }}" alt="Existing Image"
+                                                class="img-thumbnail" width="100">
+                                            <button type="button" class="btn btn-danger btn-sm mt-1 m-2"
+                                                wire:click="removeExistingImage({{ $index }})"><i
+                                                    class="fa fa-trash"></i></button>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="row justify-content-end">
                             <div class="col-lg-10">
                                 <button type="submit"class="btn btn-primary">

@@ -34,7 +34,7 @@ class Inventory extends Model
 
     public function request()
     {
-        return $this->belongsTo(RequestItem::class);
+        return $this->belongsTo(RequestItem::class, 'request_id');
     }
 
     // Check if approved by director
