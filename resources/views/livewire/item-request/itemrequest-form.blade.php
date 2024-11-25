@@ -40,8 +40,6 @@
                                         <th>Qty</th>
                                         <th>Price</th>
                                         <th>Purchase Date</th>
-                                        <th>Serial Number</th>
-                                        <th>Model</th>
                                         <th>Description</th>
                                         <th>Action</th>
                                     </tr>
@@ -74,15 +72,6 @@
                                             <td>
                                                 <input type="date"
                                                     wire:model="items.{{ $index }}.purchase_date"
-                                                    class="form-control">
-                                            </td>
-                                            <td>
-                                                <input type="text"
-                                                    wire:model="items.{{ $index }}.serial_number"
-                                                    class="form-control">
-                                            </td>
-                                            <td>
-                                                <input type="text" wire:model="items.{{ $index }}.model"
                                                     class="form-control">
                                             </td>
                                             <td>
