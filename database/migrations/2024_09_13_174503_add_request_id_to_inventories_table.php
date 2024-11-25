@@ -15,7 +15,7 @@ return new class extends Migration
             // Add only if the column does not exist
             if (!Schema::hasColumn('inventories', 'request_id')) {
                 $table->unsignedBigInteger('request_id')->nullable()->after('id');
-                $table->foreign('request_id')->references('id')->on('requests')->onDelete('cascade');
+                $table->foreign('request_id')->references('id')->on('request_items')->onDelete('cascade');
             }
 
             if (!Schema::hasColumn('inventories', 'director_id')) {

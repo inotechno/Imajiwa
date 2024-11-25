@@ -40,8 +40,6 @@ class ItemrequestForm extends Component
                     'id' => $inventory->id,
                     'name' => $inventory->name,
                     'description' => $inventory->description,
-                    'serial_number' => $inventory->serial_number,
-                    'model' => $inventory->model,
                     'qty' => $inventory->qty,
                     'price' => $inventory->price,
                     'purchase_date' => $inventory->purchase_date,
@@ -61,8 +59,6 @@ class ItemrequestForm extends Component
         return [
             'name' => '',
             'description' => '',
-            'serial_number' => '',
-            'model' => '',
             'qty' => '',
             'purchase_date' => '',
             'category_inventory_id' => null,
@@ -110,7 +106,7 @@ class ItemrequestForm extends Component
 
     public function store()
     {
-        $request = \App\Models\Request::create([
+        $request = RequestItem::create([
             'name' => $this->name,
         ]);
 
@@ -131,7 +127,7 @@ class ItemrequestForm extends Component
 
     public function update()
     {
-        $request = \App\Models\Request::find($this->request_id);
+        $request = RequestItem::find($this->request_id);
         $request->update([
             'name' => $this->name,
         ]);
@@ -165,7 +161,7 @@ class ItemrequestForm extends Component
                 'type' => 'item_request',
                 'message' => 'A new item request has been submitted',
                 'user_id' => $chiefDirector->id,
-                'notifiable_type' => 'App\Models\Request',
+                'notifiable_type' => 'App\Models\RequestItem;',
                 'notifiable_id' => $request->id,
                 'url' => route('item-request.detail', $request->id) // URL untuk melihat detail pengajuan barang
             ]);
@@ -177,7 +173,7 @@ class ItemrequestForm extends Component
                 'type' => 'item_request',
                 'message' => 'A new item request has been submitted',
                 'user_id' => $commissioner->id,
-                'notifiable_type' => 'App\Models\Request',
+                'notifiable_type' => 'App\Models\RequestItem;',
                 'notifiable_id' => $request->id,
                 'url' => route('item-request.detail', $request->id) // URL untuk melihat detail pengajuan barang
             ]);

@@ -7,15 +7,18 @@ use App\Models\Inventory;
 use App\Models\User;
 use Livewire\Component;
 use Illuminate\Support\Str;
+use Livewire\WithFileUploads;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class InventoryForm extends Component
 {
-    use LivewireAlert;
+    use LivewireAlert, WithFileUploads;
     public $inventory;
     public $serial_numbers;
     public $name, $description, $director_id, $commissioner_id, $director_approved_at, $commissioner_approved_at, $slug, $status_id, $category_inventory_id, $serial_number, $image_path, $image_url, $qr_code_path, $qr_code_url, $purchase_date, $price, $model, $qty;
     public $categories;
+    public $images = [];
+    public $existingImages = [];
     public $type = 'create';
 
     public function mount($id = null)
@@ -39,6 +42,7 @@ class InventoryForm extends Component
             $this->director_id = $this->inventory->director_id;
             $this->commissioner_id = $this->inventory->commissioner_id;
             $this->category_inventory_id = $this->inventory->category_inventory_id;
+            $this->existingImages = $this->inventory->image_path ? json_decode($this->inventory->image_path, true) : [];
             $this->type = 'update';
         } else {
             $this->serial_numbers = [''];
@@ -61,6 +65,26 @@ class InventoryForm extends Component
         $this->slug = Str::slug($value);
     }
 
+    public function updatedImages()
+    {
+        $this->validate([
+            'images.*' => 'image|max:2048', // Validasi setiap gambar (maksimal 2MB)
+        ]);
+    }
+
+    public function removeImage($index)
+    {
+        unset($this->images[$index]);
+        $this->images = array_values($this->images); // Reindex array
+    }
+
+    public function removeExistingImage($index)
+    {
+        unset($this->existingImages[$index]);
+        $this->existingImages = array_values($this->existingImages); // Reindex array
+    }
+
+
     public function save()
     {
         $this->validate([
@@ -70,10 +94,20 @@ class InventoryForm extends Component
             'model' => 'required',
             'qty' => 'required',
             'category_inventory_id' => 'required',
+            'images.*' => 'image|max:2048',
         ]);
 
         try {
             $serial_numbers = implode(',', $this->serial_numbers);
+
+            $uploadedImages = [];
+            foreach ($this->images as $image) {
+                $uploadedImages[] = $image->store('inventory-images', 'public');
+            }
+
+            // Gabungkan gambar lama dan baru
+            $allImages = array_merge($this->existingImages ?? [], $uploadedImages);
+
             if ($this->type == 'create') {
                 $this->inventory = Inventory::create([
                     'category_inventory_id' => $this->category_inventory_id,
@@ -87,6 +121,7 @@ class InventoryForm extends Component
                     'director_id' => $this->director_id,
                     'commissioner_approved_at' => now(),
                     'director_approved_at' => now(),
+                    'image_path' => json_encode($allImages),
                 ]);
             } else {
                 if ($this->inventory) {
@@ -98,6 +133,7 @@ class InventoryForm extends Component
                         'serial_number' => $serial_numbers,
                         'model' => $this->model,
                         'qty' => $this->qty,
+                        'image_path' => json_encode($allImages),
                     ]);
                 } else {
                     $this->alert('error', 'Error: Inventory not found.');
