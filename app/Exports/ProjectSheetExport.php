@@ -32,11 +32,23 @@ class ProjectSheetExport implements FromCollection, WithHeadings, WithMapping, W
             $producer,               
         ];
 
+        if ($project->additionalProjectManagers->isNotEmpty()) {
+            foreach ($project->additionalProjectManagers as $additionalManager) {
+                $rows[] = [
+                    '',              
+                    '',             
+                    '',              
+                    $additionalManager->user->name,  // Name of the additional project manager
+                ];
+            }
+        }
+
         if ($project->employees->isNotEmpty()) {
             foreach ($project->employees as $employee) {
                 $rows[] = [
                     '',              
                     '',             
+                    '',              
                     '',              
                     $employee->user->name,
                 ];
@@ -52,6 +64,7 @@ class ProjectSheetExport implements FromCollection, WithHeadings, WithMapping, W
             'No',
             'Project',
             'Producer',
+            'Additional Project Managers',
             'Tim',
         ];
     }
