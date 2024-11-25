@@ -25,7 +25,7 @@ class ItemrequestItem extends Component
     public function deleteConfirm()
     {
         $this->alert('warning', 'Are you sure you want to delete this request item?', [
-            'inventory' => 'center',
+            'position' => 'center',
             'timer' => null,
             'toast' => false,
 
@@ -46,11 +46,10 @@ class ItemrequestItem extends Component
     #[On('delete-inventory')]
     public function delete()
     {
-        Notification::where('notifiable_type', 'App\Models\ItemRequest')
-            ->where('notifiable_id', $this->item_request->id)
+        Notification::where('notifiable_type', 'App\Models\RequestItem')
+            ->where('notifiable_id', $this->request->id)
             ->delete();
-        $this->item_request->delete();
-        $this->inventory->delete();
+        $this->request->delete();
         $this->alert('success', 'request item deleted successfully');
         $this->dispatch('refreshIndex');
     }
