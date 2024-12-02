@@ -240,7 +240,7 @@
             <div class="dropdown-menu dropdown-menu-end">
                 <!-- item-->
                 @can('view:profile')
-                    <a class="dropdown-item" href="{{ route('profile.index') }}"><i
+                    <a class="dropdown-item" href="{{ route('profile.edit') }}"><i
                             class="bx bx-user font-size-16 align-middle me-1"></i>
                         <span key="t-profile">Profile</span></a>
                 @endcan

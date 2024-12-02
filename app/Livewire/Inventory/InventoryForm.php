@@ -109,6 +109,7 @@ class InventoryForm extends Component
             $allImages = array_merge($this->existingImages ?? [], $uploadedImages);
 
             if ($this->type == 'create') {
+                $randomQrCode = rand(100000000, 999999999);
                 $this->inventory = Inventory::create([
                     'category_inventory_id' => $this->category_inventory_id,
                     'name' => $this->name,
@@ -122,6 +123,7 @@ class InventoryForm extends Component
                     'commissioner_approved_at' => now(),
                     'director_approved_at' => now(),
                     'image_path' => json_encode($allImages),
+                    'qr_code_path' => $randomQrCode,
                 ]);
             } else {
                 if ($this->inventory) {
