@@ -53,7 +53,10 @@ class EmployeeIndex extends Component
             });
         })->when($this->position_id, function ($query) {
             $query->where('position_id', $this->position_id);
-        })->latest()->paginate($this->perPage);
+        })
+            ->whereNotNull('position_id')
+            ->latest()
+            ->paginate($this->perPage);
 
         return view('livewire.employee.employee-index', compact('employees'))->layout('layouts.app', ['title' => 'Employee List']);
     }

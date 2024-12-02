@@ -11,6 +11,20 @@
     <td>
         {{ $inventory->qty }}
     </td>
+    <td>
+        {{-- @if (!empty($inventory->qr_code_path))
+            <img src="data:image/png;base64,{{ DNS1D::getBarcodePNG($inventory->qr_code_path, 'UPCA', 2, 50) }}"
+                alt="Barcode {{ $inventory->qr_code_path }}">
+            <p>CODE - {{ $inventory->qr_code_path }}</p>
+        @else --}}
+        @if (!empty($inventory->qr_code_path))
+            <img src="data:image/png;base64,{{ DNS2D::getBarcodePNG($inventory->qr_code_path, 'QRCODE') }}"
+                alt="Barcode {{ $inventory->qr_code_path }}">
+            <p>CODE - {{ $inventory->qr_code_path }}</p>
+        @else
+            <span>No QR Code</span>
+        @endif
+    </td>
     <td>{{ $inventory->description }}</td>
     <td>
         @can('update:inventory')
