@@ -40,8 +40,10 @@ class DashboardIndex extends Component
     public $isEmployee;
     public $isFinance;
     public $isCommissioner;
+    public $isHR;
     public $isDirector;
     public $isProjectManager;
+    public $Manageprojects;
     public $isAdminsitrator;
 
     public function mount()
@@ -69,6 +71,7 @@ class DashboardIndex extends Component
             $this->totalProjects = \App\Models\Project::count();
             $this->myProjects = $this->employee->projects->count();
             $this->ManageProjects = $this->employee->managedProjects->count();
+            $this->Manageprojects = $this->employee->managedProjects;
 
             $this->announcements = Announcement::latest()->take(5)->get() ?: collect();
 
