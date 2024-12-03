@@ -173,7 +173,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if ($isProjectManager && $Manageprojects->count() > 0)
+                                    @if ($isProjectManager && $Manageprojects && $Manageprojects->count() > 0)
                                         @foreach ($Manageprojects as $project)
                                             <tr>
                                                 <th scope="row">{{ $loop->iteration }}</th>
