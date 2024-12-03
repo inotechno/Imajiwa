@@ -72,6 +72,7 @@ class DashboardIndex extends Component
             $this->myProjects = $this->employee->projects->count();
             $this->ManageProjects = $this->employee->managedProjects->count();
             $this->Manageprojects = $this->employee->managedProjects;
+            $this->projects = $this->employee->projects ?? collect();
 
             $this->announcements = Announcement::latest()->take(5)->get() ?: collect();
 
