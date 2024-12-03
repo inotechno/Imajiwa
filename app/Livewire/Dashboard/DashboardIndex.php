@@ -9,9 +9,11 @@ use App\Models\Attendance;
 use App\Models\LeaveRequest;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class DashboardIndex extends Component
 {
+    use WithPagination;
 
     public $attendances;
     public $employee;
@@ -67,13 +69,16 @@ class DashboardIndex extends Component
             $this->user = $this->employee->user;
             $this->attendances = $this->employee->attendances;
 
+            // $this->totalProjects = \App\Models\Project::count();
+            // $this->myProjects = $this->employee->projects->count();
+            // $this->ManageProjects = $this->employee->managedProjects->count();
 
-            $this->totalProjects = \App\Models\Project::count();
-            $this->myProjects = $this->employee->projects->count();
-            $this->ManageProjects = $this->employee->managedProjects->count();
             $this->Manageprojects = $this->employee->managedProjects;
-            $this->projects = $this->employee->projects ?? collect();
+            $this->projects = $this->employee->projects;
 
+            $this->project_status = $this->setProjectStatus();
+            $this->manage_project_status = $this->setManageProjectStatus();
+            
             $this->announcements = Announcement::latest()->take(5)->get() ?: collect();
 
             $this->absentRequests = AbsentRequest::where('employee_id', $this->employee->id)
@@ -93,6 +98,44 @@ class DashboardIndex extends Component
             $this->attendances = collect();
             $this->leaveRequests = collect();
         }
+    }
+
+    public function setProjectStatus()
+    {
+        $this->project_not_started = $this->projects->where('status', 'not_started')->count();
+        $this->project_in_progress = $this->projects->where('status', 'in_progress')->count();
+        $this->project_completed = $this->projects->where('status', 'completed')->count();
+        $this->project_cancelled = $this->projects->where('status', 'cancelled')->count();
+        $this->project_on_hold = $this->projects->where('status', 'on_hold')->count();
+
+        $project_status = [
+            'Completed' => ['count' => $this->project_completed, 'icon' => 'bx bx-check-circle'],
+            'Cancelled' => ['count' => $this->project_cancelled, 'icon' => 'bx bx-x-circle'],
+            'On Hold' => ['count' => $this->project_on_hold, 'icon' => 'bx bx-pause-circle'],
+            'Not Started' => ['count' => $this->project_not_started, 'icon' => 'bx bx-hourglass'],
+            'In Progress' => ['count' => $this->project_in_progress, 'icon' => 'bx bx-hourglass'],
+        ];
+
+        return $project_status;
+    }
+
+    public function setManageProjectStatus()
+    {
+        $this->project_not_started = $this->Manageprojects->where('status', 'not_started')->count();
+        $this->project_in_progress = $this->Manageprojects->where('status', 'in_progress')->count();
+        $this->project_completed = $this->Manageprojects->where('status', 'completed')->count();
+        $this->project_cancelled = $this->Manageprojects->where('status', 'cancelled')->count();
+        $this->project_on_hold = $this->Manageprojects->where('status', 'on_hold')->count();
+
+        $manage_project_status = [
+            'Completed' => ['count' => $this->project_completed, 'icon' => 'bx bx-check-circle'],
+            'Cancelled' => ['count' => $this->project_cancelled, 'icon' => 'bx bx-x-circle'],
+            'On Hold' => ['count' => $this->project_on_hold, 'icon' => 'bx bx-pause-circle'],
+            'Not Started' => ['count' => $this->project_not_started, 'icon' => 'bx bx-hourglass'],
+            'In Progress' => ['count' => $this->project_in_progress, 'icon' => 'bx bx-hourglass'],
+        ];
+
+        return $manage_project_status;
     }
 
     public function render()

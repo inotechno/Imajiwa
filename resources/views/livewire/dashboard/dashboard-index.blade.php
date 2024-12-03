@@ -132,6 +132,11 @@
                                 </div>
                             </div>
                         @endforeach
+                        <tr>
+                            <td colspan="5">
+                                {{ $ManageProjects->links() }}
+                            </td>
+                        </tr>
                     @else
                         @foreach ($project_status as $key => $value)
                             <div class="col-md-6">
