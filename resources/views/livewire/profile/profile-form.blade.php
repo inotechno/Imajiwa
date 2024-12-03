@@ -58,7 +58,6 @@
                             </div>
                         </div>
 
-
                         {{-- citizen  --}}
                         <div class="row mb-4">
                             <label for="citizen_id" class="col-form-label col-lg-2"> Citizen ID</label>
