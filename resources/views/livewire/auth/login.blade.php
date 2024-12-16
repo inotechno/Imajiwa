@@ -7,7 +7,7 @@
                     <!-- Video Column -->
                     <div class="col-md-7 d-md-flex justify-content-center align-items-center p-0">
                         <video style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" autoplay loop muted>
-                            <source src="{{ asset('video/ImajiwaColler.webm') }}" type="video/webm">
+                            <source src="{{ asset('video/ImajiwaColler.mp4') }}" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
                     </div>
