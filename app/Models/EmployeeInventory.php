@@ -31,6 +31,6 @@ class EmployeeInventory extends Model
 
     public function statusInventory()
     {
-        return $this->belongsTo(statusInventory::class, 'status_id');
+        return $this->belongsTo(StatusInventory::class, 'status_id');
     }
 }
