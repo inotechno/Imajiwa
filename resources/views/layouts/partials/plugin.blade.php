@@ -14,6 +14,7 @@
 
 {{-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
 {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script> --}}
+<script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.min.js"></script>
 <x-livewire-alert::scripts />
 <script>
     document.addEventListener('DOMContentLoaded', function() {
