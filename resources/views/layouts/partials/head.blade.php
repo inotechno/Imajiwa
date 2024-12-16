@@ -3,8 +3,8 @@
     <meta charset="utf-8" />
     <title>{{$title ?? ''}} | {{ config('app.name') }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
-    <meta content="Themesbrand" name="author" />
+    <meta content="DATABASE IMAJIWA" name="description" />
+    <meta content="IMAJIWA" name="author" />
     <meta name="csrf_token" value="{{ csrf_token() }}"/>
 
     <!-- App favicon -->
