@@ -6,11 +6,11 @@
                     <thead>
                         <tr>
                             <th scope="col">Name</th>
-                            <th scope="col">Model</th>
-                            <th scope="col">Serial Number</th>
+                            {{-- <th scope="col">Model</th>
+                            <th scope="col">Serial Number</th> --}}
                             <th scope="col">Qty</th>
                             <th scope="col">Barcode</th>
-                            <th scope="col">Description</th>
+                            <th scope="col">Image</th>
                             <th scope="col">Action</th>
                         </tr>
                     </thead>

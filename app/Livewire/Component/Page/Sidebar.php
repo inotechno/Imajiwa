@@ -32,6 +32,13 @@ class Sidebar extends Component
                     'permission' => 'view:import_master_data',
                 ],
                 [
+                    'name' => 'Status Inventory',
+                    'url' => '/status-inventory',
+                    'route' => 'status-inventory.index',
+                    'icon' => 'bx bx-upload',
+                    'permission' => 'view:status-inventory',
+                ],
+                [
                     'name' => 'Machine',
                     'url' => '/machine',
                     'route' => 'machine.index',
@@ -196,6 +203,13 @@ class Sidebar extends Component
                             'route' => 'inventory.index',
                             'icon' => 'bx bx-log-out-circle',
                             'permission' => 'view:inventory'
+                        ],
+                        [
+                            'name' => 'Employee Inventory',
+                            'url' => '/employee-inventory',
+                            'route' => 'employee-inventory.index',
+                            'icon' => 'bx bx-log-out-circle',
+                            'permission' => 'view:employee-inventory'
                         ],
                         [
                             'name' => 'Item Request',

@@ -221,6 +221,16 @@ class RoleSeeder extends Seeder
             'delete:item-request' => ['Finance', 'Administrator'],
             'approve:item-request' => ['Director', 'commissioner'],
 
+            'view:employee-inventory' => ['Finance', 'Administrator'],
+            'create:employee-inventory' => ['Finance', 'Administrator'],
+            'update:employee-inventory' => ['Finance', 'Administrator'],
+            'delete:employee-inventory' => ['Finance', 'Administrator'],
+            
+            'view:status-inventory' => ['Finance', 'Administrator'],
+            'create:status-inventory' => ['Finance', 'Administrator'],
+            'update:status-inventory' => ['Finance', 'Administrator'],
+            'delete:status-inventory' => ['Finance', 'Administrator'],
+
 
         ];
 
