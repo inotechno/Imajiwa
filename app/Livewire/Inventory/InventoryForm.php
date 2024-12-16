@@ -109,7 +109,7 @@ class InventoryForm extends Component
             $allImages = array_merge($this->existingImages ?? [], $uploadedImages);
 
             if ($this->type == 'create') {
-                $randomQrCode = rand(100000000, 999999999);
+                $randomQrCode = Str::random(4);
                 $this->inventory = Inventory::create([
                     'category_inventory_id' => $this->category_inventory_id,
                     'name' => $this->name,
@@ -149,6 +149,10 @@ class InventoryForm extends Component
             $this->alert('error', 'Error: ' . $e->getMessage());
         }
     }
+
+
+   
+
 
     public function render()
     {

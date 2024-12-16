@@ -8,7 +8,7 @@
     <meta name="csrf_token" value="{{ csrf_token() }}"/>
 
     <!-- App favicon -->
-    <link rel="shortcut icon" href="{{asset('images/favicon.ico') }}">
+    <link rel="shortcut icon" href="{{asset('images/logo-imajiwa.png') }}">
 
     @stack('styles')
 
