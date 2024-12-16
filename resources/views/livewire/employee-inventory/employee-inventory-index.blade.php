@@ -1,5 +1,5 @@
 <div>
-    @livewire('component.page.breadcrumb', ['breadcrumbs' => [['name' => 'Application', 'url' => '/'], ['name' => 'Inventory', 'url' => route('inventory.index')]]], key('breadcrumb'))
+    @livewire('component.page.breadcrumb', ['breadcrumbs' => [['name' => 'Application', 'url' => '/'], ['name' => 'Employee Inventory', 'url' => route('employee-inventory.index')]]], key('breadcrumb'))
 
     <div class="row">
         <div class="col-lg-12">
@@ -22,13 +22,7 @@
                         </div>
                         <div class="flex-shrink-0">
                             <button class="btn btn-warning me-3" wire:click="resetFilter">Reset Filter</button>
-                            <button wire:click="updateQrCodePathForEmpty" class="btn btn-primary">
-                                Update QR Code
-                            </button>
-                            {{-- <button class="btn btn-success" wire:click="downloadAllQrCodes">
-                                Download All QR Codes
-                            </button> --}}
-                            <a href="{{ route('inventory.create') }}" class="btn btn-primary">Create</a>
+                            <a href="{{ route('employee-inventory.create') }}" class="btn btn-primary">Create</a>
                         </div>
 
                     </div>
@@ -40,8 +34,8 @@
 
     <div class="row">
         <div class="col-lg">
-            @livewire('inventory.inventory-list', ['inventories' => $inventories->getCollection()], key('inventory-list'))
-            {{ $inventories->links() }}
+            @livewire('employee-inventory.employee-inventory-list', ['employeeInventories' => $employeeInventories->getCollection()], key('employee-inventory-list'))
+            {{ $employeeInventories->links() }}
         </div>
     </div>
 </div>

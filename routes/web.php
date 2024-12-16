@@ -52,7 +52,17 @@ use App\Livewire\Announcement\AnnouncementDetail;
 use App\Livewire\Categoryinventory\CategoryinventoryIndex;
 use App\Livewire\Categoryinventory\CategoryinventoryForm;
 use App\Livewire\Inventory\InventoryIndex;
+use App\Livewire\Inventory\InventoryDetail;
 use App\Livewire\Inventory\InventoryForm;
+use App\Livewire\Inventory\InventoryShow;
+use App\Livewire\StatusInventory\StatusInventoryIndex;
+use App\Livewire\StatusInventory\StatusInventoryForm;
+use App\Livewire\StatusInventory\StatusInventoryShow;
+use App\Livewire\StatusInventory\StatusInventoryItem;
+use App\Livewire\EmployeeInventory\EmployeeInventoryIndex;
+use App\Livewire\EmployeeInventory\EmployeeInventoryForm;
+use App\Livewire\EmployeeInventory\EmployeeInventoryShow;
+use App\Livewire\EmployeeInventory\EmployeeInventoryItem;
 use App\Livewire\ItemRequest\ItemrequestIndex;
 use App\Livewire\ItemRequest\ItemrequestForm;
 use App\Livewire\ItemRequest\ItemrequestDetail;
@@ -192,8 +202,21 @@ Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
 
     Route::group(['prefix' => 'inventory'], function () {
         Route::get('/', InventoryIndex::class)->name('inventory.index')->middleware('can:view:inventory');
+        Route::get('detail/{id}', InventoryDetail::class)->name('inventory.detail');
         Route::get('create', InventoryForm::class)->name('inventory.create')->middleware('can:create:inventory');
         Route::get('edit/{id}', InventoryForm::class)->name('inventory.edit')->middleware('can:update:inventory');
+    });
+
+    Route::group(['prefix' => 'status-inventory'], function () {
+        Route::get('/', StatusInventoryIndex::class)->name('status-inventory.index')->middleware('can:view:status-inventory');
+        Route::get('create', StatusInventoryForm::class)->name('status-inventory.create')->middleware('can:create:status-inventory');
+        Route::get('edit/{id}', StatusInventoryForm::class)->name('status-inventory.edit')->middleware('can:update:status-inventory');
+    });
+
+    Route::group(['prefix' => 'employee-inventory'], function () {
+        Route::get('/', EmployeeInventoryIndex::class)->name('employee-inventory.index')->middleware('can:view:employee-inventory');
+        Route::get('create', EmployeeInventoryForm::class)->name('employee-inventory.create')->middleware('can:create:employee-inventory');
+        Route::get('edit/{id}', EmployeeInventoryForm::class)->name('employee-inventory.edit')->middleware('can:update:employee-inventory');
     });
 
     Route::group(['prefix' => 'item-request'], function () {
@@ -207,3 +230,5 @@ Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
         Route::get('/', NotificationIndex::class)->name('notification.index');
     });
 });
+
+Route::get('inv/{code}', InventoryShow::class)->name('inventory.show');

@@ -37,6 +37,11 @@ class Inventory extends Model
         return $this->belongsTo(RequestItem::class, 'request_id');
     }
 
+    public function statusInventory()
+    {
+        return $this->belongsTo(statusInventory::class, 'status_id');
+    }
+
     // Check if approved by director
     public function isApprovedByDirector()
     {

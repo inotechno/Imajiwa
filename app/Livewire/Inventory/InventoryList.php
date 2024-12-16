@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\Attributes\Reactive;
 
 
+
 class InventoryList extends Component
 {
     #[Reactive]
