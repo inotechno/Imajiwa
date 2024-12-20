@@ -130,31 +130,10 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        @endforeach
-                        <tr>
-                            <td colspan="5" class="text-center">No data</td>
-                        </tr>
-                    @else
-                        @foreach ($project_status as $key => $value)
-                            <div class="col-md-6">
-                                <div class="card mini-stats-wid">
-                                    <div class="card-body">
-                                        <div class="d-flex">
-                                            <div class="flex-grow-1">
-                                                <p class="text-muted fw-medium mb-2">{{ $key }}</p>
-                                                <h4 class="mb-0">{{ $value['count'] }}</h4>
-                                            </div>
-
-                                            <div class="flex-shrink-0 align-self-center">
-                                                <div class="mini-stat-icon avatar-sm rounded-circle bg-primary">
-                                                    <span class="avatar-title">
-                                                        <i class="{{ $value['icon'] }} font-size-24"></i>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="mt-4">
+                                    <a href="javascript: void(0);"
+                                        class="btn btn-primary waves-effect waves-light btn-sm">View
+                                        Profile <i class="mdi mdi-arrow-right ms-1"></i></a>
                                 </div>
                             </div>
                         @endforeach
