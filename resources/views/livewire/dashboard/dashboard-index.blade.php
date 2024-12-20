@@ -133,9 +133,7 @@
                             </div>
                         @endforeach
                         <tr>
-                            <td colspan="5">
-                                {{ $ManageProjects->links() }}
-                            </td>
+                            <td colspan="5" class="text-center">No data</td>
                         </tr>
                     @else
                         @foreach ($project_status as $key => $value)
