@@ -46,19 +46,18 @@ class DashboardIndex extends Component
     public $isDirector;
     public $isProjectManager;
     public $Manageprojects;
-    public $isAdminsitrator;
+    public $isAdministrator;
 
     public function mount()
     {
         $this->user = Auth::user();
         $this->name = $this->user->name;
-        // $employee = $this->user->employee;
         $this->employee = Employee::with('user', 'position')->where('user_id', $this->user->id)->first();
 
 
         $this->isEmployee = $this->user->hasRole('Employee');
         $this->isProjectManager = $this->user->hasRole('Project Manager');
-        $this->isAdminsitrator = $this->user->hasRole('Administrator');
+        $this->isAdministrator = $this->user->hasRole('Administrator');
         $this->isFinance = $this->user->hasRole('Finance');
         $this->isDirector = $this->user->hasRole('Director');
         $this->isCommissioner = $this->user->hasRole('Commissioner');
@@ -68,30 +67,14 @@ class DashboardIndex extends Component
             $this->position = $this->employee->position;
             $this->user = $this->employee->user;
             $this->attendances = $this->employee->attendances;
-
-            // $this->totalProjects = \App\Models\Project::count();
-            // $this->myProjects = $this->employee->projects->count();
-            // $this->ManageProjects = $this->employee->managedProjects->count();
-
             $this->Manageprojects = $this->employee->managedProjects;
             $this->projects = $this->employee->projects;
-
             $this->project_status = $this->setProjectStatus();
             $this->manage_project_status = $this->setManageProjectStatus();
-            
             $this->announcements = Announcement::latest()->take(5)->get() ?: collect();
-
-            $this->absentRequests = AbsentRequest::where('employee_id', $this->employee->id)
-                ->whereMonth('start_date', now()->month)
-                ->get();
-
-            $this->attendances = Attendance::where('employee_id', $this->employee->id)
-                ->whereMonth('timestamp', now()->month)
-                ->get();
-
-            $this->leaveRequests = LeaveRequest::where('employee_id', $this->employee->id)
-                ->whereMonth('start_date', now()->month)
-                ->get();
+            $this->absentRequests = AbsentRequest::where('employee_id', $this->employee->id)->whereMonth('start_date', now()->month)->get();
+            $this->attendances = Attendance::where('employee_id', $this->employee->id)->whereMonth('timestamp', now()->month)->get();
+            $this->leaveRequests = LeaveRequest::where('employee_id', $this->employee->id)->whereMonth('start_date', now()->month)->get();
         } else {
             $this->announcements = collect();
             $this->absentRequests = collect();

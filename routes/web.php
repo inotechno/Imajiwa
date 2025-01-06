@@ -67,6 +67,7 @@ use App\Livewire\ItemRequest\ItemrequestIndex;
 use App\Livewire\ItemRequest\ItemrequestForm;
 use App\Livewire\ItemRequest\ItemrequestDetail;
 use App\Livewire\Notification\NotificationIndex;
+use App\Livewire\Report\ReportAttendance;
 
 /*
 |--------------------------------------------------------------------------
@@ -229,6 +230,12 @@ Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
     Route::group(['prefix' => 'notification'], function () {
         Route::get('/', NotificationIndex::class)->name('notification.index');
     });
+    
+
+    Route::get('/report-attendance', ReportAttendance::class)
+           ->name('report.attendance')
+           ->middleware('can:view:report-attendance');
+    
 });
 
 Route::get('inv/{code}', InventoryShow::class)->name('inventory.show');

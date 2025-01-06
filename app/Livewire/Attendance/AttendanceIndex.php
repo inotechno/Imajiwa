@@ -47,6 +47,7 @@ class AttendanceIndex extends Component
 
     public function render()
     {
+        $currentYear = now()->year;
         $attendances = Attendance::with(['employee.user', 'machine', 'site', 'attendanceMethod'])
             ->when($this->search, function ($query) {
                 $query->whereHas('employee.user', function ($query) {
@@ -58,6 +59,9 @@ class AttendanceIndex extends Component
             })
             ->when($this->end_date, function ($query) {
                 $query->whereDate('timestamp', '<=', $this->end_date);
+            })
+            ->when(!$this->start_date && !$this->end_date, function ($query) use ($currentYear) {
+                $query->whereYear('timestamp', $currentYear);
             })
             ->select('employee_id')
             ->selectRaw('DATE(timestamp) as date')
