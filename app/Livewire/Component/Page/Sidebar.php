@@ -276,38 +276,38 @@ class Sidebar extends Component
         //         [
         //             'name' => 'Report Attendance',
         //             'url' => '/report-attendance',
-        //             'route' => 'report-attendance.index',
+        //             'route' => 'report.attendance',
         //             'icon' => 'bx bx-bar-chart-alt-2',
         //             'permission' => 'view:report-attendance'
         //         ],
-        //         [
-        //             'name' => 'Report absent',
-        //             'url' => '/report-absent-request',
-        //             'route' => 'report-absent-request.index',
-        //             'icon' => 'bx bx-bar-chart-alt-2',
-        //             'permission' => 'view:report-absent-request'
-        //         ],
-        //         [
-        //             'name' => 'Report Leave',
-        //             'url' => '/report-leave-request',
-        //             'route' => 'report-leave-request.index',
-        //             'icon' => 'bx bx-bar-chart-alt-2',
-        //             'permission' => 'view:report-leave-request'
-        //         ],
-        //         [
-        //             'name' => 'Report Financial',
-        //             'url' => '/report-financial-request',
-        //             'route' => 'report-financial-request.index',
-        //             'icon' => 'bx bx-bar-chart-alt-2',
-        //             'permission' => 'view:report-financial-request'
-        //         ],
-        //         [
-        //             'name' => 'Report Visit',
-        //             'url' => '/report-visit-request',
-        //             'route' => 'report-visit-request.index',
-        //             'icon' => 'bx bx-bar-chart-alt-2',
-        //             'permission' => 'view:report-visit'
-        //         ],
+                // [
+                //     'name' => 'Report absent',
+                //     'url' => '/report-absent-request',
+                //     'route' => 'report-absent-request.index',
+                //     'icon' => 'bx bx-bar-chart-alt-2',
+                //     'permission' => 'view:report-absent-request'
+                // ],
+                // [
+                //     'name' => 'Report Leave',
+                //     'url' => '/report-leave-request',
+                //     'route' => 'report-leave-request.index',
+                //     'icon' => 'bx bx-bar-chart-alt-2',
+                //     'permission' => 'view:report-leave-request'
+                // ],
+                // [
+                //     'name' => 'Report Financial',
+                //     'url' => '/report-financial-request',
+                //     'route' => 'report-financial-request.index',
+                //     'icon' => 'bx bx-bar-chart-alt-2',
+                //     'permission' => 'view:report-financial-request'
+                // ],
+                // [
+                //     'name' => 'Report Visit',
+                //     'url' => '/report-visit-request',
+                //     'route' => 'report-visit-request.index',
+                //     'icon' => 'bx bx-bar-chart-alt-2',
+                //     'permission' => 'view:report-visit'
+                // ],
         //     ]
         // ],
         // [

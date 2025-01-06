@@ -180,15 +180,14 @@ class RoleSeeder extends Seeder
             'approve:leave-request' => ['Employee', 'HR', 'Finance', 'Director', 'Administrator'],
 
             // Report
-            'view:report-attendance' => ['Employee', 'Finance', 'HR', 'Director', 'Administrator'],
-            // 'view:report-daily-report' => ['Employee', 'Finance', 'HR', 'Director', 'Administrator'],
-            'view:report-financial-request' => ['Employee', 'Finance', 'Director', 'Administrator'],
-            'view:report-absent-request' => ['Employee', 'HR', 'Director', 'Administrator'],
-            'view:report-leave-request' => ['Employee', 'HR', 'Director', 'Administrator'],
-            'view:report-visit' => ['Employee', 'HR', 'Director', 'Administrator'],
+            'view:report-attendance' => ['Finance', 'Administrator'],
+            'view:report-daily-report' => ['Finance', 'Administrator'],
+            'view:report-financial-request' => ['Finance','Administrator'],
+            'view:report-absent-request' => ['Finance', 'Administrator'],
+            'view:report-leave-request' => ['Finance', 'Administrator'],
 
             // Project
-            'view:project-all' => ['HR', 'Finance', 'Director', 'Administrator', 'Project Manager', 'Employee','commissioner'],
+            'view:project-all' => ['HR', 'Finance', 'Director', 'Administrator', 'Project Manager', 'Employee', 'commissioner'],
             'view:project' => ['Employee', 'Project Manager'],
             'create:project' => ['Administrator', 'Project Manager'],
             'update:project' => ['Administrator', 'Project Manager'],
@@ -196,8 +195,8 @@ class RoleSeeder extends Seeder
             'export:project' => ['Administrator', 'Finance'],
 
             // Profile
-            'view:profile' => ['Employee', 'HR', 'Director', 'Project Manager', 'Finance','commissioner'],
-            'update:profile' => ['Employee', 'HR', 'Director', 'Project Manager', 'Finance','commissioner'],
+            'view:profile' => ['Employee', 'HR', 'Director', 'Project Manager', 'Finance', 'commissioner'],
+            'update:profile' => ['Employee', 'HR', 'Director', 'Project Manager', 'Finance', 'commissioner'],
 
             //inventory
             'view:category-inventory-all' => ['Finance', 'Director', 'Administrator', 'commissioner'],
@@ -225,13 +224,11 @@ class RoleSeeder extends Seeder
             'create:employee-inventory' => ['Finance', 'Administrator'],
             'update:employee-inventory' => ['Finance', 'Administrator'],
             'delete:employee-inventory' => ['Finance', 'Administrator'],
-            
+
             'view:status-inventory' => ['Finance', 'Administrator'],
             'create:status-inventory' => ['Finance', 'Administrator'],
             'update:status-inventory' => ['Finance', 'Administrator'],
             'delete:status-inventory' => ['Finance', 'Administrator'],
-
-
         ];
 
         foreach ($permissions as $permissionName => $roles) {
