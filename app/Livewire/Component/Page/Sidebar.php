@@ -129,9 +129,24 @@ class Sidebar extends Component
                 [
                     'name' => 'Project',
                     'url' => '/project',
-                    'route' => 'project.index',
                     'icon' => 'bx bx-briefcase-alt',
-                    'permission' => 'view:project'
+                    'permission' => 'view:project',
+                    'subMenus' => [
+                        [
+                            'name' => 'My Project',
+                            'url' => '/project',
+                            'route' => 'project.index',
+                            'icon' => 'bx bx-log-out-circle',
+                            'permission' => 'view:project'
+                        ],
+                        [
+                            'name' => 'Team Project',
+                            'url' => '/project/team',
+                            'route' => 'project-team.index',
+                            'icon' => 'bx bx-log-out-circle',
+                            'permission' => 'view:project'
+                        ],
+                    ],
                 ],
                 [
                     'name' => 'Attendance',
@@ -270,16 +285,16 @@ class Sidebar extends Component
                 ],
             ]
         ],
-        // [
-        //     'title' => 'Report',
-        //     'menus' => [
-        //         [
-        //             'name' => 'Report Attendance',
-        //             'url' => '/report-attendance',
-        //             'route' => 'report.attendance',
-        //             'icon' => 'bx bx-bar-chart-alt-2',
-        //             'permission' => 'view:report-attendance'
-        //         ],
+         [
+             'title' => 'Report',
+             'menus' => [
+                 [
+                     'name' => 'Report Attendance',
+                     'url' => '/report-attendance',
+                     'route' => 'report.attendance',
+                     'icon' => 'bx bx-bar-chart-alt-2',
+                     'permission' => 'view:report'
+                 ],
                 // [
                 //     'name' => 'Report absent',
                 //     'url' => '/report-absent-request',
@@ -308,8 +323,8 @@ class Sidebar extends Component
                 //     'icon' => 'bx bx-bar-chart-alt-2',
                 //     'permission' => 'view:report-visit'
                 // ],
-        //     ]
-        // ],
+            ]
+        ],
         // [
         //     'title' => 'Setting',
         //     'menus' => [

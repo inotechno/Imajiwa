@@ -164,7 +164,12 @@
 
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title mb-4">My Projects</h4>
+                            <div class="d-flex justify-content-between">
+                                <h4 class="card-title mb-4">My Projects</h4>
+                                <div class="mb-3">
+                                    <a href="{{ route('project.index') }}" class="btn btn-sm btn-primary">Go to all My Projects</a>
+                                </div>
+                            </div>
                             <div class="table-responsive">
                                 <table class="table table-nowrap table-hover mb-0">
                                     <thead>
@@ -177,8 +182,8 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @if ($isProjectManager && $Manageprojects && $Manageprojects->count() > 0)
-                                            @foreach ($Manageprojects as $project)
+                                        @if ($isProjectManager && $inProgressProjects && $inProgressProjects->count() > 0)
+                                            @foreach ($inProgressProjects as $project)
                                                 <tr>
                                                     <th scope="row">{{ $loop->iteration }}</th>
                                                     <td>{{ $project->name }}</td>
@@ -187,8 +192,8 @@
                                                     <td>{{ ucfirst(str_replace('_', ' ', $project->status)) }}</td>
                                                 </tr>
                                             @endforeach
-                                        @elseif ($projects->count() > 0)
-                                            @foreach ($projects as $project)
+                                        @elseif ($inProgressEmployeeProjects->count() > 0)
+                                            @foreach ($inProgressEmployeeProjects as $project)
                                                 <tr>
                                                     <th scope="row">{{ $loop->iteration }}</th>
                                                     <td>{{ $project->name }}</td>
@@ -404,7 +409,6 @@
             </div>
         </div>
     @endif
-
 
     @push('js')
         <!-- apexcharts -->
