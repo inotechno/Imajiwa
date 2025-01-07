@@ -67,6 +67,7 @@ use App\Livewire\ItemRequest\ItemrequestIndex;
 use App\Livewire\ItemRequest\ItemrequestForm;
 use App\Livewire\ItemRequest\ItemrequestDetail;
 use App\Livewire\Notification\NotificationIndex;
+use App\Livewire\Project\ProjectTeam;
 use App\Livewire\Report\ReportAttendance;
 
 /*
@@ -113,6 +114,7 @@ Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
 
     Route::group(['prefix' => 'project'], function () {
         Route::get('/', ProjectIndex::class)->name('project.index')->middleware('can:view:project');
+        Route::get('team', ProjectTeam::class)->name('project-team.index')->middleware('can:view:project');
         Route::get('detail/{id}', ProjectDetail::class)->name('project.detail')->middleware('can:view:project');
         Route::get('create', ProjectForm::class)->name('project.create')->middleware('can:create:project');
         Route::get('edit/{id}', ProjectForm::class)->name('project.edit')->middleware('can:update:project');

@@ -11,7 +11,7 @@ use Livewire\WithPagination;
 use App\Exports\ProjectSheetExport;
 use Maatwebsite\Excel\Facades\Excel;
 
-class ProjectIndex extends Component
+class ProjectTeam extends Component
 {
     use LivewireAlert, WithPagination;
 
@@ -41,7 +41,6 @@ class ProjectIndex extends Component
         return Excel::download(new ProjectSheetExport(), 'projects.xlsx');
     }
 
-
     public function render()
     {
         $projects = Project::with('employees.user', 'projectManager.user')->when($this->search, function ($query) {
@@ -56,31 +55,16 @@ class ProjectIndex extends Component
             $query->where('status', $this->status);
         })->orderBy('end_date', 'asc');
 
-        // if (Auth::user()->can('view:project-all')) {
-        //     $projects = $projects->paginate($this->perPage);
-        // } else if (Auth::user()->hasRole('Project Manager')) {
-        //     $projects = $projects->where('employee_id', Auth::user()->employee->id)->paginate($this->perPage);
-        // } else {
-        //     $projects = $projects->whereHas('employees', function ($query) {
-        //         $query->where('employee_id', Auth::user()->employee->id);
-        //     })->paginate($this->perPage);
-        // }
-
-        // Mengecek apakah user adalah Project Manager atau karyawan biasa
-        if (Auth::user()->hasRole('Project Manager')) {
-            // Jika Project Manager, tampilkan proyek yang dikelola oleh mereka (projectManager)
-            $projects = $projects->where('employee_id', Auth::user()->employee->id);
+        if (Auth::user()->can('view:project-all')) {
+            $projects = $projects->paginate($this->perPage);
+        } else if (Auth::user()->hasRole('Project Manager')) {
+            $projects = $projects->where('employee_id', Auth::user()->employee->id)->paginate($this->perPage);
         } else {
-            // Jika bukan Project Manager, tampilkan proyek yang melibatkan karyawan (employees)
             $projects = $projects->whereHas('employees', function ($query) {
                 $query->where('employee_id', Auth::user()->employee->id);
-            });
+            })->paginate($this->perPage);
         }
 
-        // Filter untuk proyek yang terkait dengan karyawan yang login
-        // Proyek yang dikelola oleh project manager atau yang melibatkan karyawan dalam tabel pivot
-        $projects = $projects->paginate($this->perPage);
-
-        return view('livewire.project.project-index', compact('projects'))->layout('layouts.app', ['title' => 'Project List']);
+        return view('livewire.project.project-team' , compact('projects'))->layout('layouts.app', ['title' => 'Project List']);
     }
 }
