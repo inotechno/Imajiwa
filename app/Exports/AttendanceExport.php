@@ -9,8 +9,10 @@ use App\Models\AbsentRequest;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class AttendanceExport implements FromCollection, WithHeadings
+class AttendanceExport implements FromCollection, WithHeadings, WithStyles
 {
     protected $employee_id;
     protected $periode_start;
@@ -37,14 +39,12 @@ class AttendanceExport implements FromCollection, WithHeadings
             $row = [];
             $row[] = $employee->user->name;
 
-            // Menyimpan jumlah absent dan leave dalam periode yang relevan
             $totalAbsent = 0;
             $totalLeave = 0;
 
             for ($date = $startDate->copy(); $date <= $endDate; $date->addDay()) {
                 $currentDate = $date->format('Y-m-d');
 
-                // Prioritaskan LeaveRequest
                 $leaveRequest = LeaveRequest::where('employee_id', $employee->id)
                     ->whereDate('start_date', '<=', $currentDate)
                     ->whereDate('end_date', '>=', $currentDate)
@@ -52,11 +52,10 @@ class AttendanceExport implements FromCollection, WithHeadings
 
                 if ($leaveRequest) {
                     $row[] = 'L';
-                    $totalLeave++;  // Hitung jumlah leave pada tanggal ini
+                    $totalLeave++;
                     continue;
                 }
 
-                // Cek AbsentRequest
                 $absentRequest = AbsentRequest::where('employee_id', $employee->id)
                     ->whereDate('start_date', '<=', $currentDate)
                     ->whereDate('end_date', '>=', $currentDate)
@@ -64,29 +63,27 @@ class AttendanceExport implements FromCollection, WithHeadings
 
                 if ($absentRequest) {
                     $row[] = 'A';
-                    $totalAbsent++;  // Hitung jumlah absen pada tanggal ini
+                    $totalAbsent++;
                     continue;
                 }
 
-                // Ambil data kehadiran untuk tanggal ini
                 $attendance = Attendance::where('employee_id', $employee->id)
-                    ->whereDate('timestamp', $date) // Filter berdasarkan tanggal
-                    ->first(); // Ambil record pertama untuk tanggal ini
+                    ->whereDate('timestamp', $date)
+                    ->first();
 
                 if (!$attendance) {
-                    $row[] = '-'; // Tidak hadir
+                    $row[] = '-';
                 } else {
-                    $row[] = 'P'; // Hadir dengan jam
+                    $row[] = 'P';
                 }
             }
 
-            // Tambahkan summary ke baris data (jumlah absen, leave, dan kehadiran dalam periode yang relevan)
-            $row[] = $totalAbsent;  // Total Absent dalam periode
-            $row[] = $totalLeave;   // Total Leave dalam periode
+            $row[] = $totalAbsent;
+            $row[] = $totalLeave;
             $row[] = Attendance::where('employee_id', $employee->id)
                 ->whereDate('timestamp', '>=', $startDate)
                 ->whereDate('timestamp', '<=', $endDate)
-                ->count();  // Total hadir dalam periode
+                ->count();
 
             $data[] = $row;
         }
@@ -94,24 +91,48 @@ class AttendanceExport implements FromCollection, WithHeadings
         return collect($data);
     }
 
-
-
     public function headings(): array
     {
         $startDate = Carbon::parse($this->periode_start);
         $endDate = Carbon::parse($this->periode_end);
 
-        // Menyiapkan kolom berdasarkan rentang tanggal
         $columns = ['Nama'];
         for ($date = $startDate->copy(); $date <= $endDate; $date->addDay()) {
-            $columns[] = $date->format('d/m'); // Format tanggal sesuai yang diinginkan (contoh: '01/01')
+            $columns[] = $date->format('d/m');
         }
 
-        // Menambahkan kolom untuk summary
         $columns[] = 'Absent';
         $columns[] = 'Leave';
-        // $columns[] = 'No Attendance';
 
         return $columns;
+    }
+
+    public function styles(Worksheet $sheet)
+    {
+        $highestRow = $sheet->getHighestRow();
+        $highestColumn = $sheet->getHighestColumn();
+
+        // Apply color to cells with 'P', 'L', 'A'
+        foreach ($sheet->getRowIterator() as $row) {
+            foreach ($row->getCellIterator() as $cell) {
+                if ($cell->getColumn() != 'A' && $cell->getValue() != null) { // Skip 'Nama' column
+                    $value = $cell->getValue();
+                    switch ($value) {
+                        case 'P':
+                            $cell->getStyle()->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+                            $cell->getStyle()->getFill()->getStartColor()->setRGB('D4E7D9'); // Green
+                            break;
+                        case 'L':
+                            $cell->getStyle()->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+                            $cell->getStyle()->getFill()->getStartColor()->setRGB('FFD966'); // Yellow
+                            break;
+                        case 'A':
+                            $cell->getStyle()->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+                            $cell->getStyle()->getFill()->getStartColor()->setRGB('F4CCCC'); // Red
+                            break;
+                    }
+                }
+            }
+        }
     }
 }
