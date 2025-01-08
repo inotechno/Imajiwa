@@ -31,7 +31,8 @@
 
                         <!-- Tombol Preview -->
                         <button type="submit" class="btn btn-primary mt-3">Preview</button>
-                        <button type="button" wire:click="exportReport" class="btn btn-success mt-3">Export to Excel</button>
+                        <button type="button" wire:click="exportReport" class="btn btn-success mt-3">Export to
+                            Excel</button>
                     </div>
                 </div>
 
@@ -63,7 +64,19 @@
                                         <tr>
                                             <td>{{ $row['name'] }}</td>
                                             @foreach ($columns as $column)
-                                                <td>{{ $row['data'][$column] ?? '-' }}</td>
+                                                <td
+                                                    class="
+                                            @if (isset($row['data'][$column])) @if ($row['data'][$column] == 'P') bg-success text-white 
+                                                @elseif ($row['data'][$column] == 'L') bg-warning text-dark 
+                                                @elseif ($row['data'][$column] == 'A') bg-danger text-white
+                                                @else
+                                                    bg-secondary text-white @endif
+@else
+bg-secondary text-white
+                                            @endif
+                                        ">
+                                                    {{ $row['data'][$column] ?? '-' }}
+                                                </td>
                                             @endforeach
                                             <td>{{ $row['summary']['total_absent'] }}</td>
                                             <td>{{ $row['summary']['total_leave'] }}</td>
