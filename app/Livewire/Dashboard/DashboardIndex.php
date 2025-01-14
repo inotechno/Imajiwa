@@ -134,6 +134,7 @@ class DashboardIndex extends Component
         return view('livewire.dashboard.dashboard-index' , [
             'inProgressProjects' => $inProgressProjects,
             'inProgressEmployeeProjects' => $inProgressEmployeeProjects,
+            'isAdministrator' => $this->isAdministrator,
         ])->layout('layouts.app', ['title' => 'Dashboard']);
     }
 }

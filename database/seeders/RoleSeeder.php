@@ -188,7 +188,18 @@ class RoleSeeder extends Seeder
             'create:project' => ['Administrator', 'Project Manager'],
             'update:project' => ['Administrator', 'Project Manager'],
             'delete:project' => ['Administrator', 'Project Manager'],
-            'export:project' => ['Administrator', 'Finance'],
+            'export:project' => ['Administrator', 'Finance', 'Project Manager'],
+
+            'view:client' => ['Administrator', 'Project Manager'],
+            'create:client' => ['Administrator', 'Project Manager'],
+            'update:client' => ['Administrator', 'Project Manager'],
+            'delete:client' => ['Administrator', 'Project Manager'],
+
+            // Category Project
+            'view:category-project' => ['Administrator', 'Project Manager'],
+            'create:category-project' => ['Administrator', 'Project Manager'],
+            'update:category-project' => ['Administrator', 'Project Manager'],
+            'delete:category-project' => ['Administrator',  'Project Manager'],
 
             // Profile
             'view:profile' => ['Employee', 'HR', 'Director', 'Project Manager', 'Finance', 'commissioner'],

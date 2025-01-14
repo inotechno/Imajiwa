@@ -8,7 +8,7 @@ use Livewire\Component;
 class ProjectDetail extends Component
 {
     public $project;
-    public $name, $description, $start_date, $end_date, $status, $employee_id;
+    public $name, $description, $start_date, $end_date, $status, $employee_id , $client_id, $category_id;
     public $selectedEmployees = [];
     public $additional_project_manager = [];
     public $projectManagerName;
@@ -17,7 +17,7 @@ class ProjectDetail extends Component
     public function mount($id = null)
     {
         if ($id) {
-            $this->project = \App\Models\Project::find($id);
+            $this->project = \App\Models\Project::with(['CategoryProject', 'client'])->find($id);
             $this->name = $this->project->name;
             $this->description = $this->project->description;
             $this->start_date = $this->project->start_date;

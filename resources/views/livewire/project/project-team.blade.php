@@ -38,6 +38,22 @@
                                 Reset
                             </button>
                         </div>
+
+                        @can('create:project')
+                            <div class="flex-shrink-0">
+                                {{-- Create Link Add Site --}}
+                                <a href="{{ route('project.create') }}"
+                                    class="btn btn-primary waves-effect waves-light">Create</a>
+                            </div>
+                        @endcan
+                        @can('export:project')
+                            <div class="flex-shrink-0">
+                                {{-- Export Button --}}
+                                <button type="button" class="btn btn-success waves-effect waves-light" wire:click="export">
+                                    Export
+                                </button>
+                            </div>
+                        @endcan
                     </div>
                 </div>
             </div>
@@ -76,5 +92,5 @@
             });
         </script>
     @endpush
-    
+
 </div>
