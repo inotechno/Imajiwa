@@ -70,7 +70,8 @@
                         </div>
 
                         <div class="row mb-4" wire:ignore>
-                            <label for="additional_project_manager" class="col-form-label col-lg-2">Another Project Manager</label>
+                            <label for="additional_project_manager" class="col-form-label col-lg-2">Another Project
+                                Manager</label>
                             <div class="col-lg-10">
                                 <select
                                     class="form-control select2-multiple @error('additional_project_manager') is-invalid @enderror"
@@ -83,6 +84,43 @@
                                 </select>
 
                                 @error('additional_project_manager')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <label for="category_id" class="col-form-label col-lg-2">Category</label>
+                            <div class="col-lg-10">
+                                <select class="form-control @error('category_id') is-invalid @enderror"
+                                    wire:model="category_id" id="category_id">
+                                    <option value="">Select Category</option>
+                                    @foreach ($categories as $category)
+                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('category_id')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+
+                        <div class="row mb-4">
+                            <label for="client_id" class="col-form-label col-lg-2">Client</label>
+                            <div class="col-lg-10">
+                                <select class="form-control @error('client_id') is-invalid @enderror"
+                                    wire:model="client_id" id="client_id">
+                                    <option value="">Select Client</option>
+                                    @foreach ($clients as $client)
+                                        <option value="{{ $client->id }}">{{ $client->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('client_id')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -131,9 +169,12 @@
                                 @enderror
                             </div>
                         </div>
+
+
                         <div class="row justify-content-end">
                             <div class="col-lg-10">
-                                <button type="submit" class="btn btn-primary">{{$type == 'create' ? 'Create' : 'Update '}}</button>
+                                <button type="submit"
+                                    class="btn btn-primary">{{ $type == 'create' ? 'Create' : 'Update ' }}</button>
                             </div>
                         </div>
                     </form>
@@ -156,6 +197,8 @@
                 initDatePicker();
                 let selectEmployeeElement = $('#employees');
                 let selectAdditionalManagerElement = $('#additional_project_manager');
+                let selectCategoryElement = $('#category_id');
+                let selectClientElement = $('#client_id');
 
                 function initDatePicker() {
                     $('#project-date-inputgroup').datepicker({
@@ -171,6 +214,24 @@
                         @this.set('end_date', endDate);
                     });
                 }
+
+                selectCategoryElement.select2({
+                    width: '100%',
+                    placeholder: "Select Category",
+                    allowClear: true,
+                }).on('change', function() {
+                    let selectedValue = $(this).val();
+                    Livewire.dispatch('changeSelectForm', ['category_id', selectedValue]);
+                });
+
+                selectClientElement.select2({
+                    width: '100%',
+                    placeholder: "Select Client",
+                    allowClear: true,
+                }).on('change', function() {
+                    let selectedValue = $(this).val();
+                    Livewire.dispatch('changeSelectForm', ['client_id', selectedValue]);
+                });
 
                 $('#status').select2({
                     width: '100%',
@@ -196,7 +257,11 @@
                     var status = @json($status);
                     var selectedEmployees = @json($selectedEmployees);
                     var additionalProjectManagers = @json($additional_project_manager);
+                    var categoryId = @json($category_id);
+                    var clientId = @json($client_id);
 
+                    selectCategoryElement.val(categoryId).trigger('change');
+                    selectClientElement.val(clientId).trigger('change');
                     $('#status').val(status).trigger('change');
                     selectEmployeeElement.val(selectedEmployees).trigger('change');
                     selectAdditionalManagerElement.val(additionalProjectManagers).trigger('change');

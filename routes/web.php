@@ -69,6 +69,10 @@ use App\Livewire\ItemRequest\ItemrequestDetail;
 use App\Livewire\Notification\NotificationIndex;
 use App\Livewire\Project\ProjectTeam;
 use App\Livewire\Report\ReportAttendance;
+use App\Livewire\Client\ClientIndex;
+use App\Livewire\Client\ClientForm;
+use App\Livewire\Categoryproject\CategoryProjectIndex;
+use App\Livewire\Categoryproject\CategoryProjectForm;
 
 /*
 |--------------------------------------------------------------------------
@@ -118,6 +122,20 @@ Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
         Route::get('detail/{id}', ProjectDetail::class)->name('project.detail')->middleware('can:view:project');
         Route::get('create', ProjectForm::class)->name('project.create')->middleware('can:create:project');
         Route::get('edit/{id}', ProjectForm::class)->name('project.edit')->middleware('can:update:project');
+    });
+
+    // Menambahkan route untuk Client
+    Route::group(['prefix' => 'client'], function () {
+        Route::get('/', ClientIndex::class)->name('client.index')->middleware('can:view:client');
+        Route::get('create', ClientForm::class)->name('client.create')->middleware('can:create:client');
+        Route::get('edit/{id}', ClientForm::class)->name('client.edit')->middleware('can:update:client');
+    });
+
+    // Menambahkan route untuk Category Project
+    Route::group(['prefix' => 'category-project'], function () {
+        Route::get('/', CategoryProjectIndex::class)->name('category-project.index')->middleware('can:view:category-project');
+        Route::get('create', CategoryProjectForm::class)->name('category-project.create')->middleware('can:create:category-project');
+        Route::get('edit/{id}', CategoryProjectForm::class)->name('category-project.edit')->middleware('can:update:category-project');
     });
 
     Route::group(['prefix' => 'role'], function () {
@@ -232,12 +250,11 @@ Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
     Route::group(['prefix' => 'notification'], function () {
         Route::get('/', NotificationIndex::class)->name('notification.index');
     });
-    
+
 
     Route::get('/report-attendance', ReportAttendance::class)
-           ->name('report.attendance')
-           ->middleware('can:view:report-attendance');
-    
+        ->name('report.attendance')
+        ->middleware('can:view:report-attendance');
 });
 
 Route::get('inv/{code}', InventoryShow::class)->name('inventory.show');

@@ -133,6 +133,20 @@ class Sidebar extends Component
                     'permission' => 'view:project',
                     'subMenus' => [
                         [
+                            'name' => 'Client',
+                            'url' => '/client',
+                            'route' => 'client-project.index',
+                            'icon' => 'bx bx-user',
+                            'permission' => 'view:client'
+                        ],
+                        [
+                            'name' => 'Category Project',
+                            'url' => '/category-project',
+                            'route' => 'category-project.index',
+                            'icon' => 'bx bx-category',
+                            'permission' => 'view:category-project'
+                        ],
+                        [
                             'name' => 'My Project',
                             'url' => '/project',
                             'route' => 'project.index',

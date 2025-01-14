@@ -59,6 +59,24 @@
                     </div>
 
                     <div class="row mb-4">
+                        <label for="category" class="col-form-label col-lg-2">Category</label>
+                        <div class="col-lg-10">
+                            <input id="category" name="category" type="text" class="form-control" readonly
+                                value="{{ $project->category->name ?? '-' }}">
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <label for="client" class="col-form-label col-lg-2">Client</label>
+                        <div class="col-lg-10">
+                            <input id="client" name="client" type="text" class="form-control" readonly
+                                value="{{ $project->client->name ?? '-' }}">
+                        </div>
+                    </div>
+                    
+
+
+                    <div class="row mb-4">
                         <label for="employees" class="col-form-label col-lg-2">Employees</label>
                         <div class="col-lg-10">
                             @php $counter = 1; @endphp

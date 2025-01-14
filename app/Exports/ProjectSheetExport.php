@@ -29,6 +29,8 @@ class ProjectSheetExport implements FromCollection, WithHeadings, WithMapping, W
         $rows[] = [
             $this->rowNumber++,            
             $project->name,         
+            $project->client_id,         
+            $project->category_id,         
             $producer,               
         ];
 
@@ -37,6 +39,8 @@ class ProjectSheetExport implements FromCollection, WithHeadings, WithMapping, W
                 $rows[] = [
                     '',              
                     '',             
+                    '',              
+                    '',              
                     '',              
                     $additionalManager->user->name,  // Name of the additional project manager
                 ];
@@ -48,6 +52,8 @@ class ProjectSheetExport implements FromCollection, WithHeadings, WithMapping, W
                 $rows[] = [
                     '',              
                     '',             
+                    '',              
+                    '',              
                     '',              
                     '',              
                     $employee->user->name,
@@ -63,6 +69,8 @@ class ProjectSheetExport implements FromCollection, WithHeadings, WithMapping, W
         return [
             'No',
             'Project',
+            'Client',
+            'Category',
             'Producer',
             'Additional Project Managers',
             'Tim',

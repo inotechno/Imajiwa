@@ -9,12 +9,20 @@ class Project extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'employee_id', 'code', 'description', 'start_date', 'end_date', 'status'];
+    protected $fillable = ['name', 'employee_id', 'category_id','client_id' ,'image' , 'code', 'description', 'start_date', 'end_date', 'status'];
 
 
     public function employees()
     {
         return $this->belongsToMany(Employee::class, 'projects_employees', 'project_id', 'employee_id');
+    }
+
+    public function client(){
+        return $this->belongsTo(Client::class);
+    }
+
+    public function CategoryProject(){
+        return $this->belongsTo(CategoryProject::class);
     }
 
     public function projectManager()

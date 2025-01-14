@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Project;
 
+use App\Models\CategoryProject;
+use App\Models\Client;
 use App\Models\Employee;
 use App\Models\Notification;
 use App\Models\Project;
@@ -14,9 +16,11 @@ class ProjectForm extends Component
 {
     use LivewireAlert;
     public $project;
-    public $name, $description, $start_date, $end_date, $status, $employee_id;
+    public $name, $description, $start_date, $end_date, $status, $employee_id, $client_id, $category_id;
     public $selectedEmployees = [];
     public $additional_project_manager = [];
+    public $categories = [];
+    public $clients = [];
     public $projectManagerName;
     public $employees;
     public $type = 'create';
@@ -31,6 +35,9 @@ class ProjectForm extends Component
             $this->end_date = $this->project->end_date;
             $this->status = $this->project->status;
             $this->employee_id = $this->project->employee_id;
+            $this->client_id = $this->project->client_id;
+            $this->category_id = $this->project->category_id;
+            $this->employee_id = $this->project->employee_id;
             $this->type = 'update';
 
             $this->projectManagerName = $this->project->projectManager->user->name ?? '';
@@ -41,6 +48,9 @@ class ProjectForm extends Component
             $this->employee_id = auth()->user()->employee->id;
             $this->projectManagerName = auth()->user()->employee->user->name;
         }
+
+        $this->categories = CategoryProject::all();
+        $this->clients = Client::all();
 
         $this->employees = Employee::with('user', 'position') // Mengambil relasi user dan position
             ->join('users', 'employees.user_id', '=', 'users.id') // Join ke tabel users
@@ -82,6 +92,8 @@ class ProjectForm extends Component
                 'end_date' => $this->end_date,
                 'status' => $this->status,
                 'employee_id' => $this->employee_id,
+                'category_id' => $this->category_id,
+                'client_id' => $this->client_id,
             ]);
 
             $this->project->employees()->attach($this->selectedEmployees);
@@ -93,6 +105,8 @@ class ProjectForm extends Component
                 'end_date' => $this->end_date,
                 'status' => $this->status,
                 'employee_id' => $this->employee_id,
+                'category_id' => $this->category_id,
+                'client_id' => $this->client_id,
             ]);
 
             $this->project->employees()->sync($this->selectedEmployees);
