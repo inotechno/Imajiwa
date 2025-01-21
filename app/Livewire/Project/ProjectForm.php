@@ -71,6 +71,8 @@ class ProjectForm extends Component
             'description' => 'required',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
+            'category_id' => 'nullable|integer',
+            'client_id' => 'nullable|integer',
             'status' => 'required',
         ]);
 
@@ -92,8 +94,8 @@ class ProjectForm extends Component
                 'end_date' => $this->end_date,
                 'status' => $this->status,
                 'employee_id' => $this->employee_id,
-                'category_id' => $this->category_id,
-                'client_id' => $this->client_id,
+                'category_id' => $this->category_id ?: null,
+                'client_id' => $this->client_id ?: null,
             ]);
 
             $this->project->employees()->attach($this->selectedEmployees);
@@ -105,8 +107,8 @@ class ProjectForm extends Component
                 'end_date' => $this->end_date,
                 'status' => $this->status,
                 'employee_id' => $this->employee_id,
-                'category_id' => $this->category_id,
-                'client_id' => $this->client_id,
+                'category_id' => $this->category_id ?: null,
+                'client_id' => $this->client_id ?: null,
             ]);
 
             $this->project->employees()->sync($this->selectedEmployees);
