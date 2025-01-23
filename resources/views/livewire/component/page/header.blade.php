@@ -30,12 +30,12 @@
         </button>
 
         <!-- App Search-->
-        <form class="app-search d-none d-lg-block">
+        {{-- <form class="app-search d-none d-lg-block">
             <div class="position-relative">
                 <input type="text" class="form-control" id="searchDropdown" placeholder="Search...">
                 <span class="bx bx-search-alt"></span>
             </div>
-        </form>
+        </form> --}}
 
         {{-- @livewire('component.page.dropdown-roles') --}}
 
