@@ -1,8 +1,8 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-6">
-            <script>
-                2024
+            <script type="text/javascript">
+                document.write(new Date().getFullYear());
             </script> © Imajiwa Creative House.
         </div>
         {{-- <div class="col-sm-6">

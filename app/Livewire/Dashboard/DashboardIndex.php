@@ -123,13 +123,13 @@ class DashboardIndex extends Component
 
     public function render()
     {
-        $inProgressProjects = $this->Manageprojects->filter(function ($project) {
+        $inProgressProjects = $this->Manageprojects ? $this->Manageprojects->filter(function ($project) {
             return $project->status === 'in_progress';
-        });
+        }): collect();
     
-        $inProgressEmployeeProjects = $this->projects->filter(function ($project) {
+        $inProgressEmployeeProjects = $this->projects ? $this->projects->filter(function ($project) {
             return $project->status === 'in_progress';
-        });
+        }): collect();
 
         return view('livewire.dashboard.dashboard-index' , [
             'inProgressProjects' => $inProgressProjects,
