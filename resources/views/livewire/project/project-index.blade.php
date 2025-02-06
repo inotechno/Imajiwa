@@ -12,15 +12,14 @@
             <div class="card">
                 <div class="card-body border-bottom">
                     <h4 class="card-title mb-4">Filter Site</h4>
-                    <div class="row row-cols-auto g-3 align-items-center">
-                        <div class="col flex-grow-1">
-                            <input type="search" class="form-control" wire:model.live="search"
+                    <div class="row g-3"> <!-- Menggunakan Grid -->
+                        <div class="col-md-3">
+                            <input type="search" class="form-control" id="searchInput" wire:model.live="search"
                                 placeholder="Search for Name Project Manager, Project Name">
                         </div>
-                        <div class="col">
-                            <select class="form-control select2 select-status" wire:model.live="status"
-                                data-placeholder="Select Status">
-                                <option></option>
+                        <div class="col-md-2" wire:ignore>
+                            <select class="form-control select2 select-status" wire:model.live="status">
+                                <option value="">Select Status</option>
                                 <option value="not_started">Not Started</option>
                                 <option value="in_progress">In Progress</option>
                                 <option value="completed">Completed</option>
@@ -28,35 +27,29 @@
                                 <option value="on_hold">On Hold</option>
                             </select>
                         </div>
-                        <div class="col">
-                            <select class="form-control select2 select-per-page" wire:model.live="perPage"
-                                data-placeholder="Select Per Page">
-                                <option></option>
+                        <div class="col-md-2" wire:ignore>
+                            <select class="form-control select2 select-per-page" wire:model.live="perPage">
+                                <option value="">Select Per Page</option>
                                 <option value="10">10</option>
                                 <option value="25">25</option>
                                 <option value="50">50</option>
                                 <option value="100">100</option>
                             </select>
                         </div>
-                        <div class="col">
-                            <select class="form-control select2 select-year" wire:model.live="year"
-                                data-placeholder="Select Year">
-                                <option></option>
+                        <div class="col-md-2" wire:ignore>
+                            <select class="form-control select2 select-year" wire:model.live="year">
+                                <option value="">Select Year</option>
                                 @foreach ($availableYears as $yearOption)
-                                    <option value="{{ $yearOption }}">{{ $yearOption }}</option>
-                                @endforeach
+                                <option value="{{ $yearOption }}">{{ $yearOption }}</option>
+                            @endforeach
                             </select>
                         </div>
-                        <div class="col">
-                            <button type="button" class="btn btn-warning w-100" wire:click="resetFilter">
-                                Reset
-                            </button>
+                        <div class="col-md-3 d-flex gap-2"> <!-- Mengelompokkan tombol -->
+                            <button type="button" class="btn btn-warning w-50" wire:click="resetFilter">Reset</button>
+                            @can('create:project')
+                                <a href="{{ route('project.create') }}" class="btn btn-primary w-50">Create</a>
+                            @endcan
                         </div>
-                        @can('create:project')
-                            <div class="col">
-                                <a href="{{ route('project.create') }}" class="btn btn-primary w-100">Create</a>
-                            </div>
-                        @endcan
                     </div>
                 </div>
             </div>
@@ -81,7 +74,6 @@
                     placeholder: function () {
                         return $(this).data('placeholder');
                     },
-                    allowClear: true,
                     width: '100%'
                 });
 

@@ -71,8 +71,10 @@
         <script>
             document.addEventListener('livewire:init', function() {
                 $('.select2').select2({
-                    placeholder: 'Select',
-                    width: 'resolve'
+                    placeholder: function () {
+                        return $(this).data('placeholder');
+                    },
+                    width: '100%'
                 });
 
                 $('.select-status').on('change', function() {
