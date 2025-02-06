@@ -19,6 +19,8 @@ class ProjectIndex extends Component
     public $search = '';
     public $perPage = 10;
     public $status = '';
+    public $year;
+    public $availableYears = [];
 
     protected $queryStrings = [
         'search' => ['except' => ''],
@@ -28,6 +30,16 @@ class ProjectIndex extends Component
     protected $listeners = [
         'refreshIndex' => '$refresh',
     ];
+
+    public function mount()
+    {
+        $this->year = date('Y'); 
+        $this->availableYears = Project::selectRaw('YEAR(start_date) as year')
+            ->groupBy('year')
+            ->orderBy('year', 'desc')
+            ->pluck('year')
+            ->toArray();
+    }
 
     public function resetFilter()
     {
@@ -54,6 +66,9 @@ class ProjectIndex extends Component
                 });
         })->when($this->status, function ($query) {
             $query->where('status', $this->status);
+        })
+        ->when($this->year, function ($query) {
+            $query->whereYear('start_date', $this->year);
         })->orderBy('end_date', 'asc');
 
         // if (Auth::user()->can('view:project-all')) {

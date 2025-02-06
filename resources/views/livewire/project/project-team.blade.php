@@ -1,20 +1,24 @@
 <div>
-    @livewire('component.page.breadcrumb', ['breadcrumbs' => [['name' => 'Application', 'url' => '/'], ['name' => 'Project', 'url' => route('project.index')]]], key('breadcrumb'))
+    @livewire('component.page.breadcrumb', [
+        'breadcrumbs' => [
+            ['name' => 'Application', 'url' => '/'],
+            ['name' => 'Project', 'url' => route('project.index')]
+        ]
+    ], key('breadcrumb'))
 
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body border-bottom">
                     <h4 class="card-title mb-4">Filter Site</h4>
-                    <div class="d-flex align-content-stretch gap-3 flex-column flex-md-row">
-                        <div class="flex-grow-1">
+                    <div class="row g-3"> <!-- Menggunakan Grid -->
+                        <div class="col-md-3">
                             <input type="search" class="form-control" id="searchInput" wire:model.live="search"
                                 placeholder="Search for Name Project Manager, Project Name">
                         </div>
-                        <div class="flex-shrink-0" wire:ignore>
-                            <select class="form-control select2 select-status" wire:model.live="status"
-                                data-placeholder="Select Status">
-                                <option>Select Status</option>
+                        <div class="col-md-2" wire:ignore>
+                            <select class="form-control select2 select-status" wire:model.live="status">
+                                <option value="">Select Status</option>
                                 <option value="not_started">Not Started</option>
                                 <option value="in_progress">In Progress</option>
                                 <option value="completed">Completed</option>
@@ -22,38 +26,32 @@
                                 <option value="on_hold">On Hold</option>
                             </select>
                         </div>
-                        <div class="flex-shrink-0" wire:ignore>
-                            <select class="form-control select2 select-per-page" wire:model.live="perPage"
-                                data-placeholder="Select Per Page">
-                                <option>Select Per Page</option>
+                        <div class="col-md-2" wire:ignore>
+                            <select class="form-control select2 select-per-page" wire:model.live="perPage">
+                                <option value="">Select Per Page</option>
                                 <option value="10">10</option>
                                 <option value="25">25</option>
                                 <option value="50">50</option>
                                 <option value="100">100</option>
                             </select>
                         </div>
-                        <div class="flex-shrink-0">
-                            <button type="button" class="btn btn-warning waves-effect waves-light"
-                                wire:click="resetFilter">
-                                Reset
-                            </button>
+                        <div class="col-md-2" wire:ignore>
+                            <select class="form-control select2 select-year" wire:model.live="year">
+                                <option value="">Select Year</option>
+                                @foreach ($availableYears as $yearOption)
+                                <option value="{{ $yearOption }}">{{ $yearOption }}</option>
+                            @endforeach
+                            </select>
                         </div>
-
-                        @can('create:project')
-                            <div class="flex-shrink-0">
-                                {{-- Create Link Add Site --}}
-                                <a href="{{ route('project.create') }}"
-                                    class="btn btn-primary waves-effect waves-light">Create</a>
-                            </div>
-                        @endcan
-                        @can('export:project')
-                            <div class="flex-shrink-0">
-                                {{-- Export Button --}}
-                                <button type="button" class="btn btn-success waves-effect waves-light" wire:click="export">
-                                    Export
-                                </button>
-                            </div>
-                        @endcan
+                        <div class="col-md-3 d-flex gap-2"> <!-- Mengelompokkan tombol -->
+                            <button type="button" class="btn btn-warning w-50" wire:click="resetFilter">Reset</button>
+                            @can('create:project')
+                                <a href="{{ route('project.create') }}" class="btn btn-primary w-50">Create</a>
+                            @endcan
+                            @can('export:project')
+                                <button type="button" class="btn btn-success w-50" wire:click="export">Export</button>
+                            @endcan
+                        </div>
                     </div>
                 </div>
             </div>
@@ -70,15 +68,21 @@
 
     @push('js')
         <script src="{{ asset('libs/select2/js/select2.min.js') }}"></script>
-
         <script>
             document.addEventListener('livewire:init', function() {
                 $('.select2').select2({
-                    placeholder: 'Select an option',
-                    width: 'resolve'
+                    placeholder: function () {
+                        return $(this).data('placeholder');
+                    },
+                    width: '100%'
                 });
+
                 $('.select-status').on('change', function() {
                     @this.set('status', this.value);
+                });
+
+                $('.select-year').on('change', function() {
+                    @this.set('year', this.value);
                 });
 
                 $('.select-per-page').on('change', function() {
@@ -87,10 +91,10 @@
 
                 Livewire.on('reset-select2', () => {
                     $('.select-status').val(null).trigger('change');
+                    $('.select-year').val(null).trigger('change');
                     $('.select-per-page').val(null).trigger('change');
-                })
+                });
             });
         </script>
     @endpush
-
 </div>
