@@ -73,6 +73,7 @@ use App\Livewire\Client\ClientIndex;
 use App\Livewire\Client\ClientForm;
 use App\Livewire\Categoryproject\CategoryProjectIndex;
 use App\Livewire\Categoryproject\CategoryProjectForm;
+use App\Http\Controllers\SocialiteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -86,7 +87,8 @@ use App\Livewire\Categoryproject\CategoryProjectForm;
 */
 
 Route::get('/test-component', TestComponent::class)->name('test-component');
-
+Route::get('/auth/{provider}', [SocialiteController::class, 'redirectToProvider']);
+Route::get('/auth/{provider}/callback', [SocialiteController::class, 'handleProvideCallback']);
 Route::get('/login', Login::class)->name('login')->middleware('guest');
 
 Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {

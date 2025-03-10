@@ -17,6 +17,7 @@
         "jantinnerezo/livewire-alert": "^3.0",
         "laravel/framework": "^10.0",
         "laravel/sanctum": "^3.2",
+        "laravel/socialite": "^5.18",
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^3.5",
         "maatwebsite/excel": "^3.1",
