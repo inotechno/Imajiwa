@@ -11,7 +11,7 @@
                         </div>
 
                         <div class="col-12 col-md-7 p-4 d-flex flex-column justify-content-center">
-                            <h4 class="text-white text-center text-md-start mt-3">IMAJIWA Creative Studio</h4>
+                            <h4 class="text-white text-center text-md-center mt-3">Imajiwa Creative Studio</h4>
                             <div class="p-2 mt-3">
                                 <form class="form-horizontal" wire:submit="login">
                                     @if (session('error'))
@@ -49,7 +49,7 @@
                                             In</button>
                                     </div>
 
-                                    <div class="mt-4 text-center">
+                                    <div class="mt-3 text-center">
                                         <h5 class="font-size-14 mb-3">Sign in with</h5>
 
                                         <ul class="list-inline">
@@ -62,7 +62,7 @@
                                         </ul>
                                     </div>
 
-                                    <div class="mt-4 text-center">
+                                    <div class="mt-3 text-center">
                                         <a href="#" class="text-muted"><i class="mdi mdi-lock me-1"></i> Forgot
                                             your password?</a>
                                     </div>

@@ -2,12 +2,14 @@
 
 namespace App\Livewire\LeaveRequest;
 
+use App\Mail\LeaveRequestMail;
 use App\Models\Employee;
 use App\Models\LeaveRequest;
 use App\Models\Notification;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -165,45 +167,38 @@ class LeaveRequestForm extends Component
     }
 
     protected function sendNotifications($leaveRequest)
-    {
-        $supervisor = Employee::find($leaveRequest->supervisor_id);
-        $director = Employee::find($leaveRequest->director_id);
-        $hrd = Employee::find($leaveRequest->hrd_id);
+{
+    $supervisor = Employee::find($leaveRequest->supervisor_id);
+    $director = Employee::find($leaveRequest->director_id);
+    $hrd = Employee::find($leaveRequest->hrd_id);
 
+    $leaveRequestLink = route('team-leave-request.index'); // Link ke Leave Request
 
-        if ($supervisor && $supervisor->user) {
+    $emailData = [
+        'employee_name' => $leaveRequest->employee->user->name,
+        'start_date' => $leaveRequest->start_date,
+        'end_date' => $leaveRequest->end_date,
+        'notes' => $leaveRequest->notes,
+        'leave_request_link' => $leaveRequestLink,
+    ];
+
+    foreach ([$supervisor, $director, $hrd] as $recipient) {
+        if ($recipient && $recipient->user) {
+            // Buat Notifikasi di Sistem
             Notification::create([
                 'type' => 'leave_request',
                 'message' => 'A new leave request has been submitted by ' . $leaveRequest->employee->user->name,
-                'user_id' => $supervisor->user->id,
+                'user_id' => $recipient->user->id,
                 'notifiable_type' => 'App\Models\LeaveRequest',
                 'notifiable_id' => $leaveRequest->id,
-                'url' => route('team-leave-request.index') 
+                'url' => $leaveRequestLink,
             ]);
-        }
 
-        if ($director && $director->user) {
-            Notification::create([
-                'type' => 'leave_request',
-                'message' => 'A new leave request has been submitted by ' . $leaveRequest->employee->user->name,
-                'user_id' => $director->user->id,
-                'notifiable_type' => 'App\Models\LeaveRequest',
-                'notifiable_id' => $leaveRequest->id,
-                'url' => route('team-leave-request.index')
-            ]);
-        }
-
-        if ($hrd && $hrd->user) {
-            Notification::create([
-                'type' => 'leave_request',
-                'message' => 'A new leave request has been submitted by ' . $leaveRequest->employee->user->name,
-                'user_id' => $hrd->user->id,
-                'notifiable_type' => 'App\Models\LeaveRequest',
-                'notifiable_id' => $leaveRequest->id,
-                'url' => route('team-leave-request.index')
-            ]);
+            // Kirim Email
+            Mail::to($recipient->user->email)->send(new LeaveRequestMail($emailData));
         }
     }
+}
 
     public function getTotalPeriod()
     {
