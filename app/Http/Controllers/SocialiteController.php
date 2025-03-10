@@ -34,7 +34,11 @@ class SocialiteController extends Controller
         Auth::login($authUser, true);
 
         // Redirect ke dashboard setelah login
-        return redirect()->route('dashboard');
+        if (Auth::check()) {
+            return redirect()->route('dashboard.index');
+        } else {
+            return redirect()->route('login')->with('error', 'Gagal login setelah autentikasi Google.');
+        }
     }
 
     public function findUser($socialUser, $provider)
