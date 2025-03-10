@@ -14,7 +14,11 @@
                             <h4 class="text-white text-center text-md-start mt-3">IMAJIWA Creative Studio</h4>
                             <div class="p-2 mt-3">
                                 <form class="form-horizontal" wire:submit="login">
-
+                                    @if (session('error'))
+                                    <div class="alert alert-danger">
+                                        {{ session('error') }}
+                                    </div>
+                                @endif
                                     <div class="mb-3">
                                         <label for="username" class="form-label">Username</label>
                                         <input type="text" class="form-control" id="username"
@@ -46,9 +50,24 @@
                                     </div>
 
                                     <div class="mt-4 text-center">
+                                        <h5 class="font-size-14 mb-3">Sign in with</h5>
+
+                                        <ul class="list-inline">
+                                            <li class="list-inline-item">
+                                                <a href="/auth/google"
+                                                    class="social-list-item bg-danger text-white border-danger">
+                                                    <i class="mdi mdi-google"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="mt-4 text-center">
                                         <a href="#" class="text-muted"><i class="mdi mdi-lock me-1"></i> Forgot
                                             your password?</a>
                                     </div>
+
+
                                 </form>
                             </div>
                         </div>
