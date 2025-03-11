@@ -2,6 +2,8 @@
 
 namespace App\Livewire\AbsentRequest;
 
+use App\Mail\AbsentRequestMail;
+use Illuminate\Support\Facades\Mail;
 use App\Models\AbsentRequest;
 use App\Models\Employee;
 use App\Models\Notification;
@@ -153,37 +155,31 @@ class AbsentRequestForm extends Component
         $director = Employee::find($absentRequest->director_id);
         $hrd = Employee::find($absentRequest->hrd_id);
 
-        if ($supervisor && $supervisor->user) {
-            Notification::create([
-                'type' => 'absent_request',
-                'message' => 'A new absent request has been submitted by ' . $absentRequest->employee->user->name,
-                'user_id' => $supervisor->user->id,
-                'notifiable_type' => 'App\Models\AbsentRequest',
-                'notifiable_id' => $absentRequest->id,
-                'url' => route('team-absent-request.index') // URL untuk melihat detail absen
-            ]);
-        }
+        $absentRequestLink = route('team-absent-request.index'); // Link ke Leave Request
 
-        if ($director && $director->user) {
-            Notification::create([
-                'type' => 'absent_request',
-                'message' => 'A new absent request has been submitted by ' . $absentRequest->employee->user->name,
-                'user_id' => $director->user->id,
-                'notifiable_type' => 'App\Models\AbsentRequest',
-                'notifiable_id' => $absentRequest->id,
-                'url' => route('team-absent-request.index') // URL untuk melihat detail absen
-            ]);
-        }
-        
-        if ($hrd && $hrd->user) {
-            Notification::create([
-                'type' => 'absent_request',
-                'message' => 'A new absent request has been submitted by ' . $absentRequest->employee->user->name,
-                'user_id' => $hrd->user->id,
-                'notifiable_type' => 'App\Models\AbsentRequest',
-                'notifiable_id' => $absentRequest->id,
-                'url' => route('team-absent-request.index') // URL untuk melihat detail absen
-            ]);
+        $emailData = [
+            'employee_name' => $absentRequest->employee->user->name,
+            'start_date' => $absentRequest->start_date,
+            'end_date' => $absentRequest->end_date,
+            'notes' => $absentRequest->notes,
+            'absent_request_link' => $absentRequestLink,
+        ];
+
+        foreach ([$supervisor, $director, $hrd] as $recipient) {
+            if ($recipient && $recipient->user) {
+                // Buat Notifikasi di Sistem
+                Notification::create([
+                    'type' => 'absent_request',
+                    'message' => 'A new absent request has been submitted by ' . $absentRequest->employee->user->name,
+                    'user_id' => $recipient->user->id,
+                    'notifiable_type' => 'App\Models\AbsentRequest',
+                    'notifiable_id' => $absentRequest->id,
+                    'url' => $absentRequestLink,
+                ]);
+
+                // Kirim Email
+                Mail::to($recipient->user->email)->send(new AbsentRequestMail($emailData));
+            }
         }
     }
 
