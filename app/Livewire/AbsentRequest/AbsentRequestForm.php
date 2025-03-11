@@ -151,22 +151,24 @@ class AbsentRequestForm extends Component
 
     protected function sendNotifications($absentRequest)
     {
-        $supervisor = Employee::find($absentRequest->supervisor_id);
-        $director = Employee::find($absentRequest->director_id);
-        $hrd = Employee::find($absentRequest->hrd_id);
+        $recipients = [
+            'Supervisor' => Employee::find($absentRequest->supervisor_id),
+            'Director' => Employee::find($absentRequest->director_id),
+            'HRD' => Employee::find($absentRequest->hrd_id),
+        ];
 
         $absentRequestLink = route('team-absent-request.index'); // Link ke Leave Request
 
-        $emailData = [
-            'employee_name' => $absentRequest->employee->user->name,
-            'start_date' => $absentRequest->start_date,
-            'end_date' => $absentRequest->end_date,
-            'notes' => $absentRequest->notes,
-            'absent_request_link' => $absentRequestLink,
-        ];
-
-        foreach ([$supervisor, $director, $hrd] as $recipient) {
+        foreach ($recipients as $role => $recipient) {
             if ($recipient && $recipient->user) {
+                $emailData = [
+                    'recipient_role' => $role, // Tambahkan peran penerima
+                    'employee_name' => $absentRequest->employee->user->name,
+                    'start_date' => $absentRequest->start_date,
+                    'end_date' => $absentRequest->end_date,
+                    'notes' => $absentRequest->notes,
+                    'absent_request_link' => $absentRequestLink,
+                ];
                 // Buat Notifikasi di Sistem
                 Notification::create([
                     'type' => 'absent_request',
