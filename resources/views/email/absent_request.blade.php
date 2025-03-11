@@ -4,7 +4,7 @@
     <title>New Absent Request</title>
 </head>
 <body>
-    <p>Dear Supervisor,</p>
+    <p>Dear {{ $emailData['recipient_role'] }},</p>
     
     <p>A new absent request has been submitted by <strong>{{ $emailData['employee_name'] }}</strong>.</p>
 
