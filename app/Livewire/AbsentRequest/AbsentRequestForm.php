@@ -172,7 +172,7 @@ class AbsentRequestForm extends Component
                     'type' => 'absent_request',
                     'message' => 'A new absent request has been submitted by ' . $absentRequest->employee->user->name,
                     'user_id' => $recipient->user->id,
-                    'notifiable_type' => 'App\Models\LeaveRequest',
+                    'notifiable_type' => 'App\Models\AbsentRequest',
                     'notifiable_id' => $absentRequest->id,
                     'url' => $absentRequestLink,
                 ]);
