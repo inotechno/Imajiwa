@@ -23,7 +23,7 @@ class LeaveRequestMail extends Mailable
     public function build()
     {
         return $this->subject('New Leave Request')
-            ->view('emails.leave_request')
+            ->view('email.leave_request')
             ->with('emailData', $this->emailData);
     }
 }

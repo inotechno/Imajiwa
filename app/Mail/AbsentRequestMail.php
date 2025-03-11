@@ -23,7 +23,7 @@ class AbsentRequestMail extends Mailable
     public function build()
     {
         return $this->subject('New Absent Request')
-            ->view('emails.absent_request')
+            ->view('email.absent_request')
             ->with('emailData', $this->emailData);
     }
 }
