@@ -88,7 +88,7 @@
                                     </tr>
                                     <tr>
                                         <th scope="row">Date of Birth :</th>
-                                        <td>{{ toIndonesianDate($employee->birth_date) }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($employee->birth_date)->locale('en')->translatedFormat('d F, Y') }}</td>
                                     </tr>
                                     <tr>
                                         <th scope="row">Place of Birth :</th>

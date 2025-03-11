@@ -58,8 +58,7 @@
                 <div class="card-body">
                     <h4 class="card-title mb-4">Personal Information</h4>
 
-                    <p class="text-muted mb-4">Hi I'm Cynthia Price,has been the industry's standard dummy text To an
-                        English person, it will seem like simplified English, as a skeptical Cambridge.</p>
+                    <p class="text-muted mb-4">{{$employee->personal_information ?? '-'}}</p>
                     <div class="table-responsive">
                         <table class="table table-nowrap mb-0">
                             <tbody>
@@ -81,7 +80,7 @@
                                 </tr>
                                 <tr>
                                     <th scope="row">Date of Birth :</th>
-                                    <td>{{ toIndonesianDate($employee->date_of_birth) }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($employee->birth_date)->locale('en')->translatedFormat('d F, Y') }}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Place of Birth :</th>
