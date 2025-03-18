@@ -39,10 +39,16 @@ class Employee extends Model
     }
 
 
+    public function lead()
+    {
+        return $this->hasMany(Department::class, 'lead_id');
+    }
+
     public function supervisor()
     {
         return $this->hasMany(Department::class, 'supervisor_id');
     }
+
     public function director()
     {
         return $this->hasMany(Department::class, 'director_id');

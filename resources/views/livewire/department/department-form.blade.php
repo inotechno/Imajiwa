@@ -30,6 +30,22 @@
             </div>
 
             <div class="col-md" wire:ignore>
+                <label for="form-label">Lead</label>
+                <select class="form-select select2 select-lead" wire:model="lead_id"
+                    data-placeholder="Select Lead">
+                    <option></option>
+                    @foreach ($employees as $lead)
+                        <option value="{{ $lead->id }}">{{ $lead->user->name }}</option>
+                    @endforeach
+                </select>
+
+                @error('lead_id')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+            <div class="col-md" wire:ignore>
                 <label for="form-label">Supervisor</label>
                 <select class="form-select select2 select-supervisor" wire:model="supervisor_id"
                     data-placeholder="Select Supervisor">
@@ -73,6 +89,9 @@
         <script>
             document.addEventListener('livewire:init', function() {
                 $('.select2').select2();
+                $('.select-lead').on('change', function() {
+                    @this.set('lead_id', this.value);
+                });
                 $('.select-supervisor').on('change', function() {
                     @this.set('supervisor_id', this.value);
                 });
@@ -86,12 +105,14 @@
 
                 Livewire.on('change-status-form', () => {
                     $('.select-site').val(@this.site_id).trigger('change');
+                    $('.select-lead').val(@this.lead_id).trigger('change');
                     $('.select-supervisor').val(@this.supervisor_id).trigger('change');
                     $('.select-director').val(@this.director_id).trigger('change');
                 });
 
                 Livewire.on('refreshIndex', () => {
                     $('.select-director').val(null).trigger('change');
+                    $('.select-lead').val(null).trigger('change');
                     $('.select-supervisor').val(null).trigger('change');
                     $('.select-site').val(null).trigger('change');
                 })

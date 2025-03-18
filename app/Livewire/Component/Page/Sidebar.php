@@ -91,39 +91,6 @@ class Sidebar extends Component
             ]
         ],
         [
-            'title' => 'Administrator',
-            'menus' => [
-                // [
-                //     'name' => 'Daily Report All',
-                //     'url' => '/daily-report-all',
-                //     'route' => 'daily-report.index',
-                //     'icon' => 'bx bxs-report',
-                //     'permission' => 'view:daily-report-all'
-                // ],
-                [
-                    'name' => 'Attendance All',
-                    'url' => '/attendance-all',
-                    'route' => 'attendance.all',
-                    'icon' => 'bx bx-purchase-tag-alt',
-                    'permission' => 'view:attendance-all',
-                ],
-                [
-                    'name' => 'Absent Request All',
-                    'url' => '/absent-request-all',
-                    'route' => 'absent-request.all',
-                    'icon' => 'bx bxs-tired',
-                    'permission' => 'view:absent-request-all',
-                ],
-                [
-                    'name' => 'Leave Request All',
-                    'url' => '/leave-request-all',
-                    'route' => 'leave-request.all',
-                    'icon' => 'bx bx-log-out-circle',
-                    'permission' => 'view:leave-request-all',
-                ],
-            ]
-        ],
-        [
             'title' => 'Application',
             'menus' => [
                 [
@@ -165,9 +132,24 @@ class Sidebar extends Component
                 [
                     'name' => 'Attendance',
                     'url' => '/attendance',
-                    'route' => 'attendance.index',
                     'icon' => 'bx bx-purchase-tag-alt',
-                    'permission' => 'view:attendance'
+                    'permission' => 'view:attendance',
+                    'subMenus' => [
+                        [
+                            'name' => 'Attendance All',
+                            'url' => '/attendance-all',
+                            'route' => 'attendance.all',
+                            'icon' => 'bx bx-purchase-tag-alt',
+                            'permission' => 'view:attendance-all',
+                        ],
+                        [
+                            'name' => 'My Attendance',
+                            'url' => '/attendance',
+                            'route' => 'attendance.index',
+                            'icon' => 'bx bx-log-out-circle',
+                            'permission' => 'view:attendance'
+                        ],
+                    ],
                 ],
                 [
                     'name' => 'Absent Request',
@@ -175,6 +157,13 @@ class Sidebar extends Component
                     'url' => '/absent-request',
                     'permission' => 'view:absent-request',
                     'subMenus' => [
+                        [
+                            'name' => 'Absent Request All',
+                            'url' => '/absent-request-all',
+                            'route' => 'absent-request.all',
+                            'icon' => 'bx bxs-tired',
+                            'permission' => 'view:absent-request-all',
+                        ],
                         [
                             'name' => 'My Absent Request',
                             'url' => '/absent-request',
@@ -197,6 +186,13 @@ class Sidebar extends Component
                     'icon' => 'bx bx-log-out-circle',
                     'permission' => 'view:leave-request',
                     'subMenus' => [
+                        [
+                            'name' => 'Leave Request All',
+                            'url' => '/leave-request-all',
+                            'route' => 'leave-request.all',
+                            'icon' => 'bx bx-log-out-circle',
+                            'permission' => 'view:leave-request-all',
+                        ],
                         [
                             'name' => 'My Leave Request',
                             'url' => '/leave-request',
@@ -299,16 +295,16 @@ class Sidebar extends Component
                 ],
             ]
         ],
-         [
-             'title' => 'Report',
-             'menus' => [
-                 [
-                     'name' => 'Report Attendance',
-                     'url' => '/report-attendance',
-                     'route' => 'report.attendance',
-                     'icon' => 'bx bx-bar-chart-alt-2',
-                     'permission' => 'view:report'
-                 ],
+        [
+            'title' => 'Report',
+            'menus' => [
+                [
+                    'name' => 'Report Attendance',
+                    'url' => '/report-attendance',
+                    'route' => 'report.attendance',
+                    'icon' => 'bx bx-bar-chart-alt-2',
+                    'permission' => 'view:report'
+                ],
                 // [
                 //     'name' => 'Report absent',
                 //     'url' => '/report-absent-request',
