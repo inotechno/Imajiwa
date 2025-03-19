@@ -3,10 +3,13 @@
 <script src="{{ asset('libs/metismenu/metisMenu.min.js') }}"></script>
 <script src="{{ asset('libs/simplebar/simplebar.min.js') }}"></script>
 <script src="{{ asset('libs/node-waves/waves.min.js') }}"></script>
+<script src="{{ asset('libs/jquery-steps/build/jquery.steps.min.js') }}"></script>
+<script src="{{ asset('libs/node-waves/waves.min.js') }}"></script>
 
 
 @stack('js')
 <!-- App js -->
+<script src="{{ asset('js/pages/form-wizard.init.js') }}"></script>
 <script src="{{ asset('js/app.js') }}"></script>
 
 @livewireScripts

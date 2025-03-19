@@ -91,6 +91,21 @@ class Sidebar extends Component
             ]
         ],
         [
+            'title' => 'Administrator',
+            'menus' => [
+                // [
+                //     'name' => 'Daily Report All',
+                //     'url' => '/daily-report-all',
+                //     'route' => 'daily-report.index',
+                //     'icon' => 'bx bxs-report',
+                //     'permission' => 'view:daily-report-all'
+                // ],
+               
+
+                
+            ]
+        ],
+        [
             'title' => 'Application',
             'menus' => [
                 [
@@ -143,7 +158,7 @@ class Sidebar extends Component
                             'permission' => 'view:attendance-all',
                         ],
                         [
-                            'name' => 'My Attendance',
+                            'name' => 'My Leave Request',
                             'url' => '/attendance',
                             'route' => 'attendance.index',
                             'icon' => 'bx bx-log-out-circle',
@@ -206,6 +221,42 @@ class Sidebar extends Component
                             'route' => 'team-leave-request.index',
                             'icon' => 'bx bx-log-out-circle',
                             'permission' => 'view:leave-request'
+                        ],
+                    ],
+                ],
+                [
+                    'name' => 'Performance Review',
+                    'url' => '/performance-review',
+                    'icon' => 'bx bx-book-open',
+                    'permission' => 'view:performance-review',
+                    'subMenus' => [
+                        [
+                            'name' => 'Performance Review All',
+                            'url' => '/performance-review/performance-review-all',
+                            'route' => 'performance-review.all',
+                            'icon' => 'bx bx-log-out-circle',
+                            'permission' => 'view:performance-review-all',
+                        ],
+                        [
+                            'name' => 'My Performance Review',
+                            'url' => '/performance-review',
+                            'route' => 'performance-review.index',
+                            'icon' => 'bx bx-log-out-circle',
+                            'permission' => 'view:performance-review'
+                        ],
+                        [
+                            'name' => 'Team Performance Review',
+                            'url' => '/performance-review/team',
+                            'route' => 'team-performance-review.index',
+                            'icon' => 'bx bx-log-out-circle',
+                            'permission' => 'view:performance-review'
+                        ],
+                        [
+                            'name' => 'Setting',
+                            'url' => '/performance-review/setting',
+                            'route' => 'setting-performance-review.index',
+                            'icon' => 'bx bx-log-out-circle',
+                            'permission' => 'setting:performance-review'
                         ],
                     ],
                 ],

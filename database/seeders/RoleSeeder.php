@@ -227,15 +227,24 @@ class RoleSeeder extends Seeder
             'delete:item-request' => ['Finance', 'Administrator'],
             'approve:item-request' => ['Director', 'commissioner'],
 
+            //employee inventory
             'view:employee-inventory' => ['Finance', 'Administrator'],
             'create:employee-inventory' => ['Finance', 'Administrator'],
             'update:employee-inventory' => ['Finance', 'Administrator'],
             'delete:employee-inventory' => ['Finance', 'Administrator'],
 
+            //status inventory
             'view:status-inventory' => ['Finance', 'Administrator'],
             'create:status-inventory' => ['Finance', 'Administrator'],
             'update:status-inventory' => ['Finance', 'Administrator'],
             'delete:status-inventory' => ['Finance', 'Administrator'],
+
+            'view:performance-review-all' => ['HR', 'Finance', 'Director', 'Administrator', 'commissioner'],
+            'view:performance-review' => ['Employee', 'Administrator'],
+            'create:performance-review' => ['Employee', 'Administrator'],
+            'update:performance-review' => ['Employee', 'Administrator'],
+            'delete:performance-review' => ['Employee', 'Administrator'],
+            'setting:performance-review' => ['Administrator'],
         ];
 
         foreach ($permissions as $permissionName => $roles) {

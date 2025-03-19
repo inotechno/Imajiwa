@@ -1,7 +1,6 @@
 <?php
 
 use App\Livewire\Auth\Login;
-use App\Livewire\LeaveRequest\LeaveRequestDetail;
 use App\Livewire\Role\RoleIndex;
 use App\Livewire\Role\RoleForm;
 use App\Livewire\Site\SiteForm;
@@ -34,10 +33,7 @@ use App\Livewire\Department\DepartmentDetail;
 use App\Livewire\DailyReport\DailyReportIndex;
 use App\Http\Controllers\ImageUploadController;
 use App\Livewire\DailyReport\DailyReportDetail;
-use App\Livewire\LeaveRequest\LeaveRequestForm;
-use App\Livewire\LeaveRequest\LeaveRequestTeam;
 use App\Livewire\AbsentRequest\AbsentRequestAll;
-use App\Livewire\LeaveRequest\LeaveRequestIndex;
 use App\Livewire\AbsentRequest\AbsentRequestForm;
 use App\Livewire\AbsentRequest\AbsentRequestTeam;
 use App\Livewire\AbsentRequest\AbsentRequestIndex;
@@ -45,7 +41,11 @@ use App\Livewire\AbsentRequest\AbsentRequestDetail;
 use App\Livewire\ImportMasterData\ImportMasterDataIndex;
 use App\Livewire\EmailTemplateManager\EmailTemplateManagerForm;
 use App\Livewire\EmailTemplateManager\EmailTemplateManagerIndex;
+use App\Livewire\LeaveRequest\LeaveRequestForm;
+use App\Livewire\LeaveRequest\LeaveRequestTeam;
+use App\Livewire\LeaveRequest\LeaveRequestIndex;
 use App\Livewire\LeaveRequest\LeaveRequestAll;
+use App\Livewire\LeaveRequest\LeaveRequestDetail;
 use App\Livewire\Announcement\AnnouncementIndex;
 use App\Livewire\Announcement\AnnouncementForm;
 use App\Livewire\Announcement\AnnouncementDetail;
@@ -74,6 +74,12 @@ use App\Livewire\Client\ClientForm;
 use App\Livewire\Categoryproject\CategoryProjectIndex;
 use App\Livewire\Categoryproject\CategoryProjectForm;
 use App\Http\Controllers\SocialiteController;
+use App\Livewire\PerformanceReview\PerformanceReviewForm;
+use App\Livewire\PerformanceReview\PerformanceReviewTeam;
+use App\Livewire\PerformanceReview\PerformanceReviewIndex;
+use App\Livewire\PerformanceReview\PerformanceReviewAll;
+use App\Livewire\PerformanceReview\PerformanceReviewDetail;
+use App\Livewire\PerformanceReview\PerformanceReviewSetting;
 
 /*
 |--------------------------------------------------------------------------
@@ -251,6 +257,16 @@ Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
 
     Route::group(['prefix' => 'notification'], function () {
         Route::get('/', NotificationIndex::class)->name('notification.index');
+    });
+
+    Route::group(['prefix' => 'performance-review'], function () {
+        Route::get('/', PerformanceReviewIndex::class)->name('performance-review.index')->middleware('can:view:performance-review');
+        Route::get('/performance-review-all', PerformanceReviewAll::class)->name('performance-review.all')->middleware('can:view:performance-review-all');
+        Route::get('team', PerformanceReviewTeam::class)->name('team-performance-review.index')->middleware('can:view:performance-review');
+        Route::get('setting', PerformanceReviewSetting::class)->name('setting-performance-review.index')->middleware('can:setting:performance-review');
+        Route::get('create', PerformanceReviewForm::class)->name('performance-review.create')->middleware('can:create:performance-review');
+        Route::get('edit/{id}', PerformanceReviewForm::class)->name('performance-review.edit')->middleware('can:update:performance-review');
+        Route::get('detail/{id}', PerformanceReviewDetail::class)->name('performance-review.detail')->middleware('can:view:performance-review');
     });
 
 
