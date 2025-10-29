@@ -13,6 +13,7 @@ class Department extends Model
     protected $fillable = [
         'name',
         'site_id',
+        'lead_id',
         'supervisor_id',
         'director_id',
     ];
@@ -22,10 +23,15 @@ class Department extends Model
         return $this->belongsTo(Site::class);
     }
 
+    public function lead()
+    {
+        return $this->belongsTo(Employee::class, 'lead_id');
+    }
     public function supervisor()
     {
         return $this->belongsTo(Employee::class, 'supervisor_id');
     }
+
     public function director()
     {
         return $this->belongsTo(Employee::class, 'director_id');

@@ -1,1 +1,18 @@
 @import '../css/quill-custom.css';
+
+.board-card {
+  transition: all 0.25s ease;
+}
+.board-card.new {
+  animation: popin 0.3s ease;
+}
+@keyframes popin {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

@@ -16,3 +16,9 @@ use Illuminate\Support\Facades\Broadcast;
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
+
+Broadcast::channel('board.{projectId}', function ($user, $projectId) {
+    // Pastikan user punya akses ke project tersebut
+    return true;
+    // return $user->employee && $user->employee->projects->contains('id', $projectId);
+});

@@ -14,7 +14,7 @@ class DepartmentForm extends Component
     public $sites;
     public $employees;
     public $department;
-    public $name, $site_id, $supervisor_id , $director_id;
+    public $name, $site_id, $supervisor_id , $director_id , $lead_id;
     public $mode = 'create';
 
     public function mount($employees, $sites)
@@ -28,6 +28,7 @@ class DepartmentForm extends Component
         $this->name = '';
         $this->site_id = '';
         $this->supervisor_id = '';
+        $this->lead_id = '';
         $this->director_id = '';
         $this->mode = 'create';
     }
@@ -39,6 +40,7 @@ class DepartmentForm extends Component
         $this->name = $this->department->name;
         $this->site_id = $this->department->site_id;
         $this->supervisor_id = $this->department->supervisor_id;
+        $this->lead_id = $this->department->lead_id;
         $this->director_id = $this->department->director_id;
 
         $this->mode = 'edit';
@@ -72,6 +74,7 @@ class DepartmentForm extends Component
                 'name' => $this->name,
                 'site_id' => $this->site_id,
                 'supervisor_id' => $this->supervisor_id ? $this->supervisor_id : null,
+                'lead_id' => $this->lead_id ? $this->lead_id : null,
                 'director_id' => $this->director_id,
             ]);
 
@@ -91,6 +94,7 @@ class DepartmentForm extends Component
                 'name' => $this->name,
                 'site_id' => $this->site_id,
                 'supervisor_id' => $this->supervisor_id ? $this->supervisor_id : null,
+                'lead_id' => $this->lead_id ? $this->lead_id : null,
                 'director_id' => $this->director_id,
             ]);
 

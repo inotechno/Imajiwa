@@ -1,76 +1,45 @@
-## Hak Akses & Pengaturan
+🚀 Tahap 1 – Interaksi Dasar (User Experience)
+Fitur	Status	Keterangan
+Resize Card	✅	Sudah pakai interact.js.resizable() dan update w, h ke DB.
+Z-index / Bring to Front	⚙️ Sebagian	Sudah ada focusCard() dan dispatch bringToFront, tapi event Livewire belum dibuat di backend (updateZIndex).
+Auto Save + Indicator	❌	Belum ada indikator visual “Saving…” / “Saved ✓”. (Masih bisa kita tambahkan pakai Alpine store + debounce Livewire).
+Snap to Grid / Alignment Lines	⚙️ Sebagian	Struktur CSS guide-line sudah ada, tapi belum aktif logika snap dan garis bantu-nya.
 
-### Role Administrator
-- [x]
-- Akses ke data berikut:
-  - Data Karyawan
-  - Position
-  - Department
-  - Site
-  - Role
+✅ Kesimpulan:
+Tahap 1 sudah 70% jadi — tinggal Z-index finalisasi + autosave indicator + snap grid logic.
 
-### User dengan Role Administrator:
-- [x]
-- finance@imajiwa.id
-- risma@imajiwa.id
-- ari@imajiwa.id
+🧠 Tahap 2 – Kolaborasi dan Multi-User Awareness
+Fitur	Status	Keterangan
+User Cursor Tracking	❌	Belum ada event broadcast posisi cursor antar user.
+Card Locking (Editing Indicator)	❌	Belum ada sistem lock / badge “editing by …”.
+Realtime Presence (Avatar Online)	❌	Belum pakai Echo.join('presence.board.'+projectId) untuk daftar user aktif.
 
-### Project User:
-- [x]
-- finance@imajiwa.id
-- risma@imajiwa.id
-- ari@imajiwa.id
-- ali@imajiwa.id
-- farid@imajiwa.id
-- higgana@imajiwa.id
-- iqbal@imajiwa.id
-- sura@imajiwa.id
+✅ Kesimpulan:
+Tahap 2 belum dimulai — kita bisa mulai nanti setelah semua interaksi tahap 1 stabil.
 
-### Pengajuan Cuti
-- [x] Pengajuan cuti bisa diakses oleh semua user
-- [x] Approval direktur setiap department
-- [x] Approval oleh pimpinan langsung
+🎨 Tahap 3 – Elemen Visual dan Tools
+Fitur	Status	Keterangan
+Add Element Types (Image, Sticky, Link, File, Connector)	⚙️ Sebagian	Struktur type di board_cards sudah siap, tapi UI tombol tambah belum dibuat.
+Connector / Line Tool	❌	Belum diimplementasikan. Belum pakai LeaderLine.js / svg.connectable.js.
+MiniMap & Zooming	❌	Belum ada panzoom overlay.
 
-### Pengajuan Izin
-- [x] Pengajuan izin bisa diakses oleh semua user
-- [x] Approval direktur setiap department
-- [x] Approval oleh pimpinan langsung
+✅ Kesimpulan:
+Tahap 3 baru tahap awal (struktur DB ready).
 
+🔍 Ringkasan Progres Saat Ini
 
-### Data Inventaris & Pengajuan Barang
-- [x] Yang mengajukan: risma@imajiwa.id
-- [x] Approval oleh direktur utama dan komisaris
+✅ Tahap 1 → 70% (tinggal autosave + snap grid + z-index sync)
+🔜 Tahap 2 → Belum mulai
+🔜 Tahap 3 → Struktur siap, belum implementasi
 
-### Task & Daily Report
-- [ ] Daily report ada
-- [ ] Task dan daily report dibuat oleh administrator dan bisa diakses oleh pekerja berdasarkan nama yang dipilih ==>**PLAN**
+Kalau kamu setuju, kita lanjut ke penyelesaian Tahap 1 (bagian akhir) supaya tahap dasar (UX) benar-benar solid dulu.
 
-### Pengajuan Cuti
-- Jumlah cuti: 12 hari
-- [ ] Tidak bisa mengajukan cuti ketika jatah habis
+👉 Pilih mau mulai dari yang mana dulu:
 
-### Hak Akses Karyawan pada Project
-- [x] List karyawan dalam project
-- [x] Karyawan hanya bisa view data, tidak bisa edit
+🧩 Z-index full (bringToFront sync antar browser)
 
-### Fitur Lain
-- [x] Blast email password pengguna @imajiwa.id
-- [x] Update tabel karyawan (Nama, username = nama panggilan, email, NIK, jabatan)
-- [x] Tambah upload Excel
-- [x] Upload ke hosting (Jagoan Hosting)
-- [ ] Setup.exe link untuk akun hosting
-- [x] Fitur announcement (Risma/admin), termasuk:
-        - Jadwal meeting
-        - Informasi hari libur dsb.
-        - Muncul pada notifikasi dan dashboard
-- [x] Blast email ke semua project manager
-- [x] Export project detail ke Excel
+💾 Auto Save + "Saving..." indicator
 
-- [x] notif ketika employee ketika di tambahkan kedalam proyek
-- [x] notif ketika employee mengajukan absent kepada supervisor dan direktur departemen
-- [x] notif ketika employee mengajuakan cuti kepada supervisor dan direktur departemen
-- [x] notif ketika administrator pengajuan barang kepada direktur utama dan komisaris 
+🧭 Snap to grid + alignment guide
 
-- [ ] Permission employee
-- [ ] Reject Request
-- [ ] Menyesuaikan Dashboard sesuai role
+Yang mana kamu mau saya bantu implementasikan dulu?
