@@ -12,6 +12,7 @@
         "barryvdh/laravel-dompdf": "^3.0",
         "beyondcode/laravel-websockets": "1.14",
         "doctrine/dbal": "^3.9",
+        "google/apiclient": "^2.18",
         "guzzlehttp/guzzle": "^7.2",
         "inertiajs/inertia-laravel": "*",
         "intervention/image": "^3.8",

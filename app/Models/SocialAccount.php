@@ -9,6 +9,15 @@ class SocialAccount extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'user_id',
+        'provider_id',
+        'provider_name',
+        'access_token',
+        'refresh_token',
+        'token_expires_at',
+    ];
+
     protected $guarded = [];
 
 

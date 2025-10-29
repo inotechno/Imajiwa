@@ -127,4 +127,8 @@ class Employee extends Model
         return $this->permissions()->where('name', $permission)->exists();
     }
 
+    public function tasks()
+    {
+        return $this->belongsToMany(ProjectTask::class, 'employee_task');
+    }
 }

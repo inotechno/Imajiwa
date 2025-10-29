@@ -12,7 +12,15 @@ class SocialiteController extends Controller
 {
     public function redirectToProvider($provider)
     {
-        return Socialite::driver($provider)->redirect();
+        return Socialite::driver($provider)
+            ->scopes([
+                'openid',
+                'profile',
+                'email',
+                'https://www.googleapis.com/auth/calendar.events'
+            ])
+            ->with(['access_type' => 'offline', 'prompt' => 'consent'])
+            ->redirect();
     }
 
     public function handleProvideCallback($provider)
@@ -29,6 +37,19 @@ class SocialiteController extends Controller
         if (!$authUser) {
             return redirect()->route('login')->with('error', 'This Google account is not registered.');
         }
+
+        $socialAccount = SocialAccount::updateOrCreate(
+            [
+                'provider_id' => $user->getId(),
+                'provider_name' => $provider,
+            ],
+            [
+                'user_id' => $authUser->id,
+                'access_token' => $user->token,
+                'refresh_token' => $user->refreshToken ?? $this->getExistingRefreshToken($authUser, $provider),
+                'token_expires_at' => now()->addSeconds($user->expiresIn ?? 3600),
+            ]
+        );
 
         // Login user
         Auth::login($authUser, true);
@@ -67,5 +88,12 @@ class SocialiteController extends Controller
         ]);
 
         return $user;
+    }
+
+    protected function getExistingRefreshToken($user, $provider)
+    {
+        return SocialAccount::where('user_id', $user->id)
+            ->where('provider_name', $provider)
+            ->value('refresh_token');
     }
 }

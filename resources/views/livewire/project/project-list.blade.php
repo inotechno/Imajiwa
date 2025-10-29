@@ -13,7 +13,7 @@
                             <th scope="col">Team</th>
 
                             {{-- @can('update:project') --}}
-                                <th scope="col">Action</th>
+                            <th scope="col">Action</th>
                             {{-- @endcan --}}
                         </tr>
                     </thead>
