@@ -9,7 +9,6 @@
 <!-- App js -->
 <script src="{{ asset('js/app.js') }}"></script>
 
-@livewireScripts
 <script id="sweetalert-js" src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 
 {{-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
@@ -45,3 +44,5 @@
         }
     });
 </script>
+
+@livewireScripts

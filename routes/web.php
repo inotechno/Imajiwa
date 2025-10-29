@@ -10,6 +10,7 @@ use App\Livewire\Site\SiteIndex;
 use App\Livewire\Site\SiteDetail;
 use App\Livewire\Profile\ProfileForm;
 use App\Livewire\Project\ProjectForm;
+use App\Livewire\Project\ProjectBoard;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Machine\MachineIndex;
 use App\Livewire\Profile\ProfileIndex;
@@ -124,6 +125,7 @@ Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
         Route::get('detail/{id}', ProjectDetail::class)->name('project.detail')->middleware('can:view:project');
         Route::get('create', ProjectForm::class)->name('project.create')->middleware('can:create:project');
         Route::get('edit/{id}', ProjectForm::class)->name('project.edit')->middleware('can:update:project');
+        Route::get('{project}/board', ProjectBoard::class)->name('project.board')->middleware('can:view:project');
     });
 
     // Menambahkan route untuk Client

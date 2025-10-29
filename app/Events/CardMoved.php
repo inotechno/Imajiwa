@@ -1,0 +1,44 @@
+<?php
+
+namespace App\Events;
+
+use App\Models\BoardCard;
+use Illuminate\Broadcasting\Channel;
+use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PresenceChannel;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
+
+class CardMoved
+{
+    use Dispatchable, InteractsWithSockets, SerializesModels;
+
+    public $card;
+    public $projectId;
+
+    /**
+     * Create a new event instance.
+     */
+    public function __construct(BoardCard $card)
+    {
+        $this->card = $card;
+        $this->projectId = $card->project_id;
+    }
+
+    /**
+     * Get the channels the event should broadcast on.
+     *
+     * @return array<int, \Illuminate\Broadcasting\Channel>
+     */
+    public function broadcastOn()
+    {
+        return new Channel('board.' . $this->card->project_id);
+    }
+
+    public function broadcastAs()
+    {
+        return 'CardMoved';
+    }
+}

@@ -9,7 +9,7 @@ class Project extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'employee_id', 'category_id','client_id' ,'image' , 'code', 'description', 'start_date', 'end_date', 'status'];
+    protected $fillable = ['name', 'employee_id', 'category_id', 'client_id', 'image', 'code', 'description', 'start_date', 'end_date', 'status'];
 
 
     public function employees()
@@ -17,11 +17,13 @@ class Project extends Model
         return $this->belongsToMany(Employee::class, 'projects_employees', 'project_id', 'employee_id');
     }
 
-    public function client(){
+    public function client()
+    {
         return $this->belongsTo(Client::class);
     }
 
-    public function CategoryProject(){
+    public function categoryProject()
+    {
         return $this->belongsTo(CategoryProject::class);
     }
 
@@ -33,5 +35,15 @@ class Project extends Model
     public function additionalProjectManagers()
     {
         return $this->belongsToMany(Employee::class, 'project_additional_managers', 'project_id', 'employee_id');
+    }
+
+    public function board()
+    {
+        return $this->hasOne(ProjectBoard::class);
+    }
+
+    public function connectors()
+    {
+        return $this->hasMany(BoardConnector::class);
     }
 }

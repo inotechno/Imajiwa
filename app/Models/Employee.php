@@ -11,7 +11,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class Employee extends Model
 {
-    use HasFactory , HasPermissions , HasRoles;
+    use HasFactory, HasPermissions, HasRoles;
 
     protected $guard_name = 'web';
     protected $primaryKey = 'id';
@@ -126,4 +126,5 @@ class Employee extends Model
     {
         return $this->permissions()->where('name', $permission)->exists();
     }
+
 }
