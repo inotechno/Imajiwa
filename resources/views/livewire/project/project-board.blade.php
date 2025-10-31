@@ -1,24 +1,28 @@
 <div>
     <input type="file" id="board-upload" class="d-none" wire:model="upload"
-        @change="$dispatch('file-selected', { type: $el.dataset.type })">
+           @change="$dispatch('file-selected', { type: $el.dataset.type })">
 
     <div x-data="boardApp(@js($cards), @js($connectors), '{{ $projectId }}')" x-init="init()">
         <div class="d-flex gap-2 mb-3">
-            <button class="btn btn-primary btn-sm" @click="addCard('text')">📝 Text</button>
-            <button class="btn btn-warning btn-sm" @click="addCard('note')">🗒️ Note</button>
-            <button class="btn btn-info btn-sm" @click="uploadImage()">🖼️ Image</button>
-            <button class="btn btn-secondary btn-sm" @click="uploadFile()">📎 File</button>
-            <button class="btn btn-outline-info btn-sm" @click="setTool('connect')">🔗 Connect</button>
+            <button :class="{'btn-primary': currentTool==='select', 'btn-outline-primary': currentTool!=='select', 'active': currentTool==='select'}" class="btn btn-sm" @click="setTool('select')">🖱️ Select</button>
+            <button :class="{'btn-warning': currentTool==='note', 'btn-outline-warning': currentTool!=='note', 'active': currentTool==='note'}" class="btn btn-sm" @click="addCard('note')">🗒️ Note</button>
+            <button :class="{'btn-info': currentTool==='image', 'btn-outline-info': currentTool!=='image', 'active': currentTool==='image'}" class="btn btn-sm" @click="uploadImage()">🖼️ Image</button>
+            <button :class="{'btn-secondary': currentTool==='file', 'btn-outline-secondary': currentTool!=='file', 'active': currentTool==='file'}" class="btn btn-sm" @click="uploadFile()">📎 File</button>
+            <button :class="{'btn-outline-info': currentTool!=='connect', 'btn-info': currentTool==='connect', 'active': currentTool==='connect'}" class="btn btn-sm" @click="setTool('connect')">🔗 Connect</button>
         </div>
 
         <div class="position-relative bg-dark rounded board-canvas" style="height:80vh; overflow:auto;">
             <template x-for="card in cards" :key="card.id">
-                <div class="position-absolute board-card shadow rounded p-2" :id="'card-' + card.id"
-                    :data-type="card.type" @click="focusCard(card.id, $event)" :class="{
+                <div class="position-absolute board-card shadow rounded p-2"
+                     :id="'card-' + card.id"
+                     :data-type="card.type"
+                     @click="focusCard(card.id, $event)"
+                     :class="{
                         'selected': selectedCards.includes(card.id),
                         'bg-white': card.type === 'text' || card.type === 'file',
                         'bg-warning text-dark': card.type === 'note'
-                     }" :style="`
+                     }"
+                     :style="`
                         left:${card.x}px;
                         top:${card.y}px;
                         width:${card.w}px;
@@ -33,7 +37,7 @@
 
                     <template x-if="card.type === 'note'">
                         <div contenteditable="true" class="p-2 rounded" x-text="card.content"
-                            @input="updateContent(card, $event)"></div>
+                             @input="updateContent(card, $event)"></div>
                     </template>
 
                     <template x-if="card.type === 'image'">
@@ -44,6 +48,18 @@
                         <div class="d-flex align-items-center gap-2">
                             <i class="bi bi-paperclip"></i>
                             <a :href="card.content" target="_blank" class="text-primary">Open File</a>
+                        </div>
+                    </template>
+
+                    <template x-if="card.type === 'youtube'">
+                        <div class="board-yt-thumb" @click="card.opened = !card.opened" style="cursor:pointer">
+                          <template x-if="!card.opened">
+                            <img :src="'https://img.youtube.com/vi/' + extractYoutubeId(card.content) + '/0.jpg'" style="max-width:100%;border-radius:5px" />
+                          </template>
+                          <template x-if="card.opened">
+                            <iframe :src="'https://www.youtube.com/embed/' + extractYoutubeId(card.content)" frameborder="0" allowfullscreen style="width:100%;height:180px"></iframe>
+                          </template>
+                          <div class="yt-url" x-text="card.content" style="font-size: 12px; color: #888;word-break:break-all"></div>
                         </div>
                     </template>
                 </div>
@@ -69,6 +85,9 @@
                 currentTool: 'select',
                 connectingFrom: null,
                 lines: [], // {fromId,toId,line}
+                isResizingLocal: false,
+                hotkeysBound: false,
+                pasteBound: false,
 
                 init() {
                     this.clientId = Math.random().toString(36).substring(2, 9);
@@ -76,7 +95,42 @@
                     this.createGuideElements();
                     this.enableDrag();
                     this.listenRealtime();
-                    this.bindHotkeys();
+                    if (!this.hotkeysBound) {
+                        this.bindHotkeys();
+                        this.hotkeysBound = true;
+                    }
+
+                    // === Embed Link ala Millanote pada paste ===
+                    const boardEl = document.querySelector('.board-canvas');
+                    if(boardEl && !this.pasteBound) {
+                        const pasteHandler = (e) => {
+                            let pasted = (e.clipboardData || window.clipboardData).getData('text');
+                            // Jika tidak ada teks, abaikan (biar ctrl+v internal berjalan)
+                            if (!pasted) return;
+                            let type = 'text';
+                            let content = pasted;
+                            let matched = false;
+                            if (/^https?:\/\/(www.)?youtube.com|youtu.be\//.test(pasted)) {
+                                type = 'youtube'; content = pasted; matched = true;
+                            } else if (/\.(jpg|jpeg|png|gif|svg)$/i.test(pasted)) {
+                                type = 'image'; matched = true;
+                            } else if (/^https?:\/\//.test(pasted)) {
+                                type = 'link'; matched = true;
+                            }
+                            if(matched) {
+                                // HANYA handle paste text link di sini; cegah bubbling/duplikasi
+                                try { e.stopImmediatePropagation(); } catch(_) {}
+                                e.stopPropagation();
+                                e.preventDefault();
+                                const centerX = Math.round((boardEl.scrollLeft + boardEl.clientWidth/2) / this.gridSize) * this.gridSize;
+                                const centerY = Math.round((boardEl.scrollTop + boardEl.clientHeight/2) / this.gridSize) * this.gridSize;
+                                const cardData = { type, content, x: centerX, y: centerY };
+                                Livewire.dispatch('createCardFromData', { data: cardData, clientId: this.clientId });
+                            }
+                        };
+                        boardEl.addEventListener('paste', pasteHandler, true); // capture to intercept lebih awal
+                        this.pasteBound = true;
+                    }
 
                     // gambar semua konektor awal
                     if (Array.isArray(this.connectors)) {
@@ -174,9 +228,12 @@
                                 const id = el.id.replace('card-', '');
                                 const w = parseFloat(el.style.width);
                                 const h = parseFloat(el.style.height);
+                                // update local model agar sync juga di tab yang resize
+                                let card = self.cards.find(c => c.id == id);
+                                if (card) { card.w = w; card.h = h; }
                                 Livewire.dispatch('updateCardSize', { id, w, h });
-                                // reposisi garis (walau tidak wajib, agar anchor lebih tepat)
-                                this.updateLinePositions(id);
+                                self.updateLinePositions(id);
+                                setTimeout(() => { self.isResizingLocal = false }, 150);
                             }
                         },
                         modifiers: [
@@ -250,6 +307,7 @@
                 listenRealtime() {
                     Echo.channel(`board.${projectId}`)
                         .listen('CardCreated', (e) => {
+                            // PATCH - cek jika id sudah ada, skip!
                             if (!this.cards.find(c => c.id === e.card.id)) {
                                 this.cards.push(e.card);
                                 this.animateCard(e.card.id);
@@ -257,16 +315,23 @@
                         })
                         .listen('CardUpdated', (e) => {
                             const card = this.cards.find(c => c.id === e.card.id);
-                            if (card) Object.assign(card, e.card);
+                            if (card) {
+                                Object.assign(card, e.card);
+                                // --- resize animation sync
+                                const el = document.getElementById(`card-${card.id}`);
+                                if (el) {
+                                    this.smoothResize(card.id, card.w, card.h);
+                                }
+                                this.updateLinePositions(card.id);
+                            }
                         })
                         .listen('.CardMoved', (e) => {
                             const moved = this.cards.find(c => c.id === e.card.id);
                             if (!moved) return;
-
                             moved.x = e.card.x;
                             moved.y = e.card.y;
                             this.smoothMove(moved.id, moved.x, moved.y);
-                           setTimeout(() => this.updateLinePositions(moved.id), 350);
+                            setTimeout(() => this.updateLinePositions(moved.id), 350);
                         })
                         .listen('.CardDeleted', (e) => {
                             // hapus garis yang terkait
@@ -275,8 +340,6 @@
                                 if (hit) l.line.remove();
                                 return !hit;
                             });
-
-                            // hapus kartu
                             this.cards = this.cards.filter(c => c.id !== e.id);
                             const el = document.getElementById(`card-${e.id}`);
                             if (el) anime({
@@ -301,28 +364,24 @@
 
                     Livewire.on('cardDeletedLocal', (event) => {
                         const id = Array.isArray(event) ? event[0] : event;
-
                         // lokal: hapus garis yang terkait
                         this.lines = this.lines.filter(l => {
                             const hit = (l.fromId == id || l.toId == id);
                             if (hit) l.line.remove();
                             return !hit;
                         });
-
                         this.cards = this.cards.filter(c => c.id !== id);
                     });
-
                     Livewire.on('cardCreatedLocal', (event) => {
                         const card = event[0];
+                        // PATCH - cek jika id sudah ada, skip!
                         if (!this.cards.find(c => c.id === card.id)) {
                             this.cards.push(card);
                             this.animateCard(card.id);
                         }
                     });
-
                     Livewire.on('connectorCreatedLocal', e => {
                         const connector = e[0];
-                        // simpan di state lokal juga supaya konsisten
                         this.connectors.push({
                             id: connector.id ?? null,
                             from_card_id: connector.from_card_id,
@@ -334,11 +393,30 @@
                         this.drawLine(connector.from_card_id, connector.to_card_id);
                     });
                 },
+                // --- tambahkan fungsi berikut setelah smoothMove:
+                smoothResize(cardId, newW, newH) {
+                    // cegah animasi resize remote jika sedang resizing lokal
+                    if (this.isResizingLocal) return;
+                    const el = document.getElementById(`card-${cardId}`);
+                    if (!el) return;
+                    const currentW = parseFloat(el.style.width) || el.offsetWidth;
+                    const currentH = parseFloat(el.style.height) || el.offsetHeight;
+                    anime({
+                        targets: el,
+                        width: [currentW, newW],
+                        height: [currentH, newH],
+                        duration: 300,
+                        easing: 'easeOutCubic',
+                        update: () => this.updateLinePositions(cardId),
+                        complete: () => this.updateLinePositions(cardId)
+                    });
+                },
 
                 // =========================
                 // HOTKEYS
                 // =========================
                 bindHotkeys() {
+                    if (this.hotkeysBound) return; // guard rebinding
                     const self = this;
 
                     hotkeys('ctrl+d,command+d', e => {
@@ -367,21 +445,20 @@
                 duplicateSelectedCards() {
                     if (!this.selectedCards.length || this.isDuplicating) return;
                     this.isDuplicating = true;
-
-                    this.selectedCards.forEach(async (id) => {
-                        const orig = this.cards.find(c => c.id == id);
-                        if (!orig) return;
-
-                        const copy = { ...orig, id: null, x: orig.x + 40, y: orig.y + 40 };
-                        const response = await Livewire.dispatch('createCardFromData', { data: copy, clientId: this.clientId });
-
-                        if (response?.serverMemo?.data) {
-                            const newCard = response.serverMemo.data;
-                            this.cards.push(newCard);
-                            this.animateCard(newCard.id);
-                        }
+                    let offsetGap = 40;
+                    const defaultX = 120, defaultY = 120;
+                    let cardsToCopy = this.cards.filter(c => this.selectedCards.includes(c.id));
+                    cardsToCopy.forEach(orig => {
+                        const copy = { ...orig };
+                        delete copy.id;
+                        // PATCH: jangan fallback ke 'text':
+                        if (orig.type) copy.type = orig.type;
+                        if (!copy.content && orig.content) copy.content = orig.content;
+                        const ox = Number(orig.x), oy = Number(orig.y);
+                        copy.x = (isNaN(ox) ? defaultX : ox) + offsetGap;
+                        copy.y = (isNaN(oy) ? defaultY : oy) + offsetGap;
+                        Livewire.dispatch('createCardFromData', { data: copy, clientId: this.clientId });
                     });
-
                     setTimeout(() => (this.isDuplicating = false), 300);
                 },
 
@@ -457,17 +534,31 @@
                 },
 
                 copySelectedCards() {
+                    // Log semua state di proses copy
+                    console.log('cards (full):', this.cards);
+                    console.log('selectedCards:', this.selectedCards);
                     this.clipboard = this.cards
                         .filter(c => this.selectedCards.includes(c.id))
                         .map(c => ({ ...c }));
+                    console.log('clipboard (after copy):', this.clipboard);
+                    // Untuk kroscek setiap isi card di clipboard hasil copy
+                    this.clipboard.forEach((c, idx) => console.log('copied clip', idx, 'type:', c.type, 'content:', c.content));
                 },
 
                 pasteCards() {
                     if (!this.clipboard.length) return;
-                    this.clipboard.forEach(orig => {
+                    let offsetGap = 40;
+                    const defaultX = 120, defaultY = 120;
+                    console.log('== PASTE DEBUG == clipboard length:', this.clipboard.length);
+                    this.clipboard.forEach((orig, idx) => {
                         const copy = { ...orig };
                         delete copy.id;
-                        copy.x += 30; copy.y += 30;
+                        if (orig.type) copy.type = orig.type;
+                        if (!copy.content && orig.content) copy.content = orig.content;
+                        const ox = Number(orig.x), oy = Number(orig.y);
+                        copy.x = (isNaN(ox) ? defaultX : ox) + offsetGap;
+                        copy.y = (isNaN(oy) ? defaultY : oy) + offsetGap;
+                        console.log('Paste dispatch', idx, ':', copy); // LOG DETAIL DISPATCH
                         Livewire.dispatch('createCardFromData', { data: copy, clientId: this.clientId });
                     });
                 },
@@ -535,11 +626,9 @@
             cursor: grab;
             transition: box-shadow 0.25s ease, transform 0.2s ease;
         }
-
         .board-card.selected {
             box-shadow: 0 0 12px rgba(0, 123, 255, 0.85);
         }
-
         .board-card::after {
             content: '';
             position: absolute;
@@ -551,29 +640,19 @@
             border-bottom: 2px solid #007bff;
             opacity: 0.4;
         }
-
         .guide-line {
             position: absolute;
             background: rgba(0, 123, 255, 0.4);
             z-index: 9999;
             pointer-events: none;
         }
-
-        .guide-line.vertical {
-            width: 1px;
-            height: 100%;
-        }
-
-        .guide-line.horizontal {
-            height: 1px;
-            width: 100%;
-        }
+        .guide-line.vertical { width: 1px; height: 100%; }
+        .guide-line.horizontal { height: 1px; width: 100%; }
 
         .board-card.note {
             background-color: #ffe680 !important;
             border: 1px solid #f0d94a;
         }
-
         .board-card img {
             max-width: 100%;
             border-radius: 10px;
@@ -590,7 +669,6 @@
             font-size: 0.95rem;
             transform: rotate(-1.5deg);
         }
-
         .board-card[data-type="note"]::before {
             content: "";
             position: absolute;
@@ -601,15 +679,11 @@
             width: 0;
             height: 0;
         }
-
         .board-card[data-type="note"]:hover {
             transform: rotate(0deg) scale(1.02);
             box-shadow: 4px 6px 12px rgba(0, 0, 0, 0.18);
         }
 
-        .board-canvas {
-            position: relative;
-            overflow: auto;
-        }
+        .board-canvas { position: relative; overflow: auto; }
     </style>
 </div>

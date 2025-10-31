@@ -221,19 +221,35 @@ class ProjectBoard extends Component
     public function createCardFromData($payload = [])
     {
         $data = $payload['data'] ?? $payload;
-
-        $card = BoardCard::create([
-            'project_id' => $this->projectId,
-            'type'       => $data['type'] ?? 'text',
-            'content'    => $data['content'] ?? 'Duplicated card',
-            'x'          => $data['x'] ?? 100,
-            'y'          => $data['y'] ?? 100,
-            'w'          => $data['w'] ?? 200,
-            'h'          => $data['h'] ?? 100,
-            'z_index'    => (BoardCard::where('project_id', $this->projectId)->max('z_index') ?? 0) + 1,
-            'updated_by' => null,
+        
+        // GUARD: cegah pembuatan card text kosong (kemungkinan trigger kedua yang tidak diinginkan)
+        $isClientAction = isset($payload['clientId']) && !empty($payload['clientId']);
+        if ($isClientAction && isset($data['type']) && $data['type'] === 'text' && (!isset($data['content']) || $data['content'] === null || $data['content'] === '')) {
+            \Log::debug('createCardFromData GUARD: skip empty text card', ['payload' => $payload]);
+            return null;
+        }
+        
+        $fields = (new BoardCard)->getFillable();
+        $finalData = [];
+        foreach ($fields as $f) {
+            if (array_key_exists($f, $data) && $f !== 'id' && $f !== 'project_id' && $f !== 'z_index') {
+                $finalData[$f] = $data[$f];
+            }
+        }
+        $finalData['project_id'] = $this->projectId;
+        $finalData['z_index'] = (BoardCard::where('project_id', $this->projectId)->max('z_index') ?? 0) + 1;
+        $finalData['x'] = isset($finalData['x']) && $finalData['x'] !== '' ? (int)$finalData['x'] : 120;
+        $finalData['y'] = isset($finalData['y']) && $finalData['y'] !== '' ? (int)$finalData['y'] : 120;
+        if (empty($finalData['type']) && isset($data['type'])) $finalData['type'] = $data['type'];
+        if (empty($finalData['content']) && isset($data['content'])) $finalData['content'] = $data['content'];
+        
+        \Log::debug('createCardFromData', [
+            'clientId' => $payload['clientId'] ?? null,
+            'data' => $data,
+            'finalData' => $finalData,
         ]);
 
+        $card = BoardCard::create($finalData);
         broadcast(new CardCreated($card))->toOthers();
         $this->dispatch('cardCreatedLocal', $card->toArray());
         return $card->toArray();

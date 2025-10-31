@@ -129,6 +129,6 @@ class Employee extends Model
 
     public function tasks()
     {
-        return $this->belongsToMany(ProjectTask::class, 'employee_task');
+        return $this->belongsToMany(ProjectTask::class, 'employee_tasks');
     }
 }
