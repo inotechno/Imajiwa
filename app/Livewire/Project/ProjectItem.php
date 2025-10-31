@@ -81,7 +81,7 @@ class ProjectItem extends Component
             'color' => $status_color
         ];
     }
-    
+
     public function render()
     {
         return view('livewire.project.project-item', [

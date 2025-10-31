@@ -35,4 +35,24 @@ class ProjectTask extends Model
     {
         return $this->belongsToMany(Employee::class, 'employee_tasks');
     }
+
+    public function getStatusColorAttribute()
+    {
+        return match ($this->status) {
+            'todo' => 'secondary',
+            'in_progress' => 'info',
+            'done' => 'success',
+            default => 'dark',
+        };
+    }
+
+    public function getStatusLabelAttribute()
+    {
+        return match ($this->status) {
+            'todo' => 'To Do',
+            'in_progress' => 'In Progress',
+            'done' => 'Done',
+            default => 'Unknown',
+        };
+    }
 }
