@@ -1,24 +1,19 @@
 <div>
-    <!-- Breadcrumb -->
-    @livewire(
-        'component.page.breadcrumb',
-        [
-            'breadcrumbs' => [['name' => 'Application', 'url' => '/'], ['name' => 'Project', 'url' => route('project.index')]],
-        ],
-        key('breadcrumb')
-    )
 
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body border-bottom">
-                    <h4 class="card-title mb-4">Filter Site</h4>
-                    <div class="row g-3"> <!-- Menggunakan Grid -->
-                        <div class="col-md-3">
+                    <h4 class="card-title mb-4">Filter Task</h4>
+                    <div class="row g-3">
+                        <!-- Search -->
+                        <div class="col-md-4">
                             <input type="search" class="form-control" id="searchInput" wire:model.live="search"
-                                placeholder="Search for Name Project Manager, Project Name">
+                                placeholder="Search for Task Title or Project Name">
                         </div>
-                        <div class="col-md-2" wire:ignore>
+
+                        <!-- Status -->
+                        <div class="col-md-3" wire:ignore>
                             <select class="form-control select2 select-status" wire:model.live="status">
                                 <option value="">Select Status</option>
                                 <option value="not_started">Not Started</option>
@@ -28,6 +23,8 @@
                                 <option value="on_hold">On Hold</option>
                             </select>
                         </div>
+
+                        <!-- Per Page -->
                         <div class="col-md-2" wire:ignore>
                             <select class="form-control select2 select-per-page" wire:model.live="perPage">
                                 <option value="">Select Per Page</option>
@@ -37,29 +34,21 @@
                                 <option value="100">100</option>
                             </select>
                         </div>
-                        <div class="col-md-2" wire:ignore>
-                            <select class="form-control select2 select-year" wire:model.live="year">
-                                <option value="">Select Year</option>
-                                @foreach ($availableYears as $yearOption)
-                                    <option value="{{ $yearOption }}">{{ $yearOption }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-3 d-flex gap-2"> <!-- Mengelompokkan tombol -->
+
+                        <!-- Buttons -->
+                        <div class="col-md-3 d-flex gap-2">
                             <button type="button" class="btn btn-warning w-50" wire:click="resetFilter">Reset</button>
-                            @can('create:project')
-                                <a href="{{ route('project.create') }}" class="btn btn-primary w-50">Create</a>
-                            @endcan
+                            <a href="{{ route('project.task.create', ['project_id' => $project->id]) }}"
+                                class="btn btn-primary w-50">Create</a>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Project List -->
-            @livewire('project.project-list', ['projects' => $projects->getCollection()], key('project-list'))
+            <!-- Task List -->
+            @livewire('project.task.task-list', ['tasks' => $tasks->getCollection()], key('task-list'))
+            {{ $tasks->links() }}
 
-            <!-- Pagination -->
-            {{ $projects->links() }}
         </div>
     </div>
 
@@ -78,14 +67,12 @@
                     width: '100%'
                 });
 
-                // Sync Select2 dengan Livewire
-                $('.select-status, .select-per-page, .select-year').on('change', function() {
+                $('.select-status, .select-per-page').on('change', function() {
                     @this.set(this.getAttribute('wire:model.live'), this.value);
                 });
 
-                // Reset Select2 saat Livewire reset
                 Livewire.on('reset-select2', () => {
-                    $('.select-status, .select-per-page, .select-year').val(null).trigger('change');
+                    $('.select-status, .select-per-page').val(null).trigger('change');
                 });
             });
         </script>

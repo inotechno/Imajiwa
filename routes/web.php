@@ -10,6 +10,10 @@ use App\Livewire\Site\SiteIndex;
 use App\Livewire\Site\SiteDetail;
 use App\Livewire\Profile\ProfileForm;
 use App\Livewire\Project\ProjectForm;
+use App\Livewire\Project\Task\TaskIndex;
+use App\Livewire\Project\Task\TaskTeam;
+use App\Livewire\Project\Task\TaskForm;
+use App\Livewire\Project\Task\TaskDetail;
 use App\Livewire\Project\ProjectBoard;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Machine\MachineIndex;
@@ -126,6 +130,23 @@ Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
         Route::get('create', ProjectForm::class)->name('project.create')->middleware('can:create:project');
         Route::get('edit/{id}', ProjectForm::class)->name('project.edit')->middleware('can:update:project');
         Route::get('{project}/board', ProjectBoard::class)->name('project.board')->middleware('can:view:project');
+
+        Route::prefix('{project_id}/task')->group(function () {
+            // Daftar semua task dalam project
+            Route::get('/', TaskIndex::class)->name('project.task.index');
+
+            // Daftar task sebagai anggota tim
+            Route::get('/team', TaskTeam::class)->name('project.task.team');
+
+            // Create task
+            Route::get('/create', TaskForm::class)->name('project.task.create');
+
+            // Edit task
+            Route::get('/{id}/edit', TaskForm::class)->name('project.task.edit');
+
+            // Detail task
+            Route::get('/{id}', TaskDetail::class)->name('project.task.detail');
+        });
     });
 
     // Menambahkan route untuk Client

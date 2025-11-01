@@ -42,7 +42,6 @@
         <!-- Tab panes -->
         <div class="tab-content p-3 text-muted">
             <div class="tab-pane active" id="overview" role="tabpanel">
-                {{-- view overview untuk saat ini  --}}
                 <div class="row">
                     <!-- Left side: project info -->
                     <div class="col-lg-8">
@@ -73,7 +72,7 @@
                                             str_replace(
                                                 '_',
                                                 '
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ',
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ',
                                                 $status,
                                             ),
                                         ) }}
@@ -162,60 +161,23 @@
                 </div>
             </div>
             <div class="tab-pane" id="task" role="tabpanel">
-                @livewire('project.project-task', ['project' => $project], key('project-task-' . $project->id))
+                @livewire('project.task.task-team', ['project' => $project])
             </div>
             {{-- Task yang dibuat oleh user login --}}
             <div class="tab-pane" id="mytask" role="tabpanel">
-                @livewire('project.project-my-task', ['project' => $project], key('project-my-task-' . $project->id))
+                @livewire('project.task.task-index', ['project' => $project])
             </div>
             <div class="tab-pane" id="kanban" role="tabpanel">
-                <p class="mb-0">
-                    kanban
-                </p>
+                @livewire('project.task.task-kanban', ['project_id' => $project->id], key('kanban-' . $project->id))
             </div>
             <div class="tab-pane" id="board" role="tabpanel">
                 <div class="row">
-                    @livewire('project.project-board')
+                    @livewire('project.project-board', ['project' => $project], key('project-board-' . $project->id))
                 </div>
             </div>
         </div>
     </div>
 
-
-
-    <div class="row">
-        <div class="col-lg-4">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title mb-4">Overview</h4>
-                </div>
-            </div>
-        </div>
-        <!-- end col -->
-
-        <div class="col-lg-4">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title mb-4">Board</h4>
-                    <p class="text-muted">View and organize your project ideas</p>
-                    <a href="{{ route('project.board', $project->id) }}" class="btn btn-primary">
-                        Open Moodboard
-                    </a>
-                </div>
-            </div>
-        </div>
-        <!-- end col -->
-
-        <div class="col-lg-4">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title mb-4">Comments</h4>
-                </div>
-            </div>
-        </div>
-        <!-- end col -->
-    </div>
-    <!-- end row -->
 
     {{-- <div class="row">
         <div class="col-lg-12">

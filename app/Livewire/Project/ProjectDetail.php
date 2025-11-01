@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Livewire\Project;
+
 use App\Models\Employee;
 use App\Models\Project;
 use Livewire\Component;
@@ -8,7 +9,7 @@ use Livewire\Component;
 class ProjectDetail extends Component
 {
     public $project;
-    public $name, $description, $start_date, $end_date, $status, $employee_id , $client_id, $category_id;
+    public $name, $description, $start_date, $end_date, $status, $employee_id, $client_id, $category_id;
     public $selectedEmployees = [];
     public $additional_project_manager = [];
     public $projectManagerName;
@@ -28,7 +29,7 @@ class ProjectDetail extends Component
             $this->selectedEmployees = $this->project->employees()->pluck('employee_id')->toArray();
             $this->additional_project_manager = $this->project->additionalProjectManagers()->pluck('employee_id')->toArray();
             $this->dispatch('change-select-form');
-        }else {
+        } else {
             $this->employee_id = auth()->user()->employee->id;
             $this->projectManagerName = auth()->user()->employee->user->name;
         }
