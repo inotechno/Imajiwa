@@ -72,36 +72,31 @@
 @push('styles')
     <link href="{{ asset('libs/dragula/dragula.min.css') }}" rel="stylesheet" type="text/css" />
 @endpush
-
 @push('js')
     <script src="{{ asset('libs/dragula/dragula.min.js') }}"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const containers = Array.from(document.querySelectorAll(".task-list"));
+
             dragula(containers).on("drop", function(el, target) {
                 const taskId = el.id.replace("task-", "");
                 const column = target.id.replace("kanban-", "");
 
-                // Mapping status ke DB
                 const statusMap = {
-                    todo: "not_started",
+                    todo: "todo",
                     inprogress: "in_progress",
-                    done: "completed"
+                    done: "done",
                 };
+                const newStatus = statusMap[column] || "todo";
 
-                const newStatus = statusMap[column] || "not_started";
+                console.log("🔥 Update task", taskId, "=>", newStatus);
 
-                console.log("Updating Task:", taskId, "=>", newStatus);
+                // ✅ Kirim parameter langsung ke Livewire (bukan objek tunggal)
+                Livewire.dispatch('updateTaskStatus', [taskId, newStatus]);
 
-                // 🔥 Dispatch ke Livewire
-                Livewire.dispatch("updateTaskStatus", {
-                    task_id: taskId,
-                    status: newStatus
-                });
+                el.classList.add("animate__animated", "animate__fadeInUp");
+                setTimeout(() => el.classList.remove("animate__animated", "animate__fadeInUp"), 500);
 
-                // Animasi
-                el.classList.add("animate__animated", "animate__pulse");
-                setTimeout(() => el.classList.remove("animate__animated", "animate__pulse"), 600);
             });
         });
     </script>

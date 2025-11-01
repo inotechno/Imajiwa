@@ -27,31 +27,35 @@ class TaskKanban extends Component
             ->orderBy('start_date')
             ->get();
 
-        $this->todoTasks = $tasks->whereIn('status', ['todo', 'not_started', 'on_hold']);
+        $this->todoTasks = $tasks->whereIn('status', ['todo']);
         $this->inProgressTasks = $tasks->where('status', 'in_progress');
-        $this->doneTasks = $tasks->whereIn('status', ['done', 'completed']);
+        $this->doneTasks = $tasks->whereIn('status', ['done']);
     }
 
     #[On('updateTaskStatus')]
-    public function updateTaskStatus($data)
+    public function updateTaskStatus($task_id, $status)
     {
-        $taskId = data_get($data, 'task_id');
-        $status = data_get($data, 'status');
-
-        if (!$taskId || !$status) {
+        if (!$task_id || !$status) {
+            logger()->warning('❌ Missing task_id or status', compact('task_id', 'status'));
             return;
         }
 
-        $task = ProjectTask::where('project_id', $this->project_id)
-            ->find($taskId);
+        $task = \App\Models\ProjectTask::find($task_id);
 
         if ($task) {
-            $task->status = $status;
-            $task->save(); // ✅ simpan perubahan ke DB
+            $task->update(['status' => $status]);
+            logger()->info("✅ Task #{$task->id} updated to {$status}");
+            $this->loadTasks(); // refresh UI
+        } else {
+            logger()->warning("⚠️ Task not found", ['task_id' => $task_id]);
         }
-
-        $this->loadTasks(); // refresh tampilan
     }
+
+
+
+
+
+
 
     public function render()
     {
