@@ -48,11 +48,6 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="d-flex">
-                                    <div class="flex-shrink-0 me-4">
-                                        <img src="{{ asset($project->image ?? 'assets/images/companies/default.png') }}"
-                                            alt="" class="avatar-sm rounded">
-                                    </div>
-
                                     <div class="flex-grow-1 overflow-hidden">
                                         <h5 class="text-truncate font-size-15">{{ $name }}</h5>
                                         <p class="text-muted">{{ $project->client->name ?? '-' }}</p>
@@ -72,7 +67,7 @@
                                             str_replace(
                                                 '_',
                                                 '
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ',
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ',
                                                 $status,
                                             ),
                                         ) }}
@@ -282,3 +277,30 @@
         </div>
     </div> --}}
 </div>
+
+@push('js')
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const tabLinks = document.querySelectorAll('a[data-bs-toggle="tab"]');
+            tabLinks.forEach(tab => {
+                tab.addEventListener('shown.bs.tab', function(e) {
+                    const target = e.target.getAttribute('href');
+
+                    // Sembunyikan semua garis LeaderLine di luar tab aktif
+                    document.querySelectorAll('.leader-line').forEach(line => {
+                        line.style.display = (target === '#board') ? 'block' : 'none';
+                    });
+
+                    // Refresh ulang posisi garis ketika balik ke Board
+                    if (target === '#board') {
+                        setTimeout(() => {
+                            if (window.activeBoard && activeBoard.lines) {
+                                activeBoard.lines.forEach(l => l.line.position());
+                            }
+                        }, 200);
+                    }
+                });
+            });
+        });
+    </script>
+@endpush
