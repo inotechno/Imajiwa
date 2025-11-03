@@ -22,60 +22,70 @@
         </div>
 
         <div class="position-relative rounded board-canvas" style="height:80vh; overflow:auto;">
-            <template x-for="card in cards" :key="card.id">
-                <div class="position-absolute board-card shadow rounded p-2" :id="'card-' + card.id"
-                    :data-type="card.type" @click="focusCard(card.id, $event)"
-                    :class="{
-                        'selected': selectedCards.includes(card.id),
-                        'bg-white': card.type === 'text' || card.type === 'file',
-                        'bg-warning text-dark': card.type === 'note'
-                    }"
-                    :style="`
-                                                                                                                                                                    left:${card.x}px;
-                                                                                                                                                                    top:${card.y}px;
-                                                                                                                                                                    width:${card.w}px;
-                                                                                                                                                                    height:${card.h}px;
-                                                                                                                                                                    z-index:${card.z_index};
-                                                                                                                                                                    transition: box-shadow 0.25s ease, transform 0.2s ease;
-                                                                                                                                                                 `">
+            <div class="board-inner position-relative" style="width:4000px; height:3000px;">
+                <template x-for="card in cards" :key="card.id">
+                    <div class="position-absolute board-card shadow rounded p-2" :id="'card-' + card.id"
+                        :data-type="card.type" @click="focusCard(card.id, $event)"
+                        :class="{
+                            'selected': selectedCards.includes(card.id),
+                            'bg-white': card.type === 'text' || card.type === 'file',
+                            'bg-warning text-dark': card.type === 'note'
+                        }"
+                        :style="`
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                left:${card.x}px;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                top:${card.y}px;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                width:${card.w}px;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                height:${card.h}px;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                z-index:${card.z_index};
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                transition: box-shadow 0.25s ease, transform 0.2s ease;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             `">
 
-                    <template x-if="card.type === 'text'">
-                        <div contenteditable="true" x-text="card.content" @input="updateContent(card, $event)"></div>
-                    </template>
+                        <template x-if="card.type === 'text'">
+                            <div contenteditable="true" x-text="card.content" @input="updateContent(card, $event)">
+                            </div>
+                        </template>
 
-                    <template x-if="card.type === 'note'">
-                        <div contenteditable="true" class="p-2 rounded" x-text="card.content"
-                            @input="updateContent(card, $event)"></div>
-                    </template>
+                        <template x-if="card.type === 'note'">
+                            <div contenteditable="true" class="p-2 rounded" x-text="card.content"
+                                @input="updateContent(card, $event)"></div>
+                        </template>
 
-                    <template x-if="card.type === 'image'">
-                        <img :src="card.content" class="img-fluid rounded"
-                            style="max-height:100%; object-fit:cover;">
-                    </template>
+                        <template x-if="card.type === 'image'">
+                            <img :src="card.content" class="img-fluid rounded"
+                                style="max-height:100%; object-fit:cover;">
+                        </template>
 
-                    <template x-if="card.type === 'file'">
-                        <div class="d-flex align-items-center gap-2">
-                            <i class="bi bi-paperclip"></i>
-                            <a :href="card.content" target="_blank" class="text-primary">Open File</a>
-                        </div>
-                    </template>
+                        <template x-if="card.type === 'file'">
+                            <div class="d-flex align-items-center gap-2">
+                                <i class="bi bi-paperclip"></i>
+                                <a :href="card.content" target="_blank" class="text-primary">Open File</a>
+                            </div>
+                        </template>
 
-                    <template x-if="card.type === 'youtube'">
-                        <div class="board-yt-thumb" @click="card.opened = !card.opened" style="cursor:pointer">
-                            <template x-if="!card.opened">
-                                <img :src="'https://img.youtube.com/vi/' + extractYoutubeId(card.content) + '/0.jpg'"
-                                    style="max-width:100%;border-radius:5px" />
-                            </template>
-                            <template x-if="card.opened">
-                                <iframe :src="'https://www.youtube.com/embed/' + extractYoutubeId(card.content)"
-                                    frameborder="0" allowfullscreen style="width:100%;height:180px"></iframe>
-                            </template>
-                            <div class="yt-url" x-text="card.content"
-                                style="font-size: 12px; color: #888;word-break:break-all"></div>
-                        </div>
-                    </template>
-                </div>
-            </template>
+                        <template x-if="card.type === 'youtube'">
+                            <div class="board-yt-thumb" @click="card.opened = !card.opened" style="cursor:pointer">
+                                <template x-if="!card.opened">
+                                    <img :src="'https://img.youtube.com/vi/' + extractYoutubeId(card.content) + '/0.jpg'"
+                                        style="max-width:100%;border-radius:5px" />
+                                </template>
+                                <template x-if="card.opened">
+                                    <iframe :src="'https://www.youtube.com/embed/' + extractYoutubeId(card.content)"
+                                        frameborder="0" allowfullscreen style="width:100%;height:180px"></iframe>
+                                </template>
+                                <div class="yt-url" x-text="card.content"
+                                    style="font-size: 12px; color: #888;word-break:break-all"></div>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+            </div>
+            <div class="zoom-control">
+                <button class="btn btn-sm btn-outline-light me-1" @click="zoomOut()">-</button>
+                <span class="zoom-label" x-text="Math.round(scale * 100) + '%'"></span>
+                <button class="btn btn-sm btn-outline-light ms-1" @click="zoomIn()">+</button>
+                <button class="btn btn-sm btn-outline-secondary ms-2" @click="resetZoom()">Reset</button>
+            </div>
+
         </div>
     </div>
 
@@ -88,6 +98,11 @@
     <script>
         function boardApp(cards, connectors, projectId) {
             return {
+                scale: 1,
+                originX: 0,
+                originY: 0,
+                innerEl: null,
+
                 cards,
                 connectors,
                 selectedCards: [],
@@ -104,12 +119,26 @@
                 hotkeysBound: false,
                 pasteBound: false,
 
+                selectionBox: null,
+                isSelecting: false,
+                selectionStart: {
+                    x: 0,
+                    y: 0
+                },
+
+
+                history: [],
+                historyIndex: -1,
+                isRecordingHistory: true,
+
                 init() {
                     this.clientId = Math.random().toString(36).substring(2, 9);
                     LeaderLine.positionByWindowScroll = false;
                     this.createGuideElements();
                     this.enableDrag();
                     this.listenRealtime();
+                    this.setupZoomAndPan();
+                    this.enableSelectionBox();
                     if (!this.hotkeysBound) {
                         this.bindHotkeys();
                         this.hotkeysBound = true;
@@ -172,7 +201,190 @@
                     window.addEventListener('resize', () => this.lines.forEach(l => l.line.position()));
                     document.querySelector('.board-canvas')
                         ?.addEventListener('scroll', () => this.lines.forEach(l => l.line.position()));
+
+                    this.innerEl = document.querySelector('.board-inner');
                 },
+
+
+                pushHistory(action) {
+                    if (!this.isRecordingHistory) return;
+                    this.history = this.history.slice(0, this.historyIndex + 1);
+                    this.history.push(action);
+                    this.historyIndex++;
+                },
+
+                undo() {
+                    if (this.historyIndex < 0) return;
+                    const action = this.history[this.historyIndex];
+                    this.isRecordingHistory = false;
+                    this.applyActionReverse(action);
+                    this.isRecordingHistory = true;
+                    this.historyIndex--;
+                },
+
+                redo() {
+                    if (this.historyIndex >= this.history.length - 1) return;
+                    this.historyIndex++;
+                    const action = this.history[this.historyIndex];
+                    this.isRecordingHistory = false;
+                    this.applyAction(action);
+                    this.isRecordingHistory = true;
+                },
+
+                applyAction(action) {
+                    const card = this.cards.find(c => c.id === action.id);
+                    if (!card) return;
+                    Object.assign(card, action.newState);
+                    this.updateCardUI(card);
+                },
+
+                applyActionReverse(action) {
+                    const card = this.cards.find(c => c.id === action.id);
+                    if (!card) return;
+                    Object.assign(card, action.oldState);
+                    this.updateCardUI(card);
+                },
+
+                updateCardUI(card) {
+                    const el = document.getElementById(`card-${card.id}`);
+                    if (el) {
+                        el.style.left = `${card.x}px`;
+                        el.style.top = `${card.y}px`;
+                        el.style.width = `${card.w}px`;
+                        el.style.height = `${card.h}px`;
+                    }
+                },
+
+
+                enableSelectionBox() {
+                    const canvas = document.querySelector('.board-canvas');
+                    const inner = document.querySelector('.board-inner');
+
+                    canvas.addEventListener('mousedown', (e) => {
+                        if (e.target.closest('.board-card')) return; // abaikan klik card
+                        if (e.button !== 0) return; // hanya klik kiri
+                        this.isSelecting = true;
+                        const rect = canvas.getBoundingClientRect();
+                        this.selectionStart = {
+                            x: e.clientX - rect.left + canvas.scrollLeft,
+                            y: e.clientY - rect.top + canvas.scrollTop
+                        };
+                        if (!this.selectionBox) {
+                            this.selectionBox = document.createElement('div');
+                            this.selectionBox.className = 'selection-box';
+                            inner.appendChild(this.selectionBox);
+                        }
+                        Object.assign(this.selectionBox.style, {
+                            left: this.selectionStart.x + 'px',
+                            top: this.selectionStart.y + 'px',
+                            width: '0px',
+                            height: '0px',
+                            display: 'block'
+                        });
+                    });
+
+                    canvas.addEventListener('mousemove', (e) => {
+                        if (!this.isSelecting) return;
+                        const rect = canvas.getBoundingClientRect();
+                        const x = e.clientX - rect.left + canvas.scrollLeft;
+                        const y = e.clientY - rect.top + canvas.scrollTop;
+                        const w = x - this.selectionStart.x;
+                        const h = y - this.selectionStart.y;
+
+                        Object.assign(this.selectionBox.style, {
+                            left: (w > 0 ? this.selectionStart.x : x) + 'px',
+                            top: (h > 0 ? this.selectionStart.y : y) + 'px',
+                            width: Math.abs(w) + 'px',
+                            height: Math.abs(h) + 'px'
+                        });
+
+                        const boxRect = this.selectionBox.getBoundingClientRect();
+                        this.selectedCards = [];
+                        this.cards.forEach(c => {
+                            const el = document.getElementById(`card-${c.id}`);
+                            if (!el) return;
+                            const cardRect = el.getBoundingClientRect();
+                            if (cardRect.right > boxRect.left && cardRect.left < boxRect.right && cardRect
+                                .bottom > boxRect.top && cardRect.top < boxRect.bottom) {
+                                this.selectedCards.push(c.id);
+                            }
+                        });
+                    });
+
+                    window.addEventListener('mouseup', () => {
+                        if (this.isSelecting) {
+                            this.isSelecting = false;
+                            if (this.selectionBox) this.selectionBox.style.display = 'none';
+                        }
+                    });
+                },
+
+                // === Zoom & Pan ===
+                setupZoomAndPan() {
+                    const canvas = document.querySelector('.board-canvas');
+                    const inner = document.querySelector('.board-inner');
+                    if (!canvas || !inner) return;
+
+                    let isPanning = false;
+                    let startX = 0,
+                        startY = 0;
+
+                    // Zoom dengan Ctrl + Scroll
+                    canvas.addEventListener('wheel', (e) => {
+                        if (!e.ctrlKey) return;
+                        e.preventDefault();
+                        const delta = e.deltaY > 0 ? 0.9 : 1.1;
+                        this.scale = Math.min(Math.max(this.scale * delta, 0.4), 2);
+                        this.applyZoom();
+                    });
+
+                    // Pan dengan Alt + Drag
+                    canvas.addEventListener('mousedown', (e) => {
+                        if (!e.altKey) return;
+                        isPanning = true;
+                        startX = e.clientX - this.originX;
+                        startY = e.clientY - this.originY;
+                        canvas.classList.add('dragging');
+                    });
+
+                    canvas.addEventListener('mousemove', (e) => {
+                        if (!isPanning) return;
+                        this.originX = e.clientX - startX;
+                        this.originY = e.clientY - startY;
+                        this.applyZoom();
+                    });
+
+                    window.addEventListener('mouseup', () => {
+                        isPanning = false;
+                        canvas.classList.remove('dragging');
+                    });
+                },
+
+                zoomIn() {
+                    this.scale = Math.min(this.scale * 1.1, 2);
+                    this.applyZoom();
+                },
+                zoomOut() {
+                    this.scale = Math.max(this.scale * 0.9, 0.3);
+                    this.applyZoom();
+                },
+                resetZoom() {
+                    this.scale = 1;
+                    this.originX = 0;
+                    this.originY = 0;
+                    this.applyZoom();
+                },
+                applyZoom() {
+                    if (!this.innerEl) return;
+                    this.innerEl.style.transition = 'transform 0.15s ease-out';
+                    this.innerEl.style.transform =
+                        `translate(${this.originX}px, ${this.originY}px) scale(${this.scale})`;
+                    this.innerEl.style.transformOrigin = '0 0';
+                    requestAnimationFrame(() => this.lines.forEach(l => l.line.position()));
+                },
+
+
+
 
                 smoothMove(cardId, newX, newY) {
                     const el = document.getElementById(`card-${cardId}`);
@@ -499,6 +711,31 @@
                         e.preventDefault();
                         self.pasteCards();
                     });
+                    hotkeys('ctrl+=,command+=', e => {
+                        e.preventDefault();
+                        this.zoomIn();
+                    });
+                    hotkeys('ctrl+-,command+-', e => {
+                        e.preventDefault();
+                        this.zoomOut();
+                    });
+                    hotkeys('ctrl+0,command+0', e => {
+                        e.preventDefault();
+                        this.resetZoom();
+                    });
+                    hotkeys('shift+0', e => {
+                        e.preventDefault();
+                        const canvas = document.querySelector('.board-canvas');
+                        const inner = this.innerEl;
+                        if (!canvas || !inner) return;
+                        const scaleX = canvas.clientWidth / inner.scrollWidth;
+                        const scaleY = canvas.clientHeight / inner.scrollHeight;
+                        this.scale = Math.min(scaleX, scaleY);
+                        this.originX = 0;
+                        this.originY = 0;
+                        this.applyZoom();
+                    });
+
                 },
 
                 duplicateSelectedCards() {
@@ -714,10 +951,46 @@
     </script>
 
     <style>
+        .selection-box {
+            position: absolute;
+            border: 1px dashed rgba(0, 123, 255, 0.8);
+            background: rgba(0, 123, 255, 0.2);
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        .zoom-control {
+            position: fixed !important;
+            /* 🧩 biar tidak ikut scroll */
+            bottom: 15px;
+            right: 15px;
+            z-index: 9999;
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            border-radius: 8px;
+            padding: 6px 10px;
+            font-size: 13px;
+            backdrop-filter: blur(4px);
+        }
+
+        .zoom-control button {
+            color: #fff !important;
+            border-color: rgba(255, 255, 255, 0.4) !important;
+        }
+
+        .zoom-control button:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
         .board-card {
             position: absolute;
             cursor: grab;
             transition: box-shadow 0.25s ease, transform 0.2s ease;
+        }
+
+        .board-inner {
+            transform-origin: 0 0;
+            transition: transform 0.2s ease-out;
         }
 
         .board-card.selected {
@@ -796,22 +1069,23 @@
             overflow: auto;
             height: 80vh;
             border-radius: 0.75rem;
-
-            /* 🌌 Warna dasar sedikit lebih terang */
             background-color: #1d1f22 !important;
 
-            /* 🟢 Pola titik halus seperti Milanote */
-            background-size: 28px 28px !important;
-            background-position: center center !important;
-
-            /* ✨ Efek depth lembut */
+            /* Pola grid titik seperti Milanote */
+            background-image: radial-gradient(circle, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+            background-size: 28px 28px;
+            background-position: center;
             transition: background-color 0.3s ease, background-size 0.3s ease;
         }
 
+
         /* Efek saat drag/zoom */
         .board-canvas.dragging {
-            background-image: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px) !important;
-            background-size: 30px 30px !important;
+            cursor: grabbing !important;
+        }
+
+        .board-canvas:not(.dragging) {
+            cursor: grab;
         }
     </style>
 </div>

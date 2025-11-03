@@ -131,6 +131,10 @@ Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
         Route::get('edit/{id}', ProjectForm::class)->name('project.edit')->middleware('can:update:project');
         Route::get('{project}/board', ProjectBoard::class)->name('project.board')->middleware('can:view:project');
 
+        Route::get('{project}/whiteboard', \App\Livewire\Project\WhiteboardCanvas::class)
+            ->name('project.whiteboard')
+            ->middleware('can:view:project');
+
         Route::prefix('{project_id}/task')->group(function () {
             // Daftar semua task dalam project
             Route::get('/', TaskIndex::class)->name('project.task.index');

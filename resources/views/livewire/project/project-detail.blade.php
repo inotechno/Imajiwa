@@ -3,40 +3,48 @@
 
 
     <div class="row">
-        <div class="col-xl-6">
-            <ul class="nav nav-pills nav-justified" role="tablist">
-                <li class="nav-item waves-effect waves-light">
-                    <a class="nav-link active" data-bs-toggle="tab" href="#overview" role="tab">
-                        <span class="d-block d-sm-none"><i class="fas fa-home"></i></span>
-                        <span class="d-none d-sm-block">Overview</span>
-                    </a>
-                </li>
-                <li class="nav-item waves-effect waves-light">
-                    <a class="nav-link" data-bs-toggle="tab" href="#task" role="tab">
-                        <span class="d-block d-sm-none"><i class="far fa-user"></i></span>
-                        <span class="d-none d-sm-block">Task</span>
-                    </a>
-                </li>
-                <li class="nav-item waves-effect waves-light">
-                    <a class="nav-link" data-bs-toggle="tab" href="#mytask" role="tab">
-                        <span class="d-block d-sm-none"><i class="far fa-user"></i></span>
-                        <span class="d-none d-sm-block">My Task</span>
-                    </a>
-                </li>
-                <li class="nav-item waves-effect waves-light">
-                    <a class="nav-link" data-bs-toggle="tab" href="#kanban" role="tab">
-                        <span class="d-block d-sm-none"><i class="far fa-envelope"></i></span>
-                        <span class="d-none d-sm-block">Kanban</span>
-                    </a>
-                </li>
-                <li class="nav-item waves-effect waves-light">
-                    <a class="nav-link" data-bs-toggle="tab" href="#board" role="tab">
-                        <span class="d-block d-sm-none"><i class="fas fa-cog"></i></span>
-                        <span class="d-none d-sm-block">Board</span>
-                    </a>
-                </li>
-            </ul>
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="col-xl-6">
+                        <ul class="nav nav-pills nav-justified" role="tablist">
+                            <li class="nav-item waves-effect waves-light">
+                                <a class="nav-link active" data-bs-toggle="tab" href="#overview" role="tab">
+                                    <span class="d-block d-sm-none"><i class="fas fa-home"></i></span>
+                                    <span class="d-none d-sm-block">Overview</span>
+                                </a>
+                            </li>
+                            <li class="nav-item waves-effect waves-light">
+                                <a class="nav-link" data-bs-toggle="tab" href="#task" role="tab">
+                                    <span class="d-block d-sm-none"><i class="far fa-user"></i></span>
+                                    <span class="d-none d-sm-block">Task</span>
+                                </a>
+                            </li>
+                            <li class="nav-item waves-effect waves-light">
+                                <a class="nav-link" data-bs-toggle="tab" href="#mytask" role="tab">
+                                    <span class="d-block d-sm-none"><i class="far fa-user"></i></span>
+                                    <span class="d-none d-sm-block">My Task</span>
+                                </a>
+                            </li>
+                            <li class="nav-item waves-effect waves-light">
+                                <a class="nav-link" data-bs-toggle="tab" href="#kanban" role="tab">
+                                    <span class="d-block d-sm-none"><i class="far fa-envelope"></i></span>
+                                    <span class="d-none d-sm-block">Kanban</span>
+                                </a>
+                            </li>
+                            <li class="nav-item waves-effect waves-light">
+                                <a class="nav-link" data-bs-toggle="tab" href="#board" role="tab">
+                                    <span class="d-block d-sm-none"><i class="fas fa-cog"></i></span>
+                                    <span class="d-none d-sm-block">Board</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
+
+
 
 
         <!-- Tab panes -->
@@ -67,7 +75,7 @@
                                             str_replace(
                                                 '_',
                                                 '
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ',
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ',
                                                 $status,
                                             ),
                                         ) }}

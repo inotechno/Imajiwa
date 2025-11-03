@@ -22,3 +22,7 @@ Broadcast::channel('board.{projectId}', function ($user, $projectId) {
     return true;
     // return $user->employee && $user->employee->projects->contains('id', $projectId);
 });
+
+Broadcast::channel('whiteboard.{boardId}', function ($user, $boardId) {
+    return true; // atau cek akses project
+});

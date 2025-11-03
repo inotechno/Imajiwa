@@ -221,14 +221,14 @@ class ProjectBoard extends Component
     public function createCardFromData($payload = [])
     {
         $data = $payload['data'] ?? $payload;
-        
+
         // GUARD: cegah pembuatan card text kosong (kemungkinan trigger kedua yang tidak diinginkan)
         $isClientAction = isset($payload['clientId']) && !empty($payload['clientId']);
         if ($isClientAction && isset($data['type']) && $data['type'] === 'text' && (!isset($data['content']) || $data['content'] === null || $data['content'] === '')) {
             \Log::debug('createCardFromData GUARD: skip empty text card', ['payload' => $payload]);
             return null;
         }
-        
+
         $fields = (new BoardCard)->getFillable();
         $finalData = [];
         foreach ($fields as $f) {
@@ -242,7 +242,7 @@ class ProjectBoard extends Component
         $finalData['y'] = isset($finalData['y']) && $finalData['y'] !== '' ? (int)$finalData['y'] : 120;
         if (empty($finalData['type']) && isset($data['type'])) $finalData['type'] = $data['type'];
         if (empty($finalData['content']) && isset($data['content'])) $finalData['content'] = $data['content'];
-        
+
         \Log::debug('createCardFromData', [
             'clientId' => $payload['clientId'] ?? null,
             'data' => $data,
@@ -278,8 +278,7 @@ class ProjectBoard extends Component
         if ($card = BoardCard::find($id)) {
             $card->update(['x' => $x, 'y' => $y]);
             // broadcast(new CardUpdated($card))->toOthers();
-             broadcast(new CardMoved($card))->toOthers();
-            
+            broadcast(new CardMoved($card))->toOthers();
         }
     }
 
