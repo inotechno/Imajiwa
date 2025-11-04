@@ -1,3 +1,6 @@
+import './bootstrap';
+import './whiteboard.jsx';
+
 import Echo from 'laravel-echo';
 import Pusher from 'pusher-js';
 

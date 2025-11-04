@@ -9,7 +9,7 @@ class ProjectBoard extends Model
 {
     use HasFactory;
 
-     protected $fillable = ['project_id', 'data', 'updated_by'];
+    protected $fillable = ['project_id', 'data', 'updated_by'];
 
     // 🔗 Relationships
     public function project()
@@ -17,7 +17,7 @@ class ProjectBoard extends Model
         return $this->belongsTo(Project::class);
     }
 
-     public function cards()
+    public function cards()
     {
         return $this->hasMany(BoardCard::class, 'project_id', 'project_id');
     }
@@ -26,5 +26,4 @@ class ProjectBoard extends Model
     {
         return $this->hasMany(BoardConnector::class, 'project_id', 'project_id');
     }
-
 }

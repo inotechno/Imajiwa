@@ -2,56 +2,65 @@
 
 namespace App\Livewire\Project;
 
-use App\Events\WhiteboardUpdated;
-use App\Models\Project;
-use App\Models\ProjectWhiteBoard;
 use Livewire\Component;
+use App\Models\ProjectBoard;
+use Illuminate\Support\Facades\Auth;
 
 class WhiteboardCanvas extends Component
 {
-    public Project $project;
-    public ProjectWhiteBoard $board;
-    public $canvasData = [];
+    public $board;
+    public $snapshot;
 
-    protected $listeners = ['saveBoardSnapshot' => 'saveSnapshot'];
-
-    public function mount(Project $project)
+    public function mount($project)
     {
-        // 🧩 Simpan project model langsung
-        $this->project = $project;
-
-        // 🧠 Ambil board atau buat baru
-        $this->board = ProjectWhiteBoard::firstOrCreate(
-            ['project_id' => $project->id],
-            ['name' => 'Main Whiteboard']
+        // Ambil board yang sudah ada atau buat baru
+        $this->board = ProjectBoard::firstOrCreate(
+            ['project_id' => $project],
+            [
+                'data' => null,
+                'updated_by' => $this->getEmployeeId(),
+            ]
         );
 
-        // Pastikan canvas_data berupa array
-        $this->canvasData = is_array($this->board->canvas_data)
-            ? $this->board->canvas_data
-            : json_decode($this->board->canvas_data ?? '[]', true);
+        $this->snapshot = $this->board->snapshot ?? null;
     }
 
-    public function saveSnapshot($snapshot)
+    /**
+     * Helper: ambil employee_id dari user login, fallback ke null
+     */
+    private function getEmployeeId()
     {
-        if (!$snapshot) return;
+        $user = Auth::user();
 
-        $this->board->update([
-            'canvas_data' => $snapshot,
-            'updated_by'  => auth()->id(),
-        ]);
+        // kalau user punya relasi ke employee
+        if (method_exists($user, 'employee') && $user->employee) {
+            return $user->employee->id;
+        }
 
-        broadcast(new WhiteboardUpdated($this->board->id, $snapshot))->toOthers();
+        // kalau tidak ada relasi employee, return null biar tidak error FK
+        return null;
     }
-
 
     public function render()
     {
-        return view('livewire.project.whiteboard-canvas', [
-            'project' => $this->project,
-            'board' => $this->board,
-        ])->layout('layouts.app', [
-            'title' => 'Whiteboard - ' . $this->project->name,
+        return view('livewire.project.whiteboard-canvas')
+            ->layout('layouts.app', ['title' => 'Project Whiteboard']);
+    }
+
+    /**
+     * Dipanggil dari React (JSX)
+     */
+    public function saveBoardSnapshot($snapshot)
+    {
+        $this->board->update([
+            'data' => json_encode($snapshot),
+            'updated_by' => $this->getEmployeeId(),
         ]);
+
+        broadcast(new \App\Events\WhiteboardUpdated(
+            $this->board->id,
+            $snapshot,
+            Auth::id()
+        ))->toOthers();
     }
 }

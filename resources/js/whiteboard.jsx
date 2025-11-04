@@ -1,48 +1,93 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
+import React, { useEffect, useRef } from "react";
+import { createRoot } from "react-dom/client";
 import { Tldraw } from "@tldraw/tldraw";
 import "@tldraw/tldraw/tldraw.css";
 
-document.addEventListener("DOMContentLoaded", () => {
-    const el = document.getElementById("whiteboard");
-    if (!el) return;
+export default function WhiteboardApp({
+    boardId,
+    initialSnapshot,
+    saveSnapshotUrl,
+}) {
+    const editorRef = useRef(null);
+    let saveTimeout = null;
 
-    const boardData = JSON.parse(el.dataset.canvas ?? "{}");
-    const root = ReactDOM.createRoot(el);
-    root.render(<WhiteboardApp initialData={boardData} />);
-});
-
-function WhiteboardApp({ initialData }) {
-    const handleMount = (editor) => {
-        // ✅ Restore data sebelumnya
-        try {
-            if (initialData && Object.keys(initialData).length > 0) {
-                editor.store.loadSnapshot(initialData);
-            }
-        } catch (err) {
-            console.warn("Failed to restore board:", err);
-        }
-
-        // ✅ Auto-save tiap 10 detik
-        setInterval(() => {
+    // ✅ Auto-save (debounce 1 detik)
+    const handleSave = (editor) => {
+        clearTimeout(saveTimeout);
+        saveTimeout = setTimeout(() => {
             try {
-                const snapshot = editor.store.getStoreSnapshot(); // ✅ FIX di sini
-                Livewire.dispatch("saveBoardSnapshot", snapshot);
-            } catch (e) {
-                console.warn("Failed to save board snapshot:", e);
+                const snapshot = editor.store.serialize(); // ✅ tetap berlaku di v4
+                if (window.Livewire && saveSnapshotUrl) {
+                    window.Livewire.find(saveSnapshotUrl)?.call(
+                        "saveBoardSnapshot",
+                        snapshot
+                    );
+                }
+            } catch (err) {
+                console.error("Error saving snapshot:", err);
             }
-        }, 10000);
+        }, 1000);
     };
 
+    // ✅ Listen broadcast realtime
+    useEffect(() => {
+        if (!window.Echo) return;
+        const channel = window.Echo.private(`whiteboard.${boardId}`).listen(
+            ".WhiteboardUpdated",
+            (e) => {
+                if (editorRef.current && e.userId !== window.Laravel?.userId) {
+                    try {
+                        // ✅ v4 tidak pakai loadSnapshot, gunakan replaceAllRecords
+                        const data = e.snapshot;
+                        if (data && data.records) {
+                            editorRef.current.store.clear(); // bersihkan dulu
+                            editorRef.current.store.put(data.records); // lalu isi ulang
+                        }
+                    } catch (err) {
+                        console.warn("Snapshot sync error:", err);
+                    }
+                }
+            }
+        );
+        return () => channel.stopListening(".WhiteboardUpdated");
+    }, [boardId]);
+
     return (
-        <div style={{ width: "100%", height: "100%" }}>
+        <div style={{ width: "100%", height: "100vh", background: "#fff" }}>
             <Tldraw
-                inferLicense={false}
-                showMultiplayerMenu={false}
-                hideUi={false}
-                persistenceKey="imajiwa-whiteboard"
-                onMount={handleMount}
+                onMount={(editor) => {
+                    editorRef.current = editor;
+
+                    // ✅ v4: load snapshot manual
+                    if (initialSnapshot && initialSnapshot.records) {
+                        try {
+                            editor.store.clear();
+                            editor.store.put(initialSnapshot.records);
+                        } catch (err) {
+                            console.warn("Initial load error:", err);
+                        }
+                    }
+
+                    // ✅ Dengarkan perubahan user dan simpan otomatis
+                    editor.store.listen(() => handleSave(editor), {
+                        source: "user",
+                    });
+                }}
             />
         </div>
     );
 }
+
+// ✅ Pastikan createRoot hanya dipanggil sekali
+document.addEventListener("DOMContentLoaded", () => {
+    const el = document.getElementById("whiteboard-container");
+    if (!el) return;
+
+    // Cek apakah sudah pernah di-mount
+    if (el._tldrawMounted) return;
+    el._tldrawMounted = true;
+
+    const props = JSON.parse(el.dataset.props);
+    const root = createRoot(el);
+    root.render(<WhiteboardApp {...props} />);
+});

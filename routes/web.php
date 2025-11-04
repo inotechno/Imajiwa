@@ -79,6 +79,7 @@ use App\Livewire\Client\ClientForm;
 use App\Livewire\Categoryproject\CategoryProjectIndex;
 use App\Livewire\Categoryproject\CategoryProjectForm;
 use App\Http\Controllers\SocialiteController;
+use App\Livewire\Project\WhiteboardCanvas;
 
 /*
 |--------------------------------------------------------------------------
@@ -134,6 +135,7 @@ Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
         Route::get('{project}/whiteboard', \App\Livewire\Project\WhiteboardCanvas::class)
             ->name('project.whiteboard')
             ->middleware('can:view:project');
+
 
         Route::prefix('{project_id}/task')->group(function () {
             // Daftar semua task dalam project

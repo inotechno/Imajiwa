@@ -24,5 +24,6 @@ Broadcast::channel('board.{projectId}', function ($user, $projectId) {
 });
 
 Broadcast::channel('whiteboard.{boardId}', function ($user, $boardId) {
-    return true; // atau cek akses project
+    // Atur policy sesuai kebutuhan; minimal user login
+    return (bool) $user;
 });
