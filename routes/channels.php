@@ -23,7 +23,4 @@ Broadcast::channel('board.{projectId}', function ($user, $projectId) {
     // return $user->employee && $user->employee->projects->contains('id', $projectId);
 });
 
-Broadcast::channel('whiteboard.{boardId}', function ($user, $boardId) {
-    // Atur policy sesuai kebutuhan; minimal user login
-    return (bool) $user;
-});
+Broadcast::channel('whiteboard.{boardId}', fn() => true);

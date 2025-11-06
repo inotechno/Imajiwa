@@ -33,4 +33,13 @@ class WhiteboardUpdated implements ShouldBroadcastNow
     {
         return 'WhiteboardUpdated';
     }
+
+    public function broadcastWith(): array
+    {
+        return [
+            'boardId' => $this->boardId,
+            'snapshot' => $this->snapshot,
+            'userId' => $this->userId,
+        ];
+    }
 }
