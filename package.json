@@ -10,19 +10,15 @@
         "vite": "^7.1.12"
     },
     "dependencies": {
-        "@panzoom/panzoom": "^4.6.0",
-        "@tldraw/tldraw": "^4.1.2",
+        "@tldraw/tldraw": "^2.4.0",
+        "@vitejs/plugin-react": "^5.1.1",
         "alpinejs": "^3.14.1",
         "animejs": "^4.2.2",
-        "fabric": "^6.7.1",
-        "hotkeys-js": "^3.13.15",
-        "interactjs": "^1.10.27",
         "laravel-echo": "^1.16.1",
-        "leader-line-new": "^1.1.9",
         "lodash": "^4.17.21",
-        "panzoom": "^9.4.3",
         "pusher-js": "^8.4.0-rc2",
         "quill": "^2.0.3",
-        "vuex": "^4.0.2"
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1"
     }
 }

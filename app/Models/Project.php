@@ -37,7 +37,7 @@ class Project extends Model
         return $this->belongsToMany(Employee::class, 'project_additional_managers', 'project_id', 'employee_id');
     }
 
-    public function board()
+    public function boards()
     {
         return $this->hasOne(ProjectBoard::class);
     }
@@ -50,5 +50,10 @@ class Project extends Model
     public function tasks()
     {
         return $this->hasMany(ProjectTask::class);
+    }
+
+    public function tldrawBoard()
+    {
+        return $this->hasOne(TldrawBoard::class, 'project_id');
     }
 }

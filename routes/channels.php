@@ -24,3 +24,13 @@ Broadcast::channel('board.{projectId}', function ($user, $projectId) {
 });
 
 Broadcast::channel('whiteboard.{boardId}', fn() => true);
+
+
+// Broadcast::channel('board.{boardId}', function ($user, $boardId) {
+//     // pastikan User/Employee model dan relasi project membership ada
+//     // return true jika user boleh mengakses board
+//     // contoh: cek apakah user employee tergabung di project board
+//     return \App\Models\ProjectBoard::where('id', $boardId)
+//             ->whereHas('project', fn($q) => $q->whereHas('employees', fn($q2) => $q2->where('employees.id', $user->id)))
+//             ->exists();
+// });

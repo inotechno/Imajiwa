@@ -75,7 +75,7 @@
                                             str_replace(
                                                 '_',
                                                 '
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ',
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ',
                                                 $status,
                                             ),
                                         ) }}
@@ -175,7 +175,7 @@
             </div>
             <div class="tab-pane" id="board" role="tabpanel">
                 <div class="row">
-                    @livewire('project.project-board', ['project' => $project], key('project-board-' . $project->id))
+                    @livewire('project.project-board', ['projectId' => $project->id], key('project-board-' . $project->id))
                 </div>
             </div>
         </div>

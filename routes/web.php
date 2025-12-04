@@ -37,6 +37,7 @@ use App\Livewire\DailyReport\DailyReportForm;
 use App\Livewire\DailyReport\DailyReportTeam;
 use App\Livewire\Department\DepartmentDetail;
 use App\Livewire\DailyReport\DailyReportIndex;
+use App\Http\Controllers\BoardAssetController;
 use App\Http\Controllers\ImageUploadController;
 use App\Livewire\DailyReport\DailyReportDetail;
 use App\Livewire\LeaveRequest\LeaveRequestForm;
@@ -131,6 +132,9 @@ Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
         Route::get('create', ProjectForm::class)->name('project.create')->middleware('can:create:project');
         Route::get('edit/{id}', ProjectForm::class)->name('project.edit')->middleware('can:update:project');
         Route::get('{project}/board', ProjectBoard::class)->name('project.board')->middleware('can:view:project');
+        Route::post('{project}/board/assets', [BoardAssetController::class, 'store'])
+            ->name('project.board.assets')
+            ->middleware('can:view:project');
 
         Route::get('{project}/whiteboard', \App\Livewire\Project\WhiteboardCanvas::class)
             ->name('project.whiteboard')

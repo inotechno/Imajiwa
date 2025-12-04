@@ -1,19 +1,18 @@
-import './bootstrap';
-import './whiteboard.jsx';
-
-import Echo from 'laravel-echo';
-import Pusher from 'pusher-js';
+import "./bootstrap";
+import Echo from "laravel-echo";
+import Pusher from "pusher-js";
 
 window.Pusher = Pusher;
 
 window.Echo = new Echo({
-  broadcaster: 'pusher',
-  key: 'local',
-  cluster: 'mt1',
+  broadcaster: "pusher",
+  key: "local",
+  cluster: "mt1",
   wsHost: window.location.hostname,
   wsPort: 6001,
   forceTLS: false,
   disableStats: true,
-  enabledTransports: ['ws', 'wss'],
+  enabledTransports: ["ws", "wss"],
 });
 
+import "./tldraw-board.jsx";

@@ -1,4 +1,5 @@
 @import '../css/quill-custom.css';
+@import './vendor/tldraw.css';
 
 .board-card {
   transition: all 0.25s ease;
