@@ -1,0 +1,23 @@
+export const uiOverrides = {
+    messages: {
+        "action.paste-error-title": "Paste error",
+        "action.paste-error-description": "Cannot paste this content",
+        "action.toggle-paste-at-cursor.menu": "Paste at cursor",
+        "action.toggle-paste-at-cursor": "Paste at cursor",
+        "action.toggle-dynamic-size-mode.menu": "Dynamic size mode",
+        "action.toggle-dynamic-size-mode": "Dynamic size mode",
+        "action.flatten-to-image": "Flatten to image",
+        "assets.files.size-too-big": "File too big",
+        "assets.files.type-not-allowed": "File type not allowed",
+        "theme.dark": "Dark",
+        "theme.light": "Light",
+        "theme.system": "System",
+        "fill-style.fill": "Fill",
+        "menu.theme": "Theme",
+        "menu.help": "Help",
+        "context-menu.edit": "Edit",
+        "share-menu.creating-project": "Creating project...",
+        "share-menu.copied": "Copied!",
+        "help-menu.docs": "Docs",
+    },
+};

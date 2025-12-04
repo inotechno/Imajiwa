@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (el && !el._root) {
         const root = createRoot(el);
-        root.render(<Tldraw />);
+        root.render(<Tldraw options={{ locale: "en" }} />);
         el._root = root;
     }
 });
