@@ -15,13 +15,15 @@ class BoardStateUpdated implements ShouldBroadcastNow
 
     public $boardId;
     public $state; // JSON document (decoded array or string)
+    public $delta; // Array of changes (added, updated, removed)
     public $actorId; // employee id who made the change (optional)
 
-    public function __construct(int $boardId, $state, ?int $actorId = null)
+    public function __construct(int $boardId, $state, ?int $actorId = null, $delta = null)
     {
         $this->boardId = $boardId;
         $this->state = $state;
         $this->actorId = $actorId;
+        $this->delta = $delta;
     }
 
     public function broadcastOn()
@@ -35,7 +37,13 @@ class BoardStateUpdated implements ShouldBroadcastNow
         return [
             'boardId' => $this->boardId,
             'state'   => $this->state,
+            'delta'   => $this->delta,
             'actorId' => $this->actorId,
         ];
+    }
+
+    public function broadcastAs()
+    {
+        return 'board.updated';
     }
 }

@@ -10,7 +10,7 @@
         "vite": "^7.1.12"
     },
     "dependencies": {
-        "@tldraw/tldraw": "^2.4.0",
+        "@tldraw/sync": "^4.2.3",
         "@vitejs/plugin-react": "^5.1.1",
         "alpinejs": "^3.14.1",
         "animejs": "^4.2.2",
@@ -19,6 +19,7 @@
         "pusher-js": "^8.4.0-rc2",
         "quill": "^2.0.3",
         "react": "^18.3.1",
-        "react-dom": "^18.3.1"
+        "react-dom": "^18.3.1",
+        "tldraw": "^4.2.3"
     }
 }

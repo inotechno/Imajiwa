@@ -16,6 +16,17 @@ export default defineConfig({
         react(),
     ],
     resolve: {
-        extensions: ['.js', '.jsx'], // ✅ penting untuk React
+        extensions: ['.js', '.jsx'],
+        // Fix: Dedupe tldraw packages to prevent multiple instances
+        dedupe: [
+            'tldraw',
+            '@tldraw/sync',
+            '@tldraw/utils',
+            '@tldraw/state',
+            '@tldraw/store',
+            '@tldraw/validate',
+            '@tldraw/tlschema',
+        ],
     },
 })
+

@@ -28,6 +28,7 @@
             csrfToken: document.querySelector('meta[name="csrf_token"]').getAttribute('value')
         };
     </script>
+    @viteReactRefresh
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 </head>
