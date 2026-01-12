@@ -110,13 +110,6 @@ function TldrawBoardWrapper({ projectId, userId, userName }) {
     const handleMount = (editor) => {
         console.log('[TLDRAW] Editor mounted successfully ✅');
         
-        // Debug unmount
-        return () => {
-             console.error('[TLDRAW] ❌ Editor is being UNMOUNTED!');
-             // Trace stack to see who called it
-             console.trace();
-        };
-        
         // Set User Name for Presence
         if (userName) {
             console.log('[TLDRAW] Setting user name:', userName);
@@ -208,6 +201,12 @@ function TldrawBoardWrapper({ projectId, userId, userName }) {
                 meta: {},
             };
         });
+        
+        // Return cleanup function (for debugging unmount)
+        return () => {
+            console.error('[TLDRAW] ❌ Editor is being UNMOUNTED!');
+            console.trace();
+        };
     };
 
     return (
