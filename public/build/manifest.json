@@ -1,12 +1,28 @@
 {
   "resources/css/app.css": {
-    "file": "assets/app-59c0b18d.css",
+    "file": "assets/app-Cld_OBLj.css",
+    "src": "resources/css/app.css",
     "isEntry": true,
-    "src": "resources/css/app.css"
+    "names": [
+      "app.css"
+    ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-32796eba.js",
+    "file": "assets/app-C66YCidl.js",
+    "name": "app",
+    "src": "resources/js/app.js",
     "isEntry": true,
-    "src": "resources/js/app.js"
+    "imports": [
+      "resources/js/tldraw-board.jsx"
+    ]
+  },
+  "resources/js/tldraw-board.jsx": {
+    "file": "assets/tldraw-board-B86SMX0W.js",
+    "name": "tldraw-board",
+    "src": "resources/js/tldraw-board.jsx",
+    "isEntry": true,
+    "css": [
+      "assets/tldraw-board-BUBuqial.css"
+    ]
   }
 }
