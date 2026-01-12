@@ -170,7 +170,7 @@
             </button>
         </div>
         
-        @livewire('component.page.notification-bell')
+        {{-- @livewire('component.page.notification-bell') --}}
 
         <div class="dropdown d-inline-block">
             <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
