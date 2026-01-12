@@ -108,7 +108,14 @@ function TldrawBoardWrapper({ projectId, userId, userName }) {
 
     // Handle mount - register asset handlers & set user info
     const handleMount = (editor) => {
-        console.log('[TLDRAW] Editor mounted');
+        console.log('[TLDRAW] Editor mounted successfully ✅');
+        
+        // Debug unmount
+        return () => {
+             console.error('[TLDRAW] ❌ Editor is being UNMOUNTED!');
+             // Trace stack to see who called it
+             console.trace();
+        };
         
         // Set User Name for Presence
         if (userName) {
