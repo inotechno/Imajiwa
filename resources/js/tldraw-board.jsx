@@ -10,7 +10,7 @@ if (import.meta.hot) {
 }
 
 // Configuration
-const SYNC_SERVER_URL = import.meta.env.VITE_TLDRAW_SYNC_URL || 'ws://localhost:5858';
+const SYNC_SERVER_URL = import.meta.env.VITE_TLDRAW_SYNC_URL || 'wss://socket.imajiwa.id';
 const HTTP_SERVER_URL = SYNC_SERVER_URL.replace('ws://', 'http://').replace('wss://', 'https://');
 
 // Store reference to prevent unmount issues
