@@ -8,7 +8,7 @@
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-jUtmnqXj.js",
+    "file": "assets/app-DACTN7Tp.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -17,12 +17,12 @@
     ]
   },
   "resources/js/tldraw-board.jsx": {
-    "file": "assets/tldraw-board-CiHCUJJZ.js",
+    "file": "assets/tldraw-board-CDXoorkY.js",
     "name": "tldraw-board",
     "src": "resources/js/tldraw-board.jsx",
     "isEntry": true,
     "css": [
-      "assets/tldraw-board-BUBuqial.css"
+      "assets/tldraw-board-D6Z-rJCL.css"
     ]
   }
 }
