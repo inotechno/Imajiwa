@@ -40,12 +40,25 @@ class ProjectTeam extends Component
 
     public function mount()
     {
-        $this->year = date('Y');
-        $this->availableYears = Project::selectRaw('YEAR(start_date) as year')
+        $currentYear = (int) date('Y');
+        $this->year = $currentYear;
+        
+        // Get years from existing projects
+        $yearsFromProjects = Project::selectRaw('YEAR(start_date) as year')
             ->groupBy('year')
             ->orderBy('year', 'desc')
             ->pluck('year')
             ->toArray();
+        
+        // Ensure current year is always included
+        if (!in_array($currentYear, $yearsFromProjects)) {
+            $yearsFromProjects[] = $currentYear;
+        }
+        
+        // Sort descending
+        rsort($yearsFromProjects);
+        
+        $this->availableYears = $yearsFromProjects;
     }
 
     public function export()
@@ -69,9 +82,11 @@ class ProjectTeam extends Component
             $query->whereYear('start_date', $this->year);
         })->orderBy('end_date', 'asc');
 
-        if (Auth::user()->can('view:project-all')) {
+        // Mengecek role user untuk filtering
+        if (Auth::user()->hasRole('Superadmin') || Auth::user()->hasRole('Admin') || Auth::user()->can('view:project-all')) {
+            // Superadmin/Admin bisa lihat semua proyek tanpa filter employee
             $projects = $projects->paginate($this->perPage);
-        } else if (Auth::user()->hasRole('Project Manager')) {
+        } elseif (Auth::user()->hasRole('Project Manager')) {
             $projects = $projects->where('employee_id', Auth::user()->employee->id)->paginate($this->perPage);
         } else {
             $projects = $projects->whereHas('employees', function ($query) {

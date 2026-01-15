@@ -61,6 +61,38 @@
                             </div>
                         </div>
                         <div class="row mb-4">
+                            <label for="password" class="col-form-label col-lg-2">Password {{ $type == 'create' ? '*' : '' }}</label>
+                            <div class="col-lg-10">
+                                <input id="password" name="password" wire:model="password" type="password"
+                                    class="form-control @error('password') is-invalid @enderror"
+                                    placeholder="{{ $type == 'create' ? 'Enter Password...' : 'Kosongkan jika tidak ingin mengubah password...' }}">
+                                @error('password')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        {{-- select-status --}}
+                        <div class="row mb-4" wire:ignore>
+                            <label for="status" class="col-form-label col-lg-2">Select Status</label>
+                            <div class="col-lg-10">
+                                <select
+                                    class="form-control select2 @error('status') is-invalid @enderror select-status"
+                                    id="status" wire:model="status" data-placeholder="Select Status">
+                                    <option value="">Select Status</option>
+                                    <option value="1">Active</option>
+                                    <option value="0">Inactive</option>
+                                </select>
+
+                                @error('status')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="row mb-4">
                             <label for="join_date" class="col-form-label col-lg-2"> Join Date, Leave Remaining</label>
                             <div class="col-lg-4">
                                 <input id="join_date" name="join_date" wire:model="join_date" type="date"
@@ -216,6 +248,7 @@
 
                         <div class="row justify-content-end">
                             <div class="col-lg-10">
+                                <a href="{{ route('employee.index') }}" class="btn btn-secondary me-2">Back</a>
                                 <button type="submit" class="btn btn-primary" wire:loading.attr="disabled"
                                     wire:target="save">{{ ucfirst($type) }} Employee</button>
                             </div>
@@ -258,12 +291,17 @@
                     Livewire.dispatch('changeSelectForm', ['gender', this.value]);
                 });
 
+                $('.select-status').on('change', function() {
+                    Livewire.dispatch('changeSelectForm', ['status', this.value]);
+                });
+
                 Livewire.on('change-select-form', () => {
                     var position_id = @json($position_id);
                     var religion = @json($religion);
                     var marital_status = @json($marital_status);
                     var role = @json($role);
                     var gender = @json($gender);
+                    var status = @json($status);
 
                     console.log(@json($role));
 
@@ -273,6 +311,7 @@
                     $('.select-marital-status').val(marital_status).trigger('change');
                     $('.select-role').val(role).trigger('change');
                     $('.select-gender').val(gender).trigger('change');
+                    $('.select-status').val(status ? '1' : '0').trigger('change');
                 });
 
                 Livewire.on('reset-select2', () => {
@@ -281,6 +320,7 @@
                     $('.select-marital-status').val(null).trigger('change');
                     $('.select-role').val(null).trigger('change');
                     $('.select-gender').val(null).trigger('change');
+                    $('.select-status').val('1').trigger('change');
                 })
             });
         </script>

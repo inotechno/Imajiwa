@@ -39,7 +39,6 @@
                         </div>
                         <div class="col-md-2" wire:ignore>
                             <select class="form-control select2 select-year" wire:model.live="year">
-                                <option value="">Select Year</option>
                                 @foreach ($availableYears as $yearOption)
                                     <option value="{{ $yearOption }}">{{ $yearOption }}</option>
                                 @endforeach

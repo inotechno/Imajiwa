@@ -33,12 +33,25 @@ class ProjectIndex extends Component
 
     public function mount()
     {
-        $this->year = date('Y');
-        $this->availableYears = Project::selectRaw('YEAR(start_date) as year')
+        $currentYear = (int) date('Y');
+        $this->year = $currentYear;
+        
+        // Get years from existing projects
+        $yearsFromProjects = Project::selectRaw('YEAR(start_date) as year')
             ->groupBy('year')
             ->orderBy('year', 'desc')
             ->pluck('year')
             ->toArray();
+        
+        // Ensure current year is always included
+        if (!in_array($currentYear, $yearsFromProjects)) {
+            $yearsFromProjects[] = $currentYear;
+        }
+        
+        // Sort descending
+        rsort($yearsFromProjects);
+        
+        $this->availableYears = $yearsFromProjects;
     }
 
     public function resetFilter()
@@ -81,20 +94,20 @@ class ProjectIndex extends Component
         //     })->paginate($this->perPage);
         // }
 
-        // Mengecek apakah user adalah Project Manager atau karyawan biasa
-        if (Auth::user()->hasRole('Project Manager')) {
-            // Jika Project Manager, tampilkan proyek yang dikelola oleh mereka (projectManager)
-            $projects = $projects->where('employee_id', Auth::user()->employee->id);
+        // Mengecek role user untuk filtering
+        // Jika user tidak punya employee (Admin/Superadmin), tampilkan semua
+        if (!Auth::user()->employee) {
+            // User tanpa employee (Admin/Superadmin) bisa lihat semua proyek
+            $projects = $projects->paginate($this->perPage);
+        } elseif (Auth::user()->hasRole('Project Manager')) {
+            // Jika Project Manager, tampilkan proyek yang dikelola oleh mereka
+            $projects = $projects->where('employee_id', Auth::user()->employee->id)->paginate($this->perPage);
         } else {
-            // Jika bukan Project Manager, tampilkan proyek yang melibatkan karyawan (employees)
+            // Jika bukan Project Manager, tampilkan proyek yang melibatkan karyawan
             $projects = $projects->whereHas('employees', function ($query) {
                 $query->where('employee_id', Auth::user()->employee->id);
-            });
+            })->paginate($this->perPage);
         }
-
-        // Filter untuk proyek yang terkait dengan karyawan yang login
-        // Proyek yang dikelola oleh project manager atau yang melibatkan karyawan dalam tabel pivot
-        $projects = $projects->paginate($this->perPage);
 
         return view('livewire.project.project-index', compact('projects'))->layout('layouts.app', ['title' => 'Project List']);
     }

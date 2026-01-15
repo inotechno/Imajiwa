@@ -32,6 +32,7 @@ class User extends Authenticatable
         'avatar_path',
         'avatar_thumbnail_url',
         'avatar_thumbnail_path',
+        'status',
     ];
 
     /**

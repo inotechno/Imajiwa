@@ -35,12 +35,11 @@
                                 <option value="100">100</option>
                             </select>
                         </div>
-                        <div class="col-md-2" wire:ignore>
+                       <div class="col-md-2" wire:ignore>
                             <select class="form-control select2 select-year" wire:model.live="year">
-                                <option value="">Select Year</option>
                                 @foreach ($availableYears as $yearOption)
-                                <option value="{{ $yearOption }}">{{ $yearOption }}</option>
-                            @endforeach
+                                    <option value="{{ $yearOption }}">{{ $yearOption }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="col-md-3 d-flex gap-2"> <!-- Mengelompokkan tombol -->

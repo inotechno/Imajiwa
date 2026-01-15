@@ -47,8 +47,12 @@ class TaskIndex extends Component
             ->when($this->project, function ($q) {
                 $q->where('project_id', $this->project->id);
             })
-            ->whereHas('employees', function ($q) {
-                $q->where('employee_id', Auth::user()->employee->id);
+            // Jika user punya employee, filter berdasarkan employee_id
+            // Jika tidak (Admin), tampilkan semua task
+            ->when(Auth::user()->employee, function ($q) {
+                $q->whereHas('employees', function ($subQ) {
+                    $subQ->where('employee_id', Auth::user()->employee->id);
+                });
             })
             ->when($this->search, function ($q) {
                 $q->where(function ($query) {

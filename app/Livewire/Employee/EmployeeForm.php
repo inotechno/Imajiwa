@@ -32,7 +32,8 @@ class EmployeeForm extends Component
         $place_of_birth,
         $gender,
         $marital_status,
-        $religion;
+        $religion,
+        $status = true; // Status aktif/tidak aktif
 
     public $user;
     public $type = 'create';
@@ -48,8 +49,7 @@ class EmployeeForm extends Component
             $this->name = $this->user->name;
             $this->username = $this->user->username;
             $this->email = $this->user->email;
-            $this->role = $this->user->getRoleNames()->first(); // Mengembalikan nama role pertama yang ditemukan
-            // dd($this->role);
+            $this->role = $this->user->getRoleNames()->first();
             $this->type = 'update';
 
             $this->citizen_id = $this->employee->citizen_id;
@@ -61,7 +61,7 @@ class EmployeeForm extends Component
             $this->marital_status = $this->employee->marital_status;
             $this->religion = $this->employee->religion;
             $this->position_id = $this->employee->position->id ?? null;
-            // dd($this->employee->positions()->first()->id);
+            $this->status = $this->user->status ?? true;
 
             $this->dispatch('change-select-form');
         }
@@ -70,35 +70,46 @@ class EmployeeForm extends Component
     public function save()
     {
         try {
-            $this->validate([
+            $rules = [
                 'name' => 'required|string|max:255',
                 'username' => 'required|string|max:255|unique:users,username,' . ($this->user->id ?? 'NULL'),
                 'email' => 'required|email|max:255|unique:users,email,' . ($this->user->id ?? 'NULL'),
                 'role' => 'required|exists:roles,name',
                 'position_id' => 'nullable|exists:positions,id',
-                'citizen_id' => 'required|string|max:255',
+                'citizen_id' => 'nullable|string|max:255',
                 'join_date' => 'nullable|date',
                 'birth_date' => 'nullable|date',
                 'place_of_birth' => 'nullable|string|max:255',
                 'gender' => 'nullable|in:male,female',
                 'marital_status' => 'nullable|string|max:255',
                 'religion' => 'nullable|string|max:255',
-            ]);
+            ];
 
-            // $this->password = Str::random(8);
+            // Password wajib saat create, opsional saat update
+            if ($this->type == 'create') {
+                $rules['password'] = 'required|string|min:6';
+            } else {
+                $rules['password'] = 'nullable|string|min:6';
+            }
+
+            $this->validate($rules);
+
+            // Convert status to boolean (after validation)
+            $statusValue = $this->status === '1' || $this->status === 1 || $this->status === true;
 
             if ($this->type == 'create') {
                 $this->user = User::create([
                     'username' => $this->username,
                     'name' => $this->name,
                     'email' => $this->email,
-                    // 'password' => Hash::make($this->password),
-                    // 'password_string' => $this->password,
+                    'password' => Hash::make($this->password),
+                    'password_string' => $this->password,
+                    'status' => $statusValue,
                 ]);
 
                 $this->user->employee()->create([
                     'id' => date('YmdH') . $this->user->id,
-                    'leave_remaining' => $this->leave_remaining,
+                    'leave_remaining' => $this->leave_remaining ?? 0,
                     'citizen_id' => $this->citizen_id,
                     'join_date' => $this->join_date,
                     'birth_date' => $this->birth_date,
@@ -111,12 +122,20 @@ class EmployeeForm extends Component
 
                 $this->user->assignRole($this->role);
             } else {
-                $this->user->update([
+                $updateData = [
                     'username' => $this->username,
                     'name' => $this->name,
                     'email' => $this->email,
-                    'password' => $this->password ? Hash::make($this->password) : $this->employee->user->password,
-                ]);
+                    'status' => $statusValue,
+                ];
+                
+                // Update password only if provided
+                if ($this->password) {
+                    $updateData['password'] = Hash::make($this->password);
+                    $updateData['password_string'] = $this->password;
+                }
+                
+                $this->user->update($updateData);
 
                 $this->employee->update([
                     'citizen_id' => $this->citizen_id,
@@ -132,7 +151,6 @@ class EmployeeForm extends Component
 
                 $this->user->assignRole($this->role);
             }
-
 
             $this->alert('success', 'Employee ' . $this->type . ' successfully');
             return redirect()->route('employee.index');
