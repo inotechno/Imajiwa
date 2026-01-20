@@ -17,7 +17,7 @@
                             <li class="nav-item waves-effect waves-light">
                                 <a class="nav-link" data-bs-toggle="tab" href="#task" role="tab">
                                     <span class="d-block d-sm-none"><i class="far fa-user"></i></span>
-                                    <span class="d-none d-sm-block">Task</span>
+                                    <span class="d-none d-sm-block">All Task</span>
                                 </a>
                             </li>
                             <li class="nav-item waves-effect waves-light">
@@ -29,13 +29,7 @@
                             <li class="nav-item waves-effect waves-light">
                                 <a class="nav-link" data-bs-toggle="tab" href="#kanban" role="tab">
                                     <span class="d-block d-sm-none"><i class="far fa-envelope"></i></span>
-                                    <span class="d-none d-sm-block">Kanban</span>
-                                </a>
-                            </li>
-                            <li class="nav-item waves-effect waves-light">
-                                <a class="nav-link" data-bs-toggle="tab" href="#board" role="tab">
-                                    <span class="d-block d-sm-none"><i class="fas fa-cog"></i></span>
-                                    <span class="d-none d-sm-block">Board</span>
+                                    <span class="d-none d-sm-block">By Status</span>
                                 </a>
                             </li>
                         </ul>
@@ -172,11 +166,6 @@
             </div>
             <div class="tab-pane" id="kanban" role="tabpanel">
                 @livewire('project.task.task-kanban', ['project_id' => $project->id], key('kanban-' . $project->id))
-            </div>
-            <div class="tab-pane" id="board" role="tabpanel">
-                <div class="row">
-                    @livewire('project.project-board', ['projectId' => $project->id], key('project-board-' . $project->id))
-                </div>
             </div>
         </div>
     </div>

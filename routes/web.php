@@ -140,10 +140,15 @@ Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
             ->name('project.whiteboard')
             ->middleware('can:view:project');
 
+        // Task Board
+        Route::get('{project_id}/task/{task_id}/board', \App\Livewire\Project\Task\TaskBoardPage::class)->name('project.task.board');
+
+        // Task & Kanban
+        Route::get('{project_id}/tasks', TaskIndex::class)->name('project.task.index');
 
         Route::prefix('{project_id}/task')->group(function () {
             // Daftar semua task dalam project
-            Route::get('/', TaskIndex::class)->name('project.task.index');
+            // Route::get('/', TaskIndex::class)->name('project.task.index'); // This route is now handled by the one above
 
             // Daftar task sebagai anggota tim
             Route::get('/team', TaskTeam::class)->name('project.task.team');

@@ -66,7 +66,7 @@
                         <div class="row mb-4" wire:ignore>
                             <label class="col-form-label col-lg-2">Status</label>
                             <div class="col-lg-10">
-                                <select class="form-control" id="status" wire:model="status">
+                                <select class="form-control" id="status">
                                     <option value="">Select Status</option>
                                     <option value="todo">To Do</option>
                                     <option value="in_progress">In Progress</option>
@@ -82,7 +82,7 @@
                         <div class="row mb-4" wire:ignore>
                             <label class="col-form-label col-lg-2">Priority</label>
                             <div class="col-lg-10">
-                                <select class="form-control" id="priority" wire:model="priority">
+                                <select class="form-control" id="priority">
                                     <option value="">Select Priority</option>
                                     <option value="low">Low</option>
                                     <option value="medium">Medium</option>
@@ -90,6 +90,8 @@
                                 </select>
                             </div>
                         </div>
+
+
 
                         <!-- Employees -->
                         <div class="row mb-4" wire:ignore>
@@ -172,11 +174,23 @@
                         @this.set('priority', $(this).val());
                     });
 
-                // Reinitialize select2 on update
-                Livewire.on('change-select-form', () => {
+                // Set Initial Values with Timeout
+                setTimeout(() => {
                     $('#employees').val(@json($selectedEmployees)).trigger('change');
                     $('#status').val(@json($status)).trigger('change');
                     $('#priority').val(@json($priority)).trigger('change');
+                }, 100);
+
+                // Reinitialize select2 and set values (For updates)
+                Livewire.on('set-form-data', (eventData) => {
+                    // Handle potential array wrapping or direct object
+                    const payload = Array.isArray(eventData) ? eventData[0] : eventData;
+                    
+                    if (payload) {
+                        $('#employees').val(payload.employees).trigger('change');
+                        $('#status').val(payload.status).trigger('change');
+                        $('#priority').val(payload.priority).trigger('change');
+                    }
                 });
             });
         </script>

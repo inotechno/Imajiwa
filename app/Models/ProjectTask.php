@@ -11,6 +11,7 @@ class ProjectTask extends Model
 
     protected $fillable = [
         'project_id',
+        'list_id',
         'created_by',
         'title',
         'description',
@@ -18,8 +19,14 @@ class ProjectTask extends Model
         'start_date',
         'end_date',
         'priority',
-        'google_event_id'
+        'google_event_id',
+        'whiteboard_room_id'
     ];
+
+    public function list()
+    {
+        return $this->belongsTo(TaskList::class, 'list_id');
+    }
 
     public function project()
     {

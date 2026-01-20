@@ -6,6 +6,7 @@ use App\Models\Employee;
 use App\Models\Notification;
 use App\Models\Project;
 use App\Models\ProjectTask;
+use App\Models\TaskList;
 use Illuminate\Support\Facades\Auth;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\On;
@@ -18,8 +19,10 @@ class TaskForm extends Component
     public $task;
     public $project_id;
     public $title, $description, $start_date, $end_date, $status, $priority;
+    public $list_id = null;
     public $selectedEmployees = [];
     public $employees = [];
+    public $lists = [];
     public $type = 'create';
 
     public function mount($project_id, $id = null)
@@ -31,10 +34,11 @@ class TaskForm extends Component
             $this->task = ProjectTask::find($id);
             $this->title = $this->task->title;
             $this->description = $this->task->description;
-            $this->start_date = $this->task->start_date;
-            $this->end_date = $this->task->end_date;
+            $this->start_date = \Carbon\Carbon::parse($this->task->start_date)->format('Y-m-d');
+            $this->end_date = \Carbon\Carbon::parse($this->task->end_date)->format('Y-m-d');
             $this->status = $this->task->status;
             $this->priority = $this->task->priority;
+            $this->list_id = $this->task->list_id;
             $this->selectedEmployees = $this->task->employees()->pluck('employees.id')->toArray();
             $this->type = 'update';
             $this->dispatch('change-select-form');
@@ -47,6 +51,15 @@ class TaskForm extends Component
             ->orderBy('users.name', 'asc')
             ->select('employees.*')
             ->get();
+
+
+
+        // Dispatch event untuk set value Select2
+        $this->dispatch('set-form-data', [
+            'employees' => $this->selectedEmployees,
+            'status' => $this->status,
+            'priority' => $this->priority
+        ]);
     }
 
     #[On('changeSelectForm')]
@@ -82,6 +95,7 @@ class TaskForm extends Component
         if ($this->type === 'create') {
             $this->task = ProjectTask::create([
                 'project_id' => $this->project_id,
+                'list_id' => $this->list_id,
                 'created_by' => Auth::id(),
                 'title' => $this->title,
                 'description' => $this->description,
@@ -96,6 +110,7 @@ class TaskForm extends Component
         // ✅ UPDATE
         else {
             $this->task->update([
+                'list_id' => $this->list_id,
                 'title' => $this->title,
                 'description' => $this->description,
                 'start_date' => $this->start_date,
