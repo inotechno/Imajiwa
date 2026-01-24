@@ -17,7 +17,7 @@
                                 placeholder="Search for Name Project Manager, Project Name">
                         </div>
                         <div class="col-md-2" wire:ignore>
-                            <select class="form-control select2 select-status" wire:model.live="status">
+                            <select class="form-control select2 select-status" data-model="status">
                                 <option value="">Select Status</option>
                                 <option value="not_started">Not Started</option>
                                 <option value="in_progress">In Progress</option>
@@ -27,7 +27,7 @@
                             </select>
                         </div>
                         <div class="col-md-2" wire:ignore>
-                            <select class="form-control select2 select-per-page" wire:model.live="perPage">
+                            <select class="form-control select2 select-per-page" data-model="perPage">
                                 <option value="">Select Per Page</option>
                                 <option value="10">10</option>
                                 <option value="25">25</option>
@@ -36,7 +36,7 @@
                             </select>
                         </div>
                        <div class="col-md-2" wire:ignore>
-                            <select class="form-control select2 select-year" wire:model.live="year">
+                            <select class="form-control select2 select-year" data-model="year">
                                 @foreach ($availableYears as $yearOption)
                                     <option value="{{ $yearOption }}">{{ $yearOption }}</option>
                                 @endforeach
@@ -55,9 +55,23 @@
                 </div>
             </div>
 
-            @livewire('project.project-list', ['projects' => $projects->getCollection()], key('project-list'))
+            <div class="position-relative">
+                <!-- Loading Indicator -->
+                <div wire:loading.flex wire:target="search, status, perPage, year, resetFilter" class="position-absolute w-100 h-100 top-0 start-0 justify-content-center align-items-center" style="z-index: 10; min-height: 200px;">
+                    <div class="spinner-chase">
+                        <div class="chase-dot"></div>
+                        <div class="chase-dot"></div>
+                        <div class="chase-dot"></div>
+                        <div class="chase-dot"></div>
+                        <div class="chase-dot"></div>
+                        <div class="chase-dot"></div>
+                    </div>
+                </div>
 
-            {{ $projects->links() }}
+                @livewire('project.project-list', ['projects' => $projects->getCollection()], key('project-list'))
+
+                {{ $projects->links() }}
+            </div>
         </div>
     </div>
 
@@ -69,6 +83,8 @@
         <script src="{{ asset('libs/select2/js/select2.min.js') }}"></script>
         <script>
             document.addEventListener('livewire:init', function() {
+                let isResetting = false;
+
                 $('.select2').select2({
                     placeholder: function () {
                         return $(this).data('placeholder');
@@ -76,22 +92,19 @@
                     width: '100%'
                 });
 
-                $('.select-status').on('change', function() {
-                    @this.set('status', this.value);
-                });
-
-                $('.select-year').on('change', function() {
-                    @this.set('year', this.value);
-                });
-
-                $('.select-per-page').on('change', function() {
-                    @this.set('perPage', this.value);
+                $('.select-status, .select-year, .select-per-page').on('change', function() {
+                    if (isResetting) return;
+                    @this.set($(this).data('model'), this.value);
                 });
 
                 Livewire.on('reset-select2', () => {
+                    isResetting = true;
                     $('.select-status').val(null).trigger('change');
-                    $('.select-year').val(null).trigger('change');
-                    $('.select-per-page').val(null).trigger('change');
+                    $('.select-per-page').val(10).trigger('change');
+                    
+                    let currentYear = new Date().getFullYear();
+                    $('.select-year').val(currentYear).trigger('change');
+                    isResetting = false;
                 });
             });
         </script>

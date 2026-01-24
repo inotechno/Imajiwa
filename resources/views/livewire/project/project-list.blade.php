@@ -18,9 +18,19 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($projects as $project)
+                        @forelse ($projects as $project)
                             @livewire('project.project-item', ['project' => $project], key($project->id))
-                        @endforeach
+                        @empty
+                            <tr>
+                                <td colspan="7" class="text-center py-5">
+                                    <div class="d-flex flex-column align-items-center justify-content-center">
+                                        <i class="mdi mdi-folder-open-outline text-muted" style="font-size: 4rem;"></i>
+                                        <h5 class="mt-3 text-muted">No Projects Found</h5>
+                                        <p class="text-secondary mb-0">Try checking your filters or create a new project.</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>

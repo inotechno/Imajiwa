@@ -12,6 +12,8 @@ class TaskDetail extends Component
     public $title, $description, $start_date, $end_date, $status, $priority;
     public $assignedEmployees = [];
     public $creatorName;
+    public $selectedEmployeeId;
+    public $availableEmployees = [];
 
     public function mount($project_id, $id)
     {
@@ -28,7 +30,13 @@ class TaskDetail extends Component
         $this->priority = $this->task->priority;
         $this->creatorName = $this->task->creator->name ?? '-';
 
+        $this->loadEmployees();
+    }
+
+    public function loadEmployees()
+    {
         // Ambil semua employee yang ditugaskan
+        $this->task->refresh();
         $this->assignedEmployees = $this->task->employees->map(function ($employee) {
             return [
                 'id' => $employee->id,
@@ -36,6 +44,42 @@ class TaskDetail extends Component
                 'position' => $employee->position->name ?? '-'
             ];
         });
+
+        // Ambil karyawan yang belum ditugaskan
+        $assignedIds = $this->task->employees->pluck('id')->toArray();
+        $this->availableEmployees = \App\Models\Employee::with('user', 'position')
+            ->join('users', 'employees.user_id', '=', 'users.id')
+            ->whereNotNull('employees.position_id')
+            ->whereNotIn('employees.id', $assignedIds)
+            ->orderBy('users.name', 'asc')
+            ->select('employees.*')
+            ->get()
+            ->map(function ($employee) {
+                return [
+                    'id' => $employee->id,
+                    'name' => $employee->user->name ?? 'Unknown'
+                ];
+            });
+    }
+
+    public function assignEmployee()
+    {
+        $this->validate([
+            'selectedEmployeeId' => 'required|exists:employees,id'
+        ]);
+
+        $this->task->employees()->attach($this->selectedEmployeeId);
+        
+        $this->selectedEmployeeId = null;
+        $this->loadEmployees();
+        
+        $this->dispatch('alert', ['type' => 'success', 'message' => 'Employee assigned successfully']);
+    }
+
+    #[\Livewire\Attributes\On('changeSelectForm')]
+    public function changeSelectForm($param, $value)
+    {
+        $this->$param = $value;
     }
 
     public function render()

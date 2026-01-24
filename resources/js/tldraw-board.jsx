@@ -110,12 +110,25 @@ function TldrawBoardWrapper({ projectId, userId, userName }) {
     const handleMount = (editor) => {
         console.log('[TLDRAW] Editor mounted successfully ✅');
         
-        // Set User Name for Presence
-        if (userName) {
-            console.log('[TLDRAW] Setting user name:', userName);
-            editor.user.updateUserPreferences({
-                name: userName,
-            });
+        // Set User Name & Default Preferences
+        editor.user.updateUserPreferences({
+            name: userName || 'Guest',
+        });
+
+        // Enable Grid by default
+        editor.updateInstanceState({ isGridMode: true });
+        
+        // Enable Dark Mode (safely)
+        try {
+            if (editor.setDarkMode) {
+                editor.setDarkMode(true);
+            } else if (editor.actions?.get('toggle-dark-mode')) {
+                 // Check current mode before toggling? 
+                 // Usually default is light.
+                 editor.actions.get('toggle-dark-mode').handler(editor);
+            }
+        } catch (e) {
+            console.warn('[TLDRAW] Failed to set dark mode:', e);
         }
 
         // Register external asset handler for file uploads

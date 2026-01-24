@@ -115,7 +115,7 @@
                     <!-- Assignees -->
                     @if(count($assignedEmployees) > 0)
                         <h6 class="font-size-11 text-muted text-uppercase mb-2">Assigned To</h6>
-                        <div class="d-flex flex-wrap gap-2">
+                        <div class="d-flex flex-wrap gap-2 mb-3">
                             @foreach($assignedEmployees as $employee)
                                 <div class="d-flex align-items-center bg-light rounded-pill pe-3 p-1">
                                     <span class="avatar-xs me-2">
@@ -128,10 +128,54 @@
                             @endforeach
                         </div>
                     @else
-                        <small class="text-muted font-italic">No team assigned yet</small>
+                        <small class="text-muted font-italic d-block mb-3">No team assigned yet</small>
                     @endif
+
+                    <div class="row" wire:ignore>
+                        <div class="col-8">
+                            <select id="selectedEmployeeId" class="form-control select2-multiple" data-placeholder="Select Employee">
+                                <option value="">Select Employee</option>
+                                @foreach($availableEmployees as $employee)
+                                    <option value="{{ $employee['id'] }}">{{ $employee['name'] }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <button wire:click="assignEmployee" class="btn btn-primary w-100 rounded-pill">
+                                <i class="mdi mdi-plus me-1"></i> Add
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+@push('styles')
+    <link href="{{ asset('libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
+@endpush
+
+@push('js')
+    <script src="{{ asset('libs/select2/js/select2.min.js') }}"></script>
+    <script>
+        document.addEventListener('livewire:init', function() {
+            initSelect2();
+            
+            Livewire.on('alert', (data) => {
+                 initSelect2();
+            });
+
+            function initSelect2() {
+                 $('#selectedEmployeeId').select2({
+                    width: '100%',
+                    placeholder: "Select Employee",
+                    allowClear: true
+                }).on('change', function() {
+                    let selectedValue = $(this).val();
+                    @this.set('selectedEmployeeId', selectedValue);
+                });
+            }
+        });
+    </script>
+@endpush

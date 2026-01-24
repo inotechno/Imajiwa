@@ -31,11 +31,35 @@ class ProjectTeam extends Component
         'refreshIndex' => '$refresh',
     ];
 
+    public function updatedSearch()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedStatus()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedYear()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedPerPage()
+    {
+        $this->resetPage();
+    }
+
     public function resetFilter()
     {
         $this->search = '';
         $this->status = '';
         $this->perPage = 10;
+        $this->year = (int) date('Y');
+        $this->resetPage();
+        
+        $this->dispatch('reset-select2');
     }
 
     public function mount()

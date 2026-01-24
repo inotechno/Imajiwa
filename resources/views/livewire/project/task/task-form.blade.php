@@ -117,6 +117,7 @@
                         <!-- Buttons -->
                         <div class="row justify-content-end">
                             <div class="col-lg-10">
+                                <a href="{{ route('project.detail', $project_id) }}" class="btn btn-secondary me-2">Back</a>
                                 <button type="submit" class="btn btn-primary">
                                     {{ $type == 'create' ? 'Create Task' : 'Update Task' }}
                                 </button>
