@@ -6,9 +6,14 @@ use App\Models\Client;
 use Livewire\Component;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 
+use Livewire\WithFileUploads;
+use Illuminate\Http\UploadedFile;
+
 class ClientForm extends Component
 {
     use LivewireAlert;
+    use WithFileUploads;
+
     public $client;
     public $name , $address , $phone , $email , $contact_person , $image;
     public $type = 'create';
@@ -31,29 +36,31 @@ class ClientForm extends Component
     {
         $this->validate([
             'name' => 'required',
+            'image' => 'nullable|max:2048', // 2MB Max
         ]);
 
-        if ($this->type == 'create') {
-            $this->client = Client::create([
-                'name' => $this->name,
-                'address' => $this->address,
-                'phone' => $this->phone,
-                'email' => $this->email,
-                'contact_person' => $this->contact_person,
-                'image' => $this->image,
-            ]);
-        } else {
-            $this->client->update([
-                'name' => $this->name,
-                'address' => $this->address,
-                'phone' => $this->phone,
-                'email' => $this->email,
-                'contact_person' => $this->contact_person,
-                'image' => $this->image,
-            ]);
+        $imagePath = $this->type == 'update' ? $this->client->image : null;
+
+        if ($this->image instanceof UploadedFile) {
+            $imagePath = $this->image->store('clients', 'public');
         }
 
-        $this->alert('success', 'client has been ' . $this->type . ' successfully');
+        $data = [
+            'name' => $this->name,
+            'address' => $this->address,
+            'phone' => $this->phone,
+            'email' => $this->email,
+            'contact_person' => $this->contact_person,
+            'image' => $imagePath,
+        ];
+
+        if ($this->type == 'create') {
+            $this->client = Client::create($data);
+        } else {
+            $this->client->update($data);
+        }
+
+        $this->alert('success', 'Client has been ' . $this->type . ' successfully');
         return redirect()->route('client.index');
     }
 

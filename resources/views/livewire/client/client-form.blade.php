@@ -6,7 +6,7 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title mb-4">
-                        {{ $type == 'create' ? 'Create Client' : 'Edit Client ' . $client->title }}
+                        {{ $type == 'create' ? 'Create Client' : 'Edit Client ' . $client->name }}
                     </h4>
                     <form wire:submit.prevent="save" class="needs-validation" wire:ignore.self>
                         <div class="row mb-4">
@@ -42,7 +42,7 @@
                         <div class="row mb-4">
                             <label for="phone" class="col-form-label col-lg-2">Phone</label>
                             <div class="col-lg-10">
-                                <input id="phone" name="phone" wire:model="phone" type="phone"
+                                <input id="phone" name="phone" wire:model="phone" type="text"
                                     class="form-control @error('phone') is-invalid @enderror"
                                     placeholder="Enter Phone...">
 
@@ -57,7 +57,7 @@
                         <div class="row mb-4">
                             <label for="address" class="col-form-label col-lg-2">Address</label>
                             <div class="col-lg-10">
-                                <input id="address" name="address" wire:model="address" type="address"
+                                <input id="address" name="address" wire:model="address" type="text"
                                     class="form-control @error('address') is-invalid @enderror"
                                     placeholder="Enter address...">
 
@@ -70,13 +70,13 @@
                         </div>
 
                         <div class="row mb-4">
-                            <label for="contact Person" class="col-form-label col-lg-2">Contact Person</label>
+                            <label for="contact_person" class="col-form-label col-lg-2">Contact Person</label>
                             <div class="col-lg-10">
-                                <input id="contact Person" name="contact Person" wire:model="contact Person" type="contact Person"
-                                    class="form-control @error('contact Person') is-invalid @enderror"
+                                <input id="contact_person" name="contact_person" wire:model="contact_person" type="text"
+                                    class="form-control @error('contact_person') is-invalid @enderror"
                                     placeholder="Enter contact Person...">
 
-                                @error('contact Person')
+                                @error('contact_person')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

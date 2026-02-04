@@ -32,7 +32,7 @@ class ClientItem extends Component
             'confirmButtonColor' => '#DD6B55',
             'confirmButtonText' => 'Yes, Delete',
             'cancelButtonText' => 'No',
-            'onConfirmed' => 'delete-position',
+            'onConfirmed' => 'delete-client',
             'showCancelButton' => true,
 
             'allowOutsideClick' => false,
