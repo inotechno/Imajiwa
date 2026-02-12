@@ -113,21 +113,11 @@ function TldrawBoardWrapper({ projectId, userId, userName }) {
         // Set User Name & Default Preferences
         editor.user.updateUserPreferences({
             name: userName || 'Guest',
+            colorScheme: 'dark', // Force Dark Mode
         });
 
         // Enable Grid by default
         editor.updateInstanceState({ isGridMode: true });
-        
-        // Enable Dark Mode (safely)
-        try {
-            const isDark = editor.user.getIsDarkMode();
-            if (!isDark) {
-                // If not dark, use action to toggle (which is the safest way in v2/v3)
-                editor.actions.get('toggle-dark-mode').handler(editor);
-            }
-        } catch (e) {
-            console.warn('[TLDRAW] Failed to set dark mode:', e);
-        }
 
         // Register external asset handler for file uploads
         editor.registerExternalAssetHandler('file', async ({ file }) => {

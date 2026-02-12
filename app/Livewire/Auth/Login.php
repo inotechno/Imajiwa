@@ -38,7 +38,7 @@ class Login extends Component
                     ->log("$user->name telah melakukan login");
 
                 $this->alert('success', 'Selamat datang di dashboard Employee Management System');
-                return redirect()->route('dashboard.index');
+                return redirect()->intended(route('dashboard.index'));
             }
 
             $this->alert('error', 'Email atau password yang anda gunakan salah, silahkan periksa kembali!');
