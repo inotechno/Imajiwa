@@ -23,6 +23,9 @@ class ProjectBoard extends Component
 
     public function mount($projectId)
     {
+        // DISABLED: Enforce Task -> Tldraw workflow
+        abort(404);
+
         $this->projectId = $projectId;
 
         // Ambil project

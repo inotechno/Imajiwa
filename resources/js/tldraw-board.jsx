@@ -120,12 +120,10 @@ function TldrawBoardWrapper({ projectId, userId, userName }) {
         
         // Enable Dark Mode (safely)
         try {
-            if (editor.setDarkMode) {
-                editor.setDarkMode(true);
-            } else if (editor.actions?.get('toggle-dark-mode')) {
-                 // Check current mode before toggling? 
-                 // Usually default is light.
-                 editor.actions.get('toggle-dark-mode').handler(editor);
+            const isDark = editor.user.getIsDarkMode();
+            if (!isDark) {
+                // If not dark, use action to toggle (which is the safest way in v2/v3)
+                editor.actions.get('toggle-dark-mode').handler(editor);
             }
         } catch (e) {
             console.warn('[TLDRAW] Failed to set dark mode:', e);
