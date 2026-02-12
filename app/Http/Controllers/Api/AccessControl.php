@@ -24,7 +24,7 @@ class AccessControl extends Controller
     public function index(Request $request)
     {
         $eventLog = json_decode($request->input('event_log'), true);
-        AccessControlEvent::dispatch($eventLog);
+        HandleAccessControlEvent::dispatch($eventLog, null); // Pass null for picturePath if not used here
         return response()->json(['status' => 'Event dispatched']);
     }
 

@@ -60,24 +60,21 @@ class HandleAccessControlEvent implements ShouldQueue
             Log::error("Machine with IP address {$ipAddress} not found");
             return;
         }
-        // Tentukan apakah ini event masuk atau keluar berdasarkan IP address
-        $eventType = $ipAddress === '192.168.20.202' ? 'out' : ($ipAddress === '192.168.20.201' ? 'in' : null);
 
-        if (!$eventType) {
-            Log::error('Invalid IP address');
-            return;
-        }
 
         DB::beginTransaction();
         try {
             if (empty($eventData['employeeNoString'])) {
-                Log::error('Invalid employeeNoString, timestamp: ' . $timestamp . ' EventType: '. $eventType);
+                Log::error('Invalid employeeNoString, timestamp: ' . $timestamp); // Removed EventType
                 return;
             }
 
+            // Fix Leading Zero Issue: Add "1" prefix, same as Node.js implementation
+            $eventData['employeeNoString'] = "1" . $eventData['employeeNoString'];
+
             if(empty($eventData['serialNo']))
             {
-                Log::error('Invalid serialNo, timestamp: ' . $timestamp . ' EventType: '. $eventType);
+                Log::error('Invalid serialNo, timestamp: ' . $timestamp); // Removed EventType
                 return;
             }
 
@@ -170,7 +167,7 @@ class HandleAccessControlEvent implements ShouldQueue
                     'machine_id' => $machine->id,
                     'attendance_method_id' => 1,
                     'site_id' => $site->id,
-                    'type' => $eventType,
+                    // 'type' => $eventType, // Removed as per Node.js logic and DB schema
                     'timestamp' => $timestamp,
                     'longitude' => $site->longitude,
                     'latitude' => $site->latitude,
