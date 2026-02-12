@@ -55,9 +55,9 @@ class HandleAccessControlEvent implements ShouldQueue
         $timestamp = Carbon::parse($eventLog['dateTime'])->format('Y-m-d H:i:s');
 
         $site = Site::find(1);
-        $machine = Machine::where('ip_address', $ipAddress)->first();
+        $machine = Machine::where('ip_address', $ipAddress)->where('is_active', 1)->first();
         if ($machine === null) {
-            Log::error("Machine with IP address {$ipAddress} not found");
+            Log::error("Machine with IP address {$ipAddress} not found or inactive.");
             return;
         }
 
