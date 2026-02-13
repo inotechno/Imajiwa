@@ -188,12 +188,108 @@ function TldrawBoardWrapper({ projectId, userId, userName }) {
         // Register URL handler (for pasting URLs)
         editor.registerExternalAssetHandler('url', async ({ url }) => {
             console.log('[ASSET] Handling URL:', url);
+
+            // Ensure protocol exists
+            let safeUrl = url;
+            if (!/^https?:\/\//i.test(url)) {
+                safeUrl = 'https://' + url;
+            }
+
+            // 1. YouTube Embed Support
+            // Regex to detect YouTube URLs (standard, short, embed, etc.)
+            const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/;
+            if (youtubeRegex.test(safeUrl)) {
+                console.log('[ASSET] Detected YouTube URL:', safeUrl);
+
+                // Clean URL: Strip playlist, index, and playback position (t=) to avoid embed errors
+                // AND FORCE /embed/ FORMAT to bypass Tldraw's internal transformation (which might be causing issues)
+                let cleanUrl = safeUrl;
+                try {
+                    const urlObj = new URL(safeUrl);
+                    let videoId = null;
+
+                    if (urlObj.hostname.includes('youtube.com')) {
+                        videoId = urlObj.searchParams.get('v');
+                        // Handle /embed/ URLs directly
+                        if (!videoId && urlObj.pathname.startsWith('/embed/')) {
+                             videoId = urlObj.pathname.split('/')[2];
+                        }
+                    } else if (urlObj.hostname.includes('youtu.be')) {
+                        videoId = urlObj.pathname.slice(1);
+                    }
+
+                    if (videoId) {
+                        // Force the embed URL format directly
+                        cleanUrl = `https://www.youtube.com/embed/${videoId}`;
+                    }
+                } catch (e) {
+                    console.warn('[ASSET] Failed to clean YouTube URL:', e);
+                }
+
+                console.log('[ASSET] Creating Embed shape with clean URL:', cleanUrl);
+                
+                // Create an Embed shape center-screen (or default placement)
+                editor.createShape({
+                    type: 'embed',
+                    props: {
+                        url: cleanUrl,
+                        w: 560,
+                        h: 315,
+                        doesResize: true,
+                    },
+                });
+                
+                // Return null to prevent Tldraw from creating a default bookmark asset
+                return null;
+            }
+
+            // 2. Image URL Support
+            // Detect common image extensions
+            const imageRegex = /\.(jpeg|jpg|gif|png|webp|svg)(\?.*)?$/i;
+            if (imageRegex.test(safeUrl)) {
+                console.log('[ASSET] Detected Image URL, creating Image asset:', safeUrl);
+                
+                // Attempt to get dimensions (optional, but helps with layout)
+                let w = 600;
+                let h = 400;
+                try {
+                    await new Promise((resolve, reject) => {
+                        const img = new Image();
+                        img.onload = () => {
+                            w = img.width;
+                            h = img.height;
+                            resolve();
+                        };
+                        img.onerror = reject;
+                        img.src = safeUrl;
+                    });
+                } catch (e) {
+                    console.warn('[ASSET] Could not determine image dimensions for URL, using defaults.');
+                }
+
+                return {
+                    id: `asset:url_image_${Date.now()}`,
+                    type: 'image',
+                    typeName: 'asset',
+                    props: {
+                        name: safeUrl.split('/').pop() || 'image',
+                        src: safeUrl,
+                        w,
+                        h,
+                        mimeType: 'image/jpeg', // Generic fallback
+                        isAnimated: safeUrl.toLowerCase().endsWith('.gif'),
+                    },
+                    meta: {},
+                };
+            }
+
+            // 3. Default: Bookmark
             return {
                 id: `asset:url_${Date.now()}`,
                 type: 'bookmark',
                 typeName: 'asset',
                 props: {
-                    src: url,
+                    src: safeUrl,
                     title: '',
                     description: '',
                     image: '',
