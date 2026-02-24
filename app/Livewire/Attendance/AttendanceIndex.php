@@ -16,6 +16,7 @@ class AttendanceIndex extends Component
     public $perPage = 10;
     public $start_date = '';
     public $end_date = '';
+    public $employee_id = '';
 
     protected $queryString = [
         'search' => ['except' => ''],
@@ -40,31 +41,42 @@ class AttendanceIndex extends Component
         $this->resetPage();
     }
 
+    public function updatingPerPage()
+    {
+        $this->resetPage();
+    }
+
     public function resetFilter()
     {
-        $this->reset(['search', 'start_date', 'end_date']);
+        $this->reset(['search', 'start_date', 'end_date', 'employee_id']);
+        $this->resetPage();
     }
 
     public function render()
     {
         $currentYear = now()->year;
         $attendances = Attendance::with(['employee.user', 'machine', 'site', 'attendanceMethod'])
+            ->whereHas('employee', function ($query) {
+                $query->whereNotNull('position_id');
+            })
             ->when($this->search, function ($query) {
                 $query->whereHas('employee.user', function ($query) {
                     $query->where('name', 'like', '%' . $this->search . '%');
                 });
             })
             ->when($this->start_date, function ($query) {
-                $query->whereDate('timestamp', '>=', $this->start_date);
+                // Filter berdasarkan shift-date (timestamp dikurangi 13 jam)
+                // agar data lembur yang check-out dini hari ikut tertangkap
+                $query->whereRaw('DATE(timestamp - INTERVAL 13 HOUR) >= ?', [$this->start_date]);
             })
             ->when($this->end_date, function ($query) {
-                $query->whereDate('timestamp', '<=', $this->end_date);
+                $query->whereRaw('DATE(timestamp - INTERVAL 13 HOUR) <= ?', [$this->end_date]);
             })
             ->when(!$this->start_date && !$this->end_date, function ($query) use ($currentYear) {
-                $query->whereYear('timestamp', $currentYear);
+                $query->whereRaw('YEAR(timestamp - INTERVAL 13 HOUR) = ?', [$currentYear]);
             })
             ->select('employee_id')
-            ->selectRaw('DATE(timestamp) as date')
+            ->selectRaw('DATE(timestamp - INTERVAL 13 HOUR) as date')
             ->selectRaw('MIN(timestamp) as check_in')
             ->selectRaw('MAX(timestamp) as check_out')
             ->groupBy('employee_id', 'date')

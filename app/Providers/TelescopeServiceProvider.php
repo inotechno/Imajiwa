@@ -21,6 +21,12 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
         $isLocal = $this->app->environment('local');
 
         Telescope::filter(function (IncomingEntry $entry) use ($isLocal) {
+            // Skip pencatatan request dari mesin access control untuk menghindari DB lock
+            if ($entry->type === 'request' &&
+                str_contains($entry->content['uri'] ?? '', 'api/access-control')) {
+                return false;
+            }
+
             return $isLocal ||
                    $entry->isReportableException() ||
                    $entry->isFailedRequest() ||

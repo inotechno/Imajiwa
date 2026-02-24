@@ -18,15 +18,38 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
+use Illuminate\Support\Facades\Log;
 
 class AccessControl extends Controller
 {
     public function index(Request $request)
     {
-        $eventLog = json_decode($request->input('event_log'), true);
-        HandleAccessControlEvent::dispatch($eventLog, null); // Pass null for picturePath if not used here
+        // Support dua format:
+        // 1. JSON body langsung: {"event_log": {...}}
+        // 2. Form field: event_log = "{...}" (JSON string dari Hikvision)
+        if ($request->has('event_log')) {
+            $raw = $request->input('event_log');
+            $eventLog = is_array($raw) ? $raw : json_decode($raw, true);
+        } else {
+            $eventLog = $request->all();
+        }
+
+        // Filter dini: skip event tanpa employeeNoString (bukan event absen karyawan)
+        $employeeNo = $eventLog['AccessControllerEvent']['employeeNoString'] ?? null;
+        if (empty($employeeNo)) {
+            return response()->json(['status' => 'Skipped - no employee data']);
+        }
+
+        Log::info('Access control event dispatched:', [
+            'employeeNo' => $employeeNo,
+            'serialNo'   => $eventLog['AccessControllerEvent']['serialNo'] ?? null,
+            'dateTime'   => $eventLog['dateTime'] ?? null,
+        ]);
+
+        HandleAccessControlEvent::dispatchSync($eventLog, null);
         return response()->json(['status' => 'Event dispatched']);
     }
+
 
     // public function index(Request $request)
     // {

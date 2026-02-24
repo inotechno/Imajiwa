@@ -136,19 +136,19 @@ class HandleAccessControlEvent implements ShouldQueue
                     'avatar_path' => null,
                     'avatar_thumbnail_url' => null,
                     'avatar_thumbnail_path' => null,
-                    'status' => 'active',
+                    'status' => 1,
                 ]);
 
                 $user->assignRole('Employee');
                 $log['user_created'] = $eventData['name'] ?? null;
             }
 
-            // Cek apakah employee sudah ada berdasarkan uid
-            $employee = Employee::where('uid', $eventData['employeeNoString'])->first();
+            // Cek apakah employee sudah ada berdasarkan user_id
+            $employee = Employee::where('user_id', $user->id)->first();
             if (!$employee) {
                 $employee = Employee::create([
-                    'uid' => $eventData['employeeNoString'],
-                    'user_id' => $user->id
+                    'id'      => $user->id,
+                    'user_id' => $user->id,
                 ]);
 
                 $log['employee_created'] = $eventData['employeeNoString'] ?? null;
