@@ -103,7 +103,7 @@ Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
     Route::get('send-mail', [SendEmailController::class, 'newUser'])->name('send-mail');
 
     Route::get('/', DashboardIndex::class)->name('dashboard.index')->middleware('can:view:dashboard');
-    Route::get('dashboard', DashboardIndex::class)->name('dashboard.index')->middleware('can:view:dashboard');
+    Route::get('dashboard', DashboardIndex::class)->middleware('can:view:dashboard');
     Route::get('import-master-data', ImportMasterDataIndex::class)->name('import.index')->middleware('can:view:import_master_data');
 
     Route::get('machine', MachineIndex::class)->name('machine.index')->middleware('can:view:machine');
