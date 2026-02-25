@@ -82,7 +82,7 @@ class AttendanceIndex extends Component
             ->groupBy('employee_id', 'date')
             ->orderBy('date', 'desc');
 
-        $attendances = $attendances->where('employee_id', Auth::user()->employee->id)->paginate($this->perPage);
+        $attendances = $attendances->where('employee_id', Auth::user()->employee?->id)->paginate($this->perPage);
 
         // Fetch all check-in and check-out records at once with relations
         $checkInDetails = Attendance::whereIn('timestamp', $attendances->pluck('check_in'))
