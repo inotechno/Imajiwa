@@ -87,7 +87,7 @@ class ProjectTeam extends Component
 
     public function export()
     {
-        return Excel::download(new ProjectSheetExport(), 'projects.xlsx');
+        return Excel::download(new ProjectSheetExport($this->year, $this->search, $this->status, Auth::user()), 'projects.xlsx');
     }
 
     public function render()

@@ -147,7 +147,7 @@ class HandleAccessControlEvent implements ShouldQueue
             $employee = Employee::where('user_id', $user->id)->first();
             if (!$employee) {
                 $employee = Employee::create([
-                    'id'      => $user->id,
+                    'id'      => $user->username,
                     'user_id' => $user->id,
                 ]);
 
