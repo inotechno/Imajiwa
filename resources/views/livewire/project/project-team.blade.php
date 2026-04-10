@@ -52,7 +52,7 @@
                             @endcan
                         </div>
                     </div>
-                </div>
+                </div>  
             </div>
 
             <div class="position-relative">

@@ -44,7 +44,7 @@ class ProjectSheetExport implements FromCollection, WithHeadings, WithMapping, W
                 $q->where('status', $this->status);
             })
             ->when($this->year, function ($q) {
-                $q->whereYear('start_date', $this->year);
+                $q->whereYear('end_date', $this->year);
             });
 
         // Terapkan filter berdasarkan Role User jika ada

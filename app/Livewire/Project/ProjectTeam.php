@@ -68,7 +68,7 @@ class ProjectTeam extends Component
         $this->year = $currentYear;
         
         // Get years from existing projects
-        $yearsFromProjects = Project::selectRaw('YEAR(start_date) as year')
+        $yearsFromProjects = Project::selectRaw('YEAR(end_date) as year')
             ->groupBy('year')
             ->orderBy('year', 'desc')
             ->pluck('year')
@@ -103,7 +103,7 @@ class ProjectTeam extends Component
         })->when($this->status, function ($query) {
             $query->where('status', $this->status);
         })->when($this->year, function ($query) {
-            $query->whereYear('start_date', $this->year);
+            $query->whereYear('end_date', $this->year);
         })->orderBy('end_date', 'asc');
 
         // Mengecek role user untuk filtering
